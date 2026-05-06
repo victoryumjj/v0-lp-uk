@@ -12,6 +12,10 @@ declare global {
   interface Window {
     fbq?: (...args: any[]) => void
     gtag?: (...args: any[]) => void
+    ttq?: {
+      track: (eventName: string, data?: Record<string, any>) => void
+      page: () => void
+    }
   }
 }
 
@@ -79,14 +83,25 @@ export default function ThankYouClient({ sessionId }: { sessionId: string | null
           window.fbq("trackSingle", "1440709523610900", "Purchase", purchaseData, { eventID: pixelEventId })
         }
 
-        // 4) Track TikTok Purchase
-        console.log('[v0] TikTok Purchase - Starting tracking')
-        console.log('[v0] TikTok Purchase - window.ttq available:', typeof window !== 'undefined' && !!window.ttq)
-        
+        // 4) Track TikTok Purchase - Direct call via ttq
+        if (typeof window !== 'undefined' && window.ttq) {
+          window.ttq.track('CompletePayment', {
+            value: sessionValue,
+            currency: sessionCurrency,
+            contents: [{
+              content_id: sessionId,
+              content_type: 'product',
+              content_name: 'Purchase',
+              price: sessionValue,
+              quantity: 1
+            }]
+          })
+        }
+
+        // Also use trackPurchase helper as backup
         let tiktokData: any = null
         try {
           const stored = sessionStorage.getItem('tiktok_purchase_data')
-          console.log('[v0] TikTok Purchase - sessionStorage data:', stored ? 'found' : 'not found')
           if (stored) {
             tiktokData = JSON.parse(stored)
             sessionStorage.removeItem('tiktok_purchase_data')
@@ -102,11 +117,9 @@ export default function ThankYouClient({ sessionId }: { sessionId: string | null
           status: 'completed',
           description: 'Purchase completed',
         }
-        console.log('[v0] TikTok Purchase - Payload:', JSON.stringify(tiktokPayload))
 
         try {
           await trackPurchase(tiktokPayload)
-          console.log('[v0] TikTok Purchase - trackPurchase() called successfully')
         } catch (tiktokErr) {
           console.error('[v0] TikTok Purchase - Error:', tiktokErr)
         }
