@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
+import { identifyUser } from "@/lib/tiktok-events"
 
 const faqs = [
   {
@@ -62,8 +63,16 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    
+    // TikTok: Identify user with email from contact form (for future event matching)
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
+    if (email) {
+      await identifyUser({ email: email.trim() })
+    }
+    
     setSubmitted(true)
   }
 
@@ -103,7 +112,7 @@ export default function ContactPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" required className="h-12" />
+                  <Input id="email" name="email" type="email" required className="h-12" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="subject">Sujet</Label>

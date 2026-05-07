@@ -5,14 +5,23 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { identifyUser, trackEventWithUser } from "@/lib/tiktok-events"
 
 export function Newsletter() {
   const [email, setEmail] = useState("")
   const [submitted, setSubmitted] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (email) {
+      // TikTok: Identify user and track CompleteRegistration for newsletter signup
+      await identifyUser({ email: email.trim() })
+      await trackEventWithUser('CompleteRegistration', {
+        value: 0,
+        currency: 'GBP',
+        description: 'Newsletter signup',
+      }, { email: email.trim() })
+      
       setSubmitted(true)
       setEmail("")
     }
