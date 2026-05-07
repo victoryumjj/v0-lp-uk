@@ -5,7 +5,7 @@ import Script from "next/script"
 import Link from "next/link"
 import { CheckCircle, Home, ShoppingBag } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { trackPurchase } from "@/lib/tiktok-events"
+import { trackPurchase, identifyUser } from "@/lib/tiktok-events"
 import { useScript } from "next/script"
 
 declare global {
@@ -83,7 +83,18 @@ export default function ThankYouClient({ sessionId }: { sessionId: string | null
           window.fbq("trackSingle", "1440709523610900", "Purchase", purchaseData, { eventID: pixelEventId })
         }
 
-        // 4) Track TikTok Purchase - Direct call via ttq
+        // 4) Track TikTok Purchase with Advanced Matching
+        // Identify user with email/phone from Stripe BEFORE tracking Purchase
+        const customerDetails = sessionData?.customer_details
+        if (customerDetails) {
+          await identifyUser({
+            email: customerDetails.email || undefined,
+            phone_number: customerDetails.phone || undefined,
+            external_id: sessionId || undefined,
+          })
+        }
+        
+        // Direct call via ttq (user already identified above)
         if (typeof window !== 'undefined' && window.ttq) {
           window.ttq.track('CompletePayment', {
             value: sessionValue,

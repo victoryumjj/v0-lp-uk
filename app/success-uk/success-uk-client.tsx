@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle, Package, RotateCcw, ShoppingCart, Star } from "lucide-react"
-import { trackPurchase } from "@/lib/tiktok-events"
+import { trackPurchase, identifyUser, trackEventWithUser } from "@/lib/tiktok-events"
 import { useCart } from "@/lib/cart-context"
 
 declare global {
@@ -86,7 +86,17 @@ export default function SuccessUKClient({ sessionId }: { sessionId: string | nul
           window.fbq("trackSingle", "1440709523610900", "Purchase", purchaseDataMeta, { eventID: purchaseEventId })
         }
 
-        // 4) TikTok Purchase
+        // 4) TikTok Purchase with Advanced Matching
+        // Identify user with email/phone from Stripe BEFORE tracking Purchase
+        const customerDetails = sessionData?.customer_details
+        if (customerDetails) {
+          await identifyUser({
+            email: customerDetails.email || undefined,
+            phone_number: customerDetails.phone || undefined,
+            external_id: sessionId || undefined,
+          })
+        }
+        
         let tiktokData: any = null
         try {
           const stored = sessionStorage.getItem("tiktok_purchase_data")
@@ -95,6 +105,8 @@ export default function SuccessUKClient({ sessionId }: { sessionId: string | nul
             sessionStorage.removeItem("tiktok_purchase_data")
           }
         } catch {}
+        
+        // Track Purchase event (user already identified above)
         await trackPurchase({
           contents: tiktokData?.contents || [],
           value: tiktokData?.value || sessionValue,
