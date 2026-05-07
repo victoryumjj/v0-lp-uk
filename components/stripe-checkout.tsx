@@ -7,7 +7,7 @@ import {
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js"
 import { createCheckoutSession } from "@/app/actions/stripe"
-import { trackAddPaymentInfo, formatCartForTikTok, storePurchaseData } from "@/lib/tiktok-events"
+import { trackAddPaymentInfo, trackInitiateCheckout, formatCartForTikTok, storePurchaseData } from "@/lib/tiktok-events"
 import { Button } from "@/components/ui/button"
 import { Loader2, AlertCircle, RefreshCw } from "lucide-react"
 
@@ -105,13 +105,30 @@ export function StripeCheckout({ items, onInitiateCheckout }: StripeCheckoutProp
       return sum + price * item.quantity
     }, 0)
     const tiktokItems = formatCartForTikTok(items)
+    const numItems = items.reduce((sum, item) => sum + item.quantity, 0)
+    const currency = items[0]?.product?.currency || 'GBP'
+
+    // Track TikTok InitiateCheckout event BEFORE showing checkout
+    try {
+      await trackInitiateCheckout({
+        contents: tiktokItems,
+        value: totalValue,
+        currency,
+        description: `Checkout initiated with ${numItems} items`,
+      })
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[v0] TikTok InitiateCheckout tracked:", { value: totalValue, currency, numItems })
+      }
+    } catch (error) {
+      console.error('[v0] Error tracking InitiateCheckout:', error)
+    }
 
     // Track AddPaymentInfo when payment form is shown
     try {
       await trackAddPaymentInfo({
         contents: tiktokItems,
         value: totalValue,
-        currency: 'GBP',
+        currency,
       })
     } catch (error) {
       console.error('[v0] Error tracking AddPaymentInfo:', error)

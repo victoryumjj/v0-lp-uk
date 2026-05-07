@@ -4,7 +4,7 @@ import { useCallback, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js"
 import { createCheckoutSessionUK } from "@/app/actions/stripe"
-import { formatCartForTikTok, storePurchaseData } from "@/lib/tiktok-events"
+import { formatCartForTikTok, storePurchaseData, trackInitiateCheckout } from "@/lib/tiktok-events"
 import { Loader2, Lock, Gift, Check, Wrench, AlertCircle, RefreshCw } from "lucide-react"
 import Image from "next/image"
 
@@ -96,6 +96,29 @@ export function StripeCheckoutUK({ items, onInitiateCheckout, bonusData }: Strip
     if (items.length === 0) return
     setLoading(true)
     setError(null)
+
+    // Track TikTok InitiateCheckout event BEFORE showing checkout
+    const totalValue = items.reduce((sum, item) => {
+      const price = item.product.salePrice || item.product.price
+      return sum + price * item.quantity
+    }, 0)
+    const tiktokItems = formatCartForTikTok(items)
+    const numItems = items.reduce((sum, item) => sum + item.quantity, 0)
+
+    try {
+      await trackInitiateCheckout({
+        contents: tiktokItems,
+        value: totalValue,
+        currency: "GBP",
+        description: `Checkout initiated with ${numItems} items`,
+      })
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[v0] TikTok InitiateCheckout tracked:", { value: totalValue, currency: "GBP", numItems })
+      }
+    } catch (err) {
+      console.error("[v0] Error tracking InitiateCheckout:", err)
+    }
+
     onInitiateCheckout?.()
     setShowCheckout(true)
     setLoading(false)
