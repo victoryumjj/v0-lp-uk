@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation"
 import { useCart } from "@/lib/cart-context"
 import { StripeCheckoutFr } from "@/components/stripe-checkout-fr"
 import { ArrowLeft, Lock, Package, RotateCcw, Star, Gift, Check, Wrench } from "lucide-react"
-import { trackInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
+import { trackInitiateCheckout as trackMetaInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
+import { trackInitiateCheckout as trackTikTokInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
 import { getFbpFbc } from "@/lib/fbp-fbc"
 import { getStoredUTMs } from "@/lib/utm-client"
 import { BonusProgressBar } from "@/components/bonus-progress-bar"
@@ -126,19 +127,36 @@ export default function CheckoutFrPage() {
     },
   ]
 
-  const handleInitiateCheckout = () => {
+  const handleInitiateCheckout = async () => {
     if (initiated) return
     setInitiated(true)
 
     const eventId = generateEventId("ic")
 
-    trackInitiateCheckout({
+    // Track Meta InitiateCheckout
+    trackMetaInitiateCheckout({
       contentIds: [storedOrder.productId],
       numItems: storedOrder.quantity,
       value: totalEur,
       currency: "EUR",
       eventId,
     })
+    
+    // Track TikTok InitiateCheckout
+    try {
+      const tiktokItems = formatCartForTikTok(checkoutItems)
+      await trackTikTokInitiateCheckout({
+        contents: tiktokItems,
+        value: totalEur,
+        currency: "EUR",
+        description: `Checkout initiated with ${storedOrder.quantity} items`,
+      })
+      if (process.env.NODE_ENV !== "production") {
+        console.log("[v0] TikTok InitiateCheckout tracked (checkout page):", { value: totalEur, currency: "EUR", numItems: storedOrder.quantity })
+      }
+    } catch (err) {
+      console.error("[v0] Error tracking TikTok InitiateCheckout:", err)
+    }
 
     const { fbp, fbc } = getFbpFbc()
     const utms = getStoredUTMs()

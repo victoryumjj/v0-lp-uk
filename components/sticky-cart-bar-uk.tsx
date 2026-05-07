@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useCart } from "@/lib/cart-context"
 import { useRouter, usePathname } from "next/navigation"
 import { ShoppingCart, Lock } from "lucide-react"
+import { trackInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
 
 interface StickyCartBarUKProps {
   product?: any
@@ -12,7 +13,7 @@ interface StickyCartBarUKProps {
 
 export function StickyCartBarUK({ product, onFinalizeOrder }: StickyCartBarUKProps) {
   const [visible, setVisible] = useState(false)
-  const { totalItems, totalPrice } = useCart()
+  const { totalItems, totalPrice, items } = useCart()
   const router = useRouter()
   const pathname = usePathname()
   const hasItemsInCart = totalItems > 0
@@ -38,7 +39,25 @@ export function StickyCartBarUK({ product, onFinalizeOrder }: StickyCartBarUKPro
     }
   }
 
-  const handleFinishOrder = () => {
+  const handleFinishOrder = async () => {
+    // Track TikTok InitiateCheckout event BEFORE navigating to checkout
+    if (items && items.length > 0) {
+      try {
+        const tiktokItems = formatCartForTikTok(items)
+        await trackInitiateCheckout({
+          contents: tiktokItems,
+          value: totalPrice,
+          currency: "GBP",
+          description: `Checkout initiated with ${totalItems} items`,
+        })
+        if (process.env.NODE_ENV !== "production") {
+          console.log("[v0] TikTok InitiateCheckout tracked:", { value: totalPrice, currency: "GBP", numItems: totalItems })
+        }
+      } catch (err) {
+        console.error("[v0] Error tracking InitiateCheckout:", err)
+      }
+    }
+
     if (onFinalizeOrder) {
       onFinalizeOrder()
     } else {
