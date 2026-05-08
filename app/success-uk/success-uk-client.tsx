@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle, Package, RotateCcw, ShoppingCart, Star } from "lucide-react"
 import { trackPurchase, identifyUser, trackEventWithUser } from "@/lib/tiktok-events"
+import { updateMetaUserData } from "@/lib/meta-pixel"
 import { useCart } from "@/lib/cart-context"
 
 declare global {
@@ -51,22 +52,25 @@ export default function SuccessUKClient({ sessionId }: { sessionId: string | nul
           sessionData = await sessionRes.json()
           setPurchaseData(sessionData)
           
-          // Save user data for Meta Advanced Matching (future page loads)
-          const customerDetails = sessionData?.customer_details
-          if (customerDetails) {
-            try {
-              const metaUserData: Record<string, string> = {}
-              if (customerDetails.email) metaUserData.em = customerDetails.email.toLowerCase().trim()
-              if (customerDetails.phone) metaUserData.ph = customerDetails.phone.replace(/[^0-9]/g, '')
-              if (customerDetails.name) {
-                const nameParts = customerDetails.name.trim().split(' ')
-                if (nameParts.length >= 1) metaUserData.fn = nameParts[0].toLowerCase()
-                if (nameParts.length >= 2) metaUserData.ln = nameParts[nameParts.length - 1].toLowerCase()
-              }
-              if (Object.keys(metaUserData).length > 0) {
-                localStorage.setItem('meta_user_data', JSON.stringify(metaUserData))
-              }
-            } catch (e) {}
+          // Update Meta Pixel with user data for Advanced Matching (immediate + future page loads)
+          const customerDetailsMeta = sessionData?.customer_details
+          if (customerDetailsMeta) {
+            let firstName: string | undefined
+            let lastName: string | undefined
+            if (customerDetailsMeta.name) {
+              const nameParts = customerDetailsMeta.name.trim().split(' ')
+              if (nameParts.length >= 1) firstName = nameParts[0]
+              if (nameParts.length >= 2) lastName = nameParts[nameParts.length - 1]
+            }
+            
+            // This updates the pixel immediately AND saves to localStorage for future visits
+            updateMetaUserData({
+              email: customerDetailsMeta.email || undefined,
+              phone: customerDetailsMeta.phone || undefined,
+              firstName,
+              lastName,
+              externalId: sessionId || undefined,
+            })
           }
         }
 

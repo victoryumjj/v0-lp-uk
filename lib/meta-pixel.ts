@@ -129,3 +129,45 @@ export function trackPageView() {
     window.fbq("track", "PageView")
   }
 }
+
+// Update Meta Pixel with user data for Advanced Matching
+// Call this when you have user PII (email, phone) to improve event matching
+export function updateMetaUserData(params: {
+  email?: string
+  phone?: string
+  firstName?: string
+  lastName?: string
+  externalId?: string
+}) {
+  if (typeof window === "undefined") return
+  
+  // Store in localStorage for future page loads
+  const userData: Record<string, string> = {}
+  if (params.email) userData.em = params.email.toLowerCase().trim()
+  if (params.phone) userData.ph = params.phone.replace(/\D/g, '')
+  if (params.firstName) userData.fn = params.firstName.toLowerCase().trim()
+  if (params.lastName) userData.ln = params.lastName.toLowerCase().trim()
+  if (params.externalId) userData.external_id = params.externalId
+  
+  if (Object.keys(userData).length === 0) return
+  
+  try {
+    localStorage.setItem('meta_user_data', JSON.stringify(userData))
+  } catch (e) {
+    // localStorage may be blocked
+  }
+  
+  // Re-init pixels with user data (Meta Pixel will hash automatically)
+  if (window.fbq) {
+    // Pixel IDs
+    const pixelId1 = "992482810135395"
+    const pixelId2 = "1309753271055484"
+    const pixelId3 = "1440709523610900"
+    
+    // Re-init each pixel with Advanced Matching data
+    // Note: fbq('init') with same pixel ID updates the user data
+    window.fbq('init', pixelId1, userData)
+    window.fbq('init', pixelId2, userData)
+    window.fbq('init', pixelId3, userData)
+  }
+}
