@@ -82,8 +82,8 @@ export default function ThankYouClient({ sessionId }: { sessionId: string | null
         }
 
         if (typeof window !== "undefined" && window.fbq) {
-          // Dispara APENAS para o pixel UK 1440709523610900
-          window.fbq("trackSingle", "1440709523610900", "Purchase", purchaseData, { eventID: pixelEventId })
+          // Fire to single Meta Pixel 1200200552118123
+          window.fbq("track", "Purchase", purchaseData, { eventID: pixelEventId })
         }
 
         // 4) Track TikTok Purchase with Advanced Matching

@@ -3,66 +3,21 @@ import crypto from "crypto"
 import { hashUserData } from "./hash"
 
 // ---------------------------------------------------------------------------
-// Multi-pixel configuration (one per currency / market)
-// Each entry maps a currency code to its own Pixel ID + Access Token.
-// Set the corresponding env vars in Vercel → Project → Environment Variables.
+// Single Meta Pixel configuration
 // ---------------------------------------------------------------------------
+export const META_PIXEL_ID = "1200200552118123"
+
 export interface PixelConfig {
   pixelId: string
   accessToken: string
 }
 
-// Returns the pixel that matches the given currency, falling back to the
-// primary pixel defined by META_PIXEL_ID / META_ACCESS_TOKEN.
-export function getPixelForCurrency(currency: string): PixelConfig {
-  const upper = (currency || "").toUpperCase()
-
-  const map: Record<string, { idEnv: string; tokenEnv: string }> = {
-    GBP: { idEnv: "META_PIXEL_ID_GBP", tokenEnv: "META_ACCESS_TOKEN_GBP" },
-    USD: { idEnv: "META_PIXEL_ID_USD", tokenEnv: "META_ACCESS_TOKEN_USD" },
-    EUR: { idEnv: "META_PIXEL_ID_EUR", tokenEnv: "META_ACCESS_TOKEN_EUR" },
-  }
-
-  const entry = map[upper]
-  if (entry) {
-    const pixelId = process.env[entry.idEnv]
-    const accessToken = process.env[entry.tokenEnv]
-    if (pixelId && accessToken) {
-      return { pixelId, accessToken }
-    }
-  }
-
-  // Fallback to primary pixel
+// Returns the single configured pixel
+export function getPixelConfig(): PixelConfig {
   return {
-    pixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.META_PIXEL_ID || "992482810135395",
-    accessToken: process.env.FACEBOOK_TOKEN || process.env.META_ACCESS_TOKEN || "",
+    pixelId: META_PIXEL_ID,
+    accessToken: process.env.META_ACCESS_TOKEN || process.env.FACEBOOK_TOKEN || "",
   }
-}
-
-// Returns ALL configured pixels (one per currency), deduplicating by pixelId.
-export function getAllConfiguredPixels(): PixelConfig[] {
-  const currencies = ["GBP", "USD", "EUR"]
-  const seen = new Set<string>()
-  const result: PixelConfig[] = []
-
-  for (const cur of currencies) {
-    const cfg = getPixelForCurrency(cur)
-    if (cfg.pixelId && cfg.accessToken && !seen.has(cfg.pixelId)) {
-      seen.add(cfg.pixelId)
-      result.push(cfg)
-    }
-  }
-
-  // Ensure primary pixel is always included
-  const primary = {
-    pixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.META_PIXEL_ID || "992482810135395",
-    accessToken: process.env.FACEBOOK_TOKEN || process.env.META_ACCESS_TOKEN || "",
-  }
-  if (primary.pixelId && primary.accessToken && !seen.has(primary.pixelId)) {
-    result.push(primary)
-  }
-
-  return result
 }
 
 export interface MetaEventData {
@@ -212,40 +167,26 @@ async function _sendToPixel(
   return json
 }
 
-// Sends an event to the primary pixel (backward-compatible)
+// Sends an event to the Meta Pixel
 export async function sendMetaEvent(data: MetaEventData): Promise<MetaApiResponse> {
-  const pixel: PixelConfig = {
-    pixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.META_PIXEL_ID || "992482810135395",
-    accessToken: process.env.FACEBOOK_TOKEN || process.env.META_ACCESS_TOKEN || "",
-  }
+  const pixel = getPixelConfig()
   return _sendToPixel(data, pixel)
 }
 
-// Sends an event to the pixel that matches the given currency
+// Alias for backward compatibility
 export async function sendMetaEventForCurrency(
   data: MetaEventData,
-  currency: string,
+  _currency: string,
 ): Promise<MetaApiResponse> {
-  const pixel = getPixelForCurrency(currency)
-  return _sendToPixel(data, pixel)
+  return sendMetaEvent(data)
 }
 
-// Sends an event directly to the UK pixel 1440709523610900
+// Alias for backward compatibility
 export async function sendMetaEventToUKPixel(data: MetaEventData): Promise<MetaApiResponse> {
-  const ukPixel: PixelConfig = {
-    pixelId: "1440709523610900",
-    accessToken: process.env.META_ACCESS_TOKEN_GBP || process.env.META_ACCESS_TOKEN || "",
-  }
-  
-  if (!ukPixel.accessToken) {
-    console.warn("[Meta CAPI] ⚠️ META_ACCESS_TOKEN_GBP não configurado para pixel UK 1440709523610900")
-    return { events_received: 0, messages: ["Access token not configured for UK pixel"] }
-  }
-  
-  return _sendToPixel(data, ukPixel)
+  return sendMetaEvent(data)
 }
 
-// Sends Purchase event to ALL configured pixels (for cross-market tracking)
+// Sends Purchase event to Meta Pixel
 export async function sendPurchaseEventToAllPixels(params: {
   value: number
   currency: string
@@ -300,37 +241,15 @@ export async function sendPurchaseEventToAllPixels(params: {
     },
   }
 
-  const results: { pixelId: string; result: MetaApiResponse }[] = []
-
-  // List of all pixels to send to
-  const pixelsToSend = [
-    { pixelId: "992482810135395", accessToken: process.env.META_ACCESS_TOKEN || process.env.FACEBOOK_TOKEN || "" },
-    { pixelId: "1309753271055484", accessToken: process.env.META_ACCESS_TOKEN_EUR || process.env.META_ACCESS_TOKEN || "" },
-    { pixelId: "1440709523610900", accessToken: process.env.META_ACCESS_TOKEN_GBP || process.env.META_ACCESS_TOKEN || "" },
-  ]
-
-  for (const pixel of pixelsToSend) {
-    if (!pixel.accessToken) {
-      console.warn(`[Meta CAPI] ⚠️ Access token não configurado para pixel ${pixel.pixelId}`)
-      continue
-    }
-
-    try {
-      // Use unique event ID per pixel to avoid deduplication issues
-      const pixelEventData = {
-        ...eventData,
-        eventId: `${params.eventId || params.orderId}_${pixel.pixelId.slice(-4)}`,
-      }
-      const result = await _sendToPixel(pixelEventData, pixel)
-      results.push({ pixelId: pixel.pixelId, result })
-      console.log(`[Meta CAPI] ✅ Purchase enviado para pixel ${pixel.pixelId}`)
-    } catch (error) {
-      console.error(`[Meta CAPI] ❌ Erro ao enviar para pixel ${pixel.pixelId}:`, error)
-      results.push({ pixelId: pixel.pixelId, result: { error: { message: String(error), type: "api_error", code: 500, fbtrace_id: "" } } })
-    }
+  const pixel = getPixelConfig()
+  
+  try {
+    const result = await _sendToPixel(eventData, pixel)
+    return [{ pixelId: pixel.pixelId, result }]
+  } catch (error) {
+    console.error(`[Meta CAPI] Error sending to pixel ${pixel.pixelId}:`, error)
+    return [{ pixelId: pixel.pixelId, result: { error: { message: String(error), type: "api_error", code: 500, fbtrace_id: "" } } }]
   }
-
-  return results
 }
 
 export async function sendPurchaseEvent(params: {
@@ -386,7 +305,6 @@ export async function sendPurchaseEvent(params: {
     },
   }
 
-  // Send to the pixel configured for this currency (e.g. GBP → META_PIXEL_ID_GBP)
-  // Falls back to the primary pixel if no per-currency pixel is set.
-  return sendMetaEventForCurrency(eventData, params.currency)
+  // Send to the single configured pixel
+  return sendMetaEvent(eventData)
 }

@@ -16,10 +16,10 @@ const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const _playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
 
 export const metadata: Metadata = {
-  title: "SLATURA WOOD | Panneaux Acoustiques en Bois & Design Interieur Premium",
+  title: "SLATURA WOOD | Premium Wood Acoustic Panels & Interior Design",
   description:
-    "Panneaux muraux en lattes de bois premium, solutions acoustiques et decoration interieure selectionnee. Artisanat europeen pour interieurs modernes.",
-  keywords: ["panneaux bois", "panneaux acoustiques", "design interieur", "decoration maison", "panneaux muraux premium"],
+    "Premium wood slat wall panels, acoustic solutions and curated interior decor. European craftsmanship for modern interiors.",
+  keywords: ["wood panels", "acoustic panels", "interior design", "home decor", "premium wall panels"],
   generator: "v0.app",
 }
 
@@ -31,7 +31,7 @@ export default function RootLayout({
   const metaPixelId = "1200200552118123" // Meta Pixel
   
   return (
-    <html lang="fr">
+    <html lang="en-GB">
       <head>
         {/* Facebook Domain Verification */}
         <meta name="facebook-domain-verification" content="ihv7koj9hajrwhdhclgubwhbfk6c22" />

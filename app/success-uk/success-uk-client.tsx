@@ -86,8 +86,8 @@ export default function SuccessUKClient({ sessionId }: { sessionId: string | nul
         const purchaseDataMeta = { value: sessionValue, currency: sessionCurrency, content_type: "product", order_id: sessionId }
 
         if (typeof window !== "undefined" && window.fbq) {
-          // Dispara APENAS para o pixel UK 1440709523610900
-          window.fbq("trackSingle", "1440709523610900", "Purchase", purchaseDataMeta, { eventID: purchaseEventId })
+          // Fire to single Meta Pixel 1200200552118123
+          window.fbq("track", "Purchase", purchaseDataMeta, { eventID: purchaseEventId })
         }
 
         // 4) TikTok Purchase with Advanced Matching

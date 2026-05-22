@@ -135,7 +135,7 @@ async function handlePurchaseEvent(session: Stripe.Checkout.Session) {
       is_free_product: value === 0,
     })
 
-    // Send Purchase event to ALL Meta Pixels (including UK pixel 1440709523610900)
+    // Send Purchase event to Meta Pixel
     const results = await sendPurchaseEventToAllPixels({
       value,
       currency,
