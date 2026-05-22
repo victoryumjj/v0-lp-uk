@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { getVisibleProductsFrMarket, getProductsByCategoryFrMarket } from "@/lib/products"
+import { getVisibleProductsUKMarket, getProductsByCategoryUKMarket } from "@/lib/products"
 import { ProductCard } from "@/components/product-card"
 import { ProductFilters } from "@/components/product-filters"
 
@@ -10,17 +10,17 @@ interface ProductsPageProps {
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const params = await searchParams
   const category = params.category
-  const visibleProducts = getVisibleProductsFrMarket()
-  const filteredProducts = category ? getProductsByCategoryFrMarket(category) : visibleProducts
+  const visibleProducts = getVisibleProductsUKMarket()
+  const filteredProducts = category ? getProductsByCategoryUKMarket(category) : visibleProducts
 
   return (
     <div className="py-12 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12">
-          <h1 className="font-serif text-4xl sm:text-5xl">Notre Collection</h1>
+          <h1 className="font-serif text-4xl sm:text-5xl">Our Collection</h1>
           <p className="mt-4 max-w-2xl text-muted-foreground">
-            Decouvrez notre selection de decoration interieure d'inspiration scandinave, fabriquee avec soin et construite pour durer.
+            Discover our selection of Scandinavian-inspired interior decor, crafted with care and built to last.
           </p>
         </div>
 
@@ -40,14 +40,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
         ) : (
           <div className="py-24 text-center">
-            <p className="text-muted-foreground">Aucun produit trouve dans cette categorie.</p>
+            <p className="text-muted-foreground">No products found in this category.</p>
           </div>
         )}
 
         {/* Results count */}
         <div className="mt-12 border-t border-border pt-8">
           <p className="text-sm text-muted-foreground">
-            Affichage de {filteredProducts.length} {filteredProducts.length === 1 ? "produit" : "produits"}
+            Showing {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
           </p>
         </div>
       </div>

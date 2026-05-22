@@ -37,9 +37,9 @@ export interface Product {
 }
 
 export const categories = [
-  { id: "wall-panels", name: "Panneaux Muraux", slug: "wall-panels" },
-  { id: "lighting", name: "Eclairage", slug: "lighting" },
-  { id: "decor", name: "Decoration", slug: "decor" },
+  { id: "wall-panels", name: "Wall Panels", slug: "wall-panels" },
+  { id: "lighting", name: "Lighting", slug: "lighting" },
+  { id: "decor", name: "Decor", slug: "decor" },
 ]
 
 export const products: Product[] = [
@@ -629,6 +629,36 @@ export function getProductsByCategoryFrMarket(category: string): Product[] {
 export function getFeaturedProductsFrMarket(): Product[] {
   return products.filter((p) => {
     if (p.slug === "flexible-acoustic-panel") return false
+    if (p.hidden) return false
+    return p.badge
+  })
+}
+
+// UK Market Functions - Show UK products, hide FR-specific versions
+export function getVisibleProductsUKMarket(): Product[] {
+  return products.filter((p) => {
+    // Hide French-specific products
+    if (p.slug === "flexible-acoustic-panel-fr") return false
+    if (p.slug === "recessed-led-strip-lighting-fr") return false
+    // Hide hidden products
+    if (p.hidden) return false
+    return true
+  })
+}
+
+export function getProductsByCategoryUKMarket(category: string): Product[] {
+  return products.filter((p) => {
+    if (p.slug === "flexible-acoustic-panel-fr") return false
+    if (p.slug === "recessed-led-strip-lighting-fr") return false
+    if (p.hidden) return false
+    return p.category === category
+  })
+}
+
+export function getFeaturedProductsUKMarket(): Product[] {
+  return products.filter((p) => {
+    if (p.slug === "flexible-acoustic-panel-fr") return false
+    if (p.slug === "recessed-led-strip-lighting-fr") return false
     if (p.hidden) return false
     return p.badge
   })
