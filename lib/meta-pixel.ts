@@ -1,8 +1,7 @@
 // Meta Pixel client-side utilities
-// Both Pixel IDs - events are tracked to all initialized pixels
+// Single Pixel ID: 1200200552118123
 
-export const META_PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID
-export const META_PIXEL_ID_2 = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID_2
+export const META_PIXEL_ID = "1200200552118123"
 
 // Declare fbq type for TypeScript
 declare global {
@@ -97,7 +96,7 @@ export function trackInitiateCheckout(params: {
   return eventId
 }
 
-// Track Purchase event (fires ONLY to pixel 1440709523610900 with eventID for deduplication)
+// Track Purchase event (fires with eventID for deduplication)
 export function trackPurchase(params: {
   orderId: string
   contentIds: string[]
@@ -109,8 +108,7 @@ export function trackPurchase(params: {
   const eventId = params.eventId || `purchase_${params.orderId}`
 
   if (typeof window !== "undefined" && window.fbq) {
-    // Dispara APENAS para o pixel UK 1440709523610900
-    window.fbq("trackSingle", "1440709523610900", "Purchase", {
+    window.fbq("track", "Purchase", {
       content_ids: params.contentIds,
       contents: params.contents,
       content_type: "product",
@@ -157,17 +155,8 @@ export function updateMetaUserData(params: {
     // localStorage may be blocked
   }
   
-  // Re-init pixels with user data (Meta Pixel will hash automatically)
+  // Re-init pixel with user data (Meta Pixel will hash automatically)
   if (window.fbq) {
-    // Pixel IDs
-    const pixelId1 = "992482810135395"
-    const pixelId2 = "1309753271055484"
-    const pixelId3 = "1440709523610900"
-    
-    // Re-init each pixel with Advanced Matching data
-    // Note: fbq('init') with same pixel ID updates the user data
-    window.fbq('init', pixelId1, userData)
-    window.fbq('init', pixelId2, userData)
-    window.fbq('init', pixelId3, userData)
+    window.fbq('init', META_PIXEL_ID, userData)
   }
 }

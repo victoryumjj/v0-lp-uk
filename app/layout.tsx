@@ -28,9 +28,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const pixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID
-  const pixelId2 = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID_2
-  const pixelId3 = "1440709523610900" // Third Meta Pixel
+  const metaPixelId = "1200200552118123" // Meta Pixel
   
   return (
     <html lang="fr">
@@ -73,43 +71,17 @@ export default function RootLayout({
             if (storedFn) advancedMatching.fn = storedFn;
             if (storedLn) advancedMatching.ln = storedLn;
             
-            ${pixelId ? `fbq('init', '${pixelId}', advancedMatching);` : ''}
-            ${pixelId2 ? `fbq('init', '${pixelId2}', advancedMatching);` : ''}
-            fbq('init', '${pixelId3}', advancedMatching);
+            fbq('init', '${metaPixelId}', advancedMatching);
             fbq('track', 'PageView');
           `}
         </Script>
-        {/* Noscript fallback for Pixel 1 */}
-        {pixelId && (
-          <noscript>
-            <img
-              height="1"
-              width="1"
-              style={{ display: "none" }}
-              src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
-              alt=""
-            />
-          </noscript>
-        )}
-        {/* Noscript fallback for Pixel 2 */}
-        {pixelId2 && (
-          <noscript>
-            <img
-              height="1"
-              width="1"
-              style={{ display: "none" }}
-              src={`https://www.facebook.com/tr?id=${pixelId2}&ev=PageView&noscript=1`}
-              alt=""
-            />
-          </noscript>
-        )}
-        {/* Noscript fallback for Pixel 3 */}
+        {/* Noscript fallback for Meta Pixel */}
         <noscript>
           <img
             height="1"
             width="1"
             style={{ display: "none" }}
-            src={`https://www.facebook.com/tr?id=${pixelId3}&ev=PageView&noscript=1`}
+            src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
             alt=""
           />
         </noscript>
