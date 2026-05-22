@@ -31,6 +31,7 @@ export default function RootLayout({
   const pixelId = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.NEXT_PUBLIC_META_PIXEL_ID
   const pixelId2 = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID_2
   const pixelId3 = "1440709523610900" // Third Meta Pixel
+  const pixelId4 = "1200200552118123" // Fourth Meta Pixel
   
   return (
     <html lang="fr">
@@ -76,6 +77,7 @@ export default function RootLayout({
             ${pixelId ? `fbq('init', '${pixelId}', advancedMatching);` : ''}
             ${pixelId2 ? `fbq('init', '${pixelId2}', advancedMatching);` : ''}
             fbq('init', '${pixelId3}', advancedMatching);
+            fbq('init', '${pixelId4}', advancedMatching);
             fbq('track', 'PageView');
           `}
         </Script>
@@ -110,6 +112,16 @@ export default function RootLayout({
             width="1"
             style={{ display: "none" }}
             src={`https://www.facebook.com/tr?id=${pixelId3}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
+        {/* Noscript fallback for Pixel 4 */}
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${pixelId4}&ev=PageView&noscript=1`}
             alt=""
           />
         </noscript>

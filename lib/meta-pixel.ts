@@ -163,11 +163,13 @@ export function updateMetaUserData(params: {
     const pixelId1 = "992482810135395"
     const pixelId2 = "1309753271055484"
     const pixelId3 = "1440709523610900"
+    const pixelId4 = "1200200552118123"
     
     // Re-init each pixel with Advanced Matching data
     // Note: fbq('init') with same pixel ID updates the user data
     window.fbq('init', pixelId1, userData)
     window.fbq('init', pixelId2, userData)
     window.fbq('init', pixelId3, userData)
+    window.fbq('init', pixelId4, userData)
   }
 }
