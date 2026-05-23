@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { stripe } from "@/lib/stripe"
-import { sendPurchaseEvent } from "@/lib/meta/sendEvent"
+import { sendPurchaseEventToAllPixels } from "@/lib/meta/sendEvent"
 import { getClientIpFromHeaders, getUserAgentFromHeaders } from "@/lib/meta/cookies"
 
 export const runtime = "nodejs"
@@ -97,8 +97,8 @@ export async function POST(request: NextRequest) {
       has_ua: !!clientUserAgent,
     })
 
-    // Send Purchase event to Meta Conversions API
-    const result = await sendPurchaseEvent({
+    // Send Purchase event to ALL Meta Pixels via Conversions API
+    const results = await sendPurchaseEventToAllPixels({
       value,
       currency,
       orderId: session_id,
@@ -123,15 +123,22 @@ export async function POST(request: NextRequest) {
       clientUserAgent: clientUserAgent,
     })
 
-    console.log("[Meta Purchase] Response:", {
-      events_received: result.events_received,
-      fbtrace_id: result.fbtrace_id,
+    const successCount = results.filter(r => r.result.events_received && r.result.events_received > 0).length
+    console.log("[Meta Purchase] Results:", {
+      total_pixels: results.length,
+      successful: successCount,
+      pixels: results.map(r => ({ pixelId: r.pixelId, received: r.result.events_received })),
     })
 
     return NextResponse.json({
       ok: true,
-      events_received: result.events_received,
-      fbtrace_id: result.fbtrace_id,
+      pixels_sent: results.length,
+      successful: successCount,
+      results: results.map(r => ({
+        pixelId: r.pixelId,
+        events_received: r.result.events_received,
+        fbtrace_id: r.result.fbtrace_id,
+      })),
       event_id: purchaseEventId,
     })
   } catch (error) {
