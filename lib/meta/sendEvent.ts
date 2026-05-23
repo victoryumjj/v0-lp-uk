@@ -32,10 +32,10 @@ export function getPixelForCurrency(currency: string): PixelConfig {
     }
   }
 
-  // Fallback to primary pixel
+  // Fallback to primary pixel (UK2)
   return {
-    pixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.META_PIXEL_ID || "992482810135395",
-    accessToken: process.env.FACEBOOK_TOKEN || process.env.META_ACCESS_TOKEN || "",
+    pixelId: "1200200552118123",
+    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
   }
 }
 
@@ -53,10 +53,10 @@ export function getAllConfiguredPixels(): PixelConfig[] {
     }
   }
 
-  // Ensure primary pixel is always included
+  // Ensure primary pixel (UK2) is always included
   const primary = {
-    pixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.META_PIXEL_ID || "992482810135395",
-    accessToken: process.env.FACEBOOK_TOKEN || process.env.META_ACCESS_TOKEN || "",
+    pixelId: "1200200552118123",
+    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
   }
   if (primary.pixelId && primary.accessToken && !seen.has(primary.pixelId)) {
     result.push(primary)
@@ -215,8 +215,8 @@ async function _sendToPixel(
 // Sends an event to the primary pixel (backward-compatible)
 export async function sendMetaEvent(data: MetaEventData): Promise<MetaApiResponse> {
   const pixel: PixelConfig = {
-    pixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.META_PIXEL_ID || "992482810135395",
-    accessToken: process.env.FACEBOOK_TOKEN || process.env.META_ACCESS_TOKEN || "",
+    pixelId: "1200200552118123",
+    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
   }
   return _sendToPixel(data, pixel)
 }
@@ -230,16 +230,11 @@ export async function sendMetaEventForCurrency(
   return _sendToPixel(data, pixel)
 }
 
-// Sends an event directly to the UK pixel 1440709523610900
+// Sends an event directly to the UK pixel 1200200552118123
 export async function sendMetaEventToUKPixel(data: MetaEventData): Promise<MetaApiResponse> {
   const ukPixel: PixelConfig = {
-    pixelId: "1440709523610900",
-    accessToken: process.env.META_ACCESS_TOKEN_GBP || process.env.META_ACCESS_TOKEN || "",
-  }
-  
-  if (!ukPixel.accessToken) {
-    console.warn("[Meta CAPI] ⚠️ META_ACCESS_TOKEN_GBP não configurado para pixel UK 1440709523610900")
-    return { events_received: 0, messages: ["Access token not configured for UK pixel"] }
+    pixelId: "1200200552118123",
+    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
   }
   
   return _sendToPixel(data, ukPixel)
@@ -302,11 +297,8 @@ export async function sendPurchaseEventToAllPixels(params: {
 
   const results: { pixelId: string; result: MetaApiResponse }[] = []
 
-  // List of all pixels to send to
+  // List of all pixels to send to - APENAS pixel UK2
   const pixelsToSend = [
-    { pixelId: "992482810135395", accessToken: process.env.META_ACCESS_TOKEN || process.env.FACEBOOK_TOKEN || "" },
-    { pixelId: "1309753271055484", accessToken: process.env.META_ACCESS_TOKEN_EUR || process.env.META_ACCESS_TOKEN || "" },
-    { pixelId: "1440709523610900", accessToken: process.env.META_ACCESS_TOKEN_GBP || process.env.META_ACCESS_TOKEN || "" },
     { pixelId: "1200200552118123", accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD" },
   ]
 
