@@ -3,23 +3,23 @@ import { Instagram, Facebook, Twitter } from "lucide-react"
 
 const footerLinks = {
   shop: [
-    { name: "Tous les Produits", href: "/products" },
-    { name: "Panneaux Muraux", href: "/products?category=wall-panels" },
-    { name: "Eclairage", href: "/products?category=lighting" },
-    { name: "Miroirs", href: "/products?category=mirrors" },
-    { name: "Decoration", href: "/products?category=decor" },
+    { name: "All Products", href: "/products" },
+    { name: "Wall Panels", href: "/products?category=wall-panels" },
+    { name: "Lighting", href: "/products?category=lighting" },
+    { name: "Mirrors", href: "/products?category=mirrors" },
+    { name: "Decor", href: "/products?category=decor" },
   ],
   company: [
-    { name: "A Propos", href: "/about" },
+    { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
-    { name: "Durabilite", href: "/about#sustainability" },
-    { name: "Carrieres", href: "/about#careers" },
+    { name: "Sustainability", href: "/about#sustainability" },
+    { name: "Careers", href: "/about#careers" },
   ],
   support: [
-    { name: "Livraison", href: "/contact#shipping" },
-    { name: "Retours", href: "/contact#returns" },
+    { name: "Delivery", href: "/contact#shipping" },
+    { name: "Returns", href: "/contact#returns" },
     { name: "FAQ", href: "/contact#faq" },
-    { name: "Guide d'Entretien", href: "/contact#care" },
+    { name: "Care Guide", href: "/contact#care" },
   ],
 }
 
@@ -33,7 +33,7 @@ export function Footer() {
               SLATURA WOOD
             </Link>
             <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              Panneaux en lattes de bois premium et decoration interieure selectionnee. Nous croyons en un artisanat de qualite, des materiaux durables et un design intemporel qui sublime chaque espace.
+              Premium wood slat panels and curated interior decor. We believe in quality craftsmanship, sustainable materials and timeless design that elevates every space.
             </p>
             <div className="mt-6 flex gap-4">
               <a
@@ -68,7 +68,7 @@ export function Footer() {
 
           {/* Links */}
           <div>
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-foreground">Boutique</h3>
+            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-foreground">Shop</h3>
             <ul className="mt-5 space-y-3">
               {footerLinks.shop.map((link) => (
                 <li key={link.name}>
@@ -84,7 +84,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-foreground">Entreprise</h3>
+            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-foreground">Company</h3>
             <ul className="mt-5 space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
@@ -117,13 +117,13 @@ export function Footer() {
         </div>
 
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-10 sm:flex-row">
-          <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} SLATURA WOOD. Tous droits reserves.</p>
+          <p className="text-xs text-muted-foreground">&copy; {new Date().getFullYear()} SLATURA WOOD. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
-              Politique de Confidentialite
+              Privacy Policy
             </Link>
             <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
-              Conditions d'Utilisation
+              Terms of Use
             </Link>
           </div>
         </div>

@@ -53,7 +53,7 @@ export function CartItem({ item }: CartItemProps) {
             size="icon"
             className="h-8 w-8 shrink-0 text-muted-foreground hover:text-foreground"
             onClick={() => removeItem(product.id)}
-            aria-label={`Supprimer ${product.name} du panier`}
+            aria-label={`Remove ${product.name} from cart`}
           >
             <X className="h-4 w-4" />
           </Button>
@@ -67,7 +67,7 @@ export function CartItem({ item }: CartItemProps) {
               onClick={() => handleQuantityChange(-1)}
               disabled={quantity <= 1}
               className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Diminuer la quantite"
+              aria-label="Decrease quantity"
             >
               <Minus className="h-3 w-3" />
             </button>
@@ -77,7 +77,7 @@ export function CartItem({ item }: CartItemProps) {
               onClick={() => handleQuantityChange(1)}
               disabled={quantity >= 100}
               className="flex h-8 w-8 items-center justify-center transition-colors hover:bg-secondary disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Augmenter la quantite"
+              aria-label="Increase quantity"
             >
               <Plus className="h-3 w-3" />
             </button>

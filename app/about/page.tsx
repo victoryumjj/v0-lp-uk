@@ -5,36 +5,36 @@ import { Button } from "@/components/ui/button"
 
 const values = [
   {
-    title: "Artisanat",
+    title: "Craftsmanship",
     description:
-      "Chaque piece de notre collection est fabriquee avec une attention minutieuse aux details, en utilisant des techniques ancestrales transmises de generation en generation.",
+      "Every piece in our collection is crafted with meticulous attention to detail, using time-honoured techniques passed down through generations.",
   },
   {
-    title: "Durabilite",
+    title: "Sustainability",
     description:
-      "Nous approvisionnons nos materiaux de maniere responsable, travaillons avec des fournisseurs certifies FSC, et concevons des produits qui durent dans le temps - reduisant les dechets par la longevite.",
+      "We source our materials responsibly, work with FSC-certified suppliers, and design products that stand the test of time - reducing waste through longevity.",
   },
   {
-    title: "Design Intemporel",
+    title: "Timeless Design",
     description:
-      "Nous croyons en un design qui transcende les tendances. Nos pieces sont creees pour devenir des elements precieux de votre interieur pendant des annees.",
+      "We believe in design that transcends trends. Our pieces are created to become cherished elements of your interior for years to come.",
   },
 ]
 
 const team = [
   {
     name: "Lena Bergstrom",
-    role: "Fondatrice & Directrice Creative",
+    role: "Founder & Creative Director",
     image: "/professional-scandinavian-blonde-woman-founder-por.jpg",
   },
   {
     name: "Anders Nilsson",
-    role: "Responsable Production",
+    role: "Production Manager",
     image: "/professional-scandinavian-man-production-manager-p.jpg",
   },
   {
     name: "Sofia Lindqvist",
-    role: "Designer Principal",
+    role: "Lead Designer",
     image: "/professional-scandinavian-brunette-woman-designer-.jpg",
   },
 ]
@@ -47,11 +47,11 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <h1 className="font-serif text-4xl leading-tight sm:text-5xl lg:text-6xl text-balance">
-              Un Design Qui Vit Avec Vous
+              Design That Lives With You
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-              WOOD BOIS a ete fonde a Copenhague en 2019 avec une mission simple : apporter la chaleur et l'authenticite
-              de l'artisanat du bois premium dans les maisons modernes a travers l'Europe.
+              SLATURA WOOD was founded in Copenhagen in 2019 with a simple mission: to bring the warmth and authenticity
+              of premium wood craftsmanship into modern homes across Europe.
             </p>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function AboutPage() {
             <div className="aspect-[4/5] overflow-hidden">
               <Image
                 src="/woodworking-workshop-craftsman-working-on-wood-sla.jpg"
-                alt="Atelier WOOD BOIS avec artisan travaillant sur des panneaux en bois"
+                alt="SLATURA WOOD workshop with craftsman working on wood panels"
                 width={600}
                 height={750}
                 className="w-full h-full object-cover"
@@ -72,21 +72,21 @@ export default function AboutPage() {
               />
             </div>
             <div>
-              <span className="text-sm font-medium uppercase tracking-widest text-muted-foreground">Notre Histoire</span>
-              <h2 className="mt-4 font-serif text-3xl sm:text-4xl">Ne d'un Amour des Materiaux Naturels</h2>
+              <span className="text-sm font-medium uppercase tracking-widest text-muted-foreground">Our Story</span>
+              <h2 className="mt-4 font-serif text-3xl sm:text-4xl">Born From a Love of Natural Materials</h2>
               <div className="mt-6 space-y-4 text-muted-foreground">
                 <p>
-                  Notre fondatrice, Lena Bergstrom, a grandi entouree par les forets de Suede. Son grand-pere etait
-                  charpentier et lui a appris que le bois a une ame - chaque veine raconte une histoire, chaque noeud garde un caractere.
+                  Our founder, Lena Bergstrom, grew up surrounded by the forests of Sweden. Her grandfather was
+                  a carpenter and taught her that wood has a soul - every grain tells a story, every knot holds character.
                 </p>
                 <p>
-                  Apres des annees de travail dans la production de meubles industriels, Lena s'est sentie deconnectee des
-                  materiaux qu'elle aimait. En 2019, elle est revenue a ses racines, s'associant avec de petits ateliers a
-                  travers la Scandinavie pour creer une collection qui honore l'artisanat traditionnel tout en repondant aux besoins de la vie contemporaine.
+                  After years of working in industrial furniture production, Lena felt disconnected from the
+                  materials she loved. In 2019, she returned to her roots, partnering with small workshops across
+                  Scandinavia to create a collection that honours traditional craftsmanship whilst meeting the needs of contemporary living.
                 </p>
                 <p>
-                  Aujourd'hui, WOOD BOIS travaille avec plus de 20 ateliers artisanaux, des forets de chene du Danemark aux
-                  studios de ceramique du Portugal. Chaque produit que nous offrons a ete touche par des mains humaines.
+                  Today, SLATURA WOOD works with over 20 artisan workshops, from the oak forests of Denmark to the
+                  ceramic studios of Portugal. Every product we offer has been touched by human hands.
                 </p>
               </div>
             </div>
@@ -98,9 +98,9 @@ export default function AboutPage() {
       <section id="sustainability" className="bg-secondary py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="font-serif text-3xl sm:text-4xl">Ce Que Nous Defendons</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl">What We Stand For</h2>
             <p className="mt-4 text-muted-foreground">
-              Nos valeurs guident chaque decision, des materiaux que nous choisissons aux partenaires avec lesquels nous travaillons.
+              Our values guide every decision, from the materials we choose to the partners we work with.
             </p>
           </div>
           <div className="mt-12 grid gap-8 md:grid-cols-3">
@@ -118,10 +118,10 @@ export default function AboutPage() {
       <section id="careers" className="py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 text-center">
-            <h2 className="font-serif text-3xl sm:text-4xl">Les Personnes Derriere WOOD BOIS</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl">The People Behind SLATURA WOOD</h2>
             <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-              Une equipe passionnee de designers, d'artisans et de reveurs devoues a apporter un beau design dans
-              votre maison.
+              A passionate team of designers, craftspeople and dreamers dedicated to bringing beautiful design into
+              your home.
             </p>
           </div>
           <div className="grid gap-8 sm:grid-cols-3">
@@ -149,14 +149,14 @@ export default function AboutPage() {
       <section className="border-t border-border py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="font-serif text-3xl sm:text-4xl">Pret a Transformer Votre Espace ?</h2>
+            <h2 className="font-serif text-3xl sm:text-4xl">Ready to Transform Your Space?</h2>
             <p className="mt-4 text-muted-foreground">
-              Explorez notre collection de panneaux en lattes de bois premium et de decoration interieure selectionnee pour l'ajout parfait a votre
-              maison.
+              Explore our collection of premium wood slat panels and curated interior decor for the perfect addition to your
+              home.
             </p>
             <Button asChild size="lg" className="mt-8">
               <Link href="/products">
-                Voir la Collection
+                View Collection
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>

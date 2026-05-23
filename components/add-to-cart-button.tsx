@@ -292,7 +292,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
             type="button"
             onClick={() => setCustomQuantityFr((q) => Math.max(1, q - 1))}
             className="flex h-12 w-14 items-center justify-center transition-colors hover:bg-gray-100"
-            aria-label="Diminuer la quantité"
+            aria-label="Decrease quantity"
           >
             <Minus className="h-4 w-4 text-gray-600" />
           </button>
@@ -301,7 +301,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
             type="button"
             onClick={() => setCustomQuantityFr((q) => q + 1)}
             className="flex h-12 w-14 items-center justify-center transition-colors hover:bg-gray-100"
-            aria-label="Augmenter la quantité"
+            aria-label="Increase quantity"
           >
             <Plus className="h-4 w-4 text-gray-600" />
           </button>
@@ -316,7 +316,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
           className="w-full flex items-center justify-center gap-2 rounded-full bg-[#2D2A26] hover:bg-[#1a1816] text-white font-medium text-base py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ShoppingCart className="h-5 w-5 flex-shrink-0" />
-          Buy Now - {customTotalFr.toFixed(2).replace(".", ",")} EUR
+          Buy Now - {customTotalFr.toFixed(2).replace(".", ",")} GBP
         </button>
       </div>
     )
