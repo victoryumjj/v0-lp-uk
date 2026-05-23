@@ -12,29 +12,29 @@ import { identifyUser } from "@/lib/tiktok-events"
 
 const faqs = [
   {
-    question: "Dans quels pays livrez-vous ?",
+    question: "Which countries do you deliver to?",
     answer:
-      "Nous livrons dans toute la France metropolitaine et dans la plupart des pays europeens. La livraison est gratuite pour toutes les commandes de plus de 80 euros en France. Pour les autres pays, les frais de livraison sont calcules a la caisse.",
+      "We deliver throughout the United Kingdom and to most European countries. Delivery is free for all UK orders over £80. For other countries, shipping costs are calculated at checkout.",
   },
   {
-    question: "Quelle est votre politique de retour ?",
+    question: "What is your returns policy?",
     answer:
-      "Nous offrons une politique de retour de 30 jours sur tous les articles non utilises dans leur emballage d'origine. Contactez-nous simplement pour initier un retour, et nous vous fournirons une etiquette d'expedition prepayee. Les remboursements sont traites dans les 5 a 7 jours ouvrables apres reception de l'article.",
+      "We offer a 30-day returns policy on all unused items in their original packaging. Simply contact us to initiate a return, and we'll provide you with a prepaid shipping label. Refunds are processed within 5-7 business days after receiving the item.",
   },
   {
-    question: "Combien de temps prend la livraison ?",
+    question: "How long does delivery take?",
     answer:
-      "La livraison standard prend 5 a 10 jours ouvrables. La livraison express (15 euros) livre dans les 2 a 4 jours ouvrables. Toutes les commandes sont expediees depuis notre entrepot en France.",
+      "Standard delivery takes 5-10 business days. Express delivery (£15) delivers within 2-4 business days. All orders are dispatched from our warehouse in the UK.",
   },
   {
-    question: "Comment entretenir mes produits en bois ?",
+    question: "How do I care for my wood products?",
     answer:
-      "Nos produits en bois sont finis avec des huiles naturelles qui protegent et ameliorent le grain. Depoussierer regulierement avec un chiffon doux. Pour un nettoyage plus profond, utilisez un chiffon humide et sechez immediatement. Evitez la lumiere directe du soleil et les sources de chaleur. Nous recommandons de re-huiler annuellement avec notre Kit d'Entretien Bois.",
+      "Our wood products are finished with natural oils that protect and enhance the grain. Dust regularly with a soft cloth. For deeper cleaning, use a damp cloth and dry immediately. Avoid direct sunlight and heat sources. We recommend re-oiling annually with our Wood Care Kit.",
   },
   {
-    question: "Offrez-vous des services d'installation ?",
+    question: "Do you offer installation services?",
     answer:
-      "Nos panneaux muraux sont livres avec des guides d'installation complets et tout le materiel necessaire. Pour une installation professionnelle, nous travaillons avec des installateurs certifies dans les principales villes francaises. Contactez-nous pour un devis.",
+      "Our wall panels come with comprehensive installation guides and all necessary hardware. For professional installation, we work with certified installers in major UK cities. Contact us for a quote.",
   },
 ]
 
@@ -81,32 +81,32 @@ export default function ContactPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="font-serif text-4xl sm:text-5xl">Contactez-Nous</h1>
+          <h1 className="font-serif text-4xl sm:text-5xl">Contact Us</h1>
           <p className="mt-4 text-muted-foreground">
-            Vous avez une question sur nos produits ou votre commande ? Nous sommes la pour vous aider.
+            Have a question about our products or your order? We're here to help.
           </p>
         </div>
 
         <div className="mt-16 grid gap-16 lg:grid-cols-2">
           {/* Contact Form */}
           <div>
-            <h2 className="font-serif text-2xl">Envoyez-Nous un Message</h2>
+            <h2 className="font-serif text-2xl">Send Us a Message</h2>
             {submitted ? (
               <div className="mt-8 rounded-sm bg-secondary p-8 text-center">
-                <h3 className="font-serif text-xl">Merci pour votre message !</h3>
+                <h3 className="font-serif text-xl">Thank you for your message!</h3>
                 <p className="mt-4 text-muted-foreground">
-                  Nous vous repondrons dans les 24 a 48 heures pendant les jours ouvrables.
+                  We'll get back to you within 24-48 hours during business days.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-8 space-y-6">
                 <div className="grid gap-6 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">Prenom</Label>
+                    <Label htmlFor="firstName">First Name</Label>
                     <Input id="firstName" required className="h-12" />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Nom</Label>
+                    <Label htmlFor="lastName">Last Name</Label>
                     <Input id="lastName" required className="h-12" />
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export default function ContactPage() {
                   <Input id="email" name="email" type="email" required className="h-12" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="subject">Sujet</Label>
+                  <Label htmlFor="subject">Subject</Label>
                   <Input id="subject" required className="h-12" />
                 </div>
                 <div className="space-y-2">
@@ -123,7 +123,7 @@ export default function ContactPage() {
                   <Textarea id="message" rows={6} required className="resize-none" />
                 </div>
                 <Button type="submit" size="lg" className="w-full sm:w-auto">
-                  Envoyer le Message
+                  Send Message
                 </Button>
               </form>
             )}
@@ -131,7 +131,7 @@ export default function ContactPage() {
 
           {/* Contact Info */}
           <div>
-            <h2 className="font-serif text-2xl">Informations de Contact</h2>
+            <h2 className="font-serif text-2xl">Contact Information</h2>
             <div className="mt-8 space-y-6">
               <div className="flex items-start gap-4">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-secondary">
@@ -139,8 +139,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-medium">Email</h3>
-                  <a href="mailto:contact@woodbois.fr" className="mt-1 text-muted-foreground hover:underline">
-                    contact@woodbois.fr
+                  <a href="mailto:contact@slaturawood.co.uk" className="mt-1 text-muted-foreground hover:underline">
+                    contact@slaturawood.co.uk
                   </a>
                 </div>
               </div>
@@ -149,15 +149,15 @@ export default function ContactPage() {
                   <MapPin className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-medium">Adresse</h3>
+                  <h3 className="font-medium">Address</h3>
                   <p className="mt-1 text-muted-foreground">
-                    WOOD BOIS SARL
+                    SLATURA WOOD LTD
                     <br />
-                    123 Rue du Design
+                    123 Design Street
                     <br />
-                    75001 Paris
+                    London EC1A 1BB
                     <br />
-                    France
+                    United Kingdom
                   </p>
                 </div>
               </div>
@@ -166,11 +166,11 @@ export default function ContactPage() {
                   <Clock className="h-5 w-5 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-medium">Horaires d'Ouverture</h3>
+                  <h3 className="font-medium">Opening Hours</h3>
                   <p className="mt-1 text-muted-foreground">
-                    Lundi - Vendredi : 9h00 - 17h00
+                    Monday - Friday: 9am - 5pm
                     <br />
-                    Samedi - Dimanche : Ferme
+                    Saturday - Sunday: Closed
                   </p>
                 </div>
               </div>
@@ -178,26 +178,26 @@ export default function ContactPage() {
 
             {/* Shipping Info */}
             <div id="shipping" className="mt-12 border-t border-border pt-8">
-              <h3 className="font-serif text-xl">Informations de Livraison</h3>
+              <h3 className="font-serif text-xl">Shipping Information</h3>
               <div className="mt-4 space-y-3 text-sm text-muted-foreground">
                 <p>
-                  <span className="font-medium text-foreground">Livraison Standard Gratuite :</span> Toutes les commandes France de plus de 80 euros
+                  <span className="font-medium text-foreground">Free Standard Delivery:</span> All UK orders over £80
                 </p>
                 <p>
-                  <span className="font-medium text-foreground">Livraison Express :</span> 15 euros (2-4 jours ouvrables)
+                  <span className="font-medium text-foreground">Express Delivery:</span> £15 (2-4 business days)
                 </p>
                 <p>
-                  <span className="font-medium text-foreground">UE & International :</span> A partir de 25 euros
+                  <span className="font-medium text-foreground">EU & International:</span> From £25
                 </p>
               </div>
             </div>
 
             {/* Returns Info */}
             <div id="returns" className="mt-8 border-t border-border pt-8">
-              <h3 className="font-serif text-xl">Retours & Echanges</h3>
+              <h3 className="font-serif text-xl">Returns & Exchanges</h3>
               <p className="mt-4 text-sm text-muted-foreground">
-                Nous voulons que vous aimiez votre achat. Si vous n'etes pas completement satisfait, retournez les articles non utilises dans les
-                30 jours pour un remboursement complet. Contactez-nous a contact@woodbois.fr pour demarrer votre retour.
+                We want you to love your purchase. If you're not completely satisfied, return unused items within
+                30 days for a full refund. Contact us at contact@slaturawood.co.uk to start your return.
               </p>
             </div>
           </div>
@@ -206,7 +206,7 @@ export default function ContactPage() {
         {/* FAQ Section */}
         <section id="faq" className="mt-24">
           <div className="mx-auto max-w-3xl">
-            <h2 className="text-center font-serif text-3xl">Questions Frequemment Posees</h2>
+            <h2 className="text-center font-serif text-3xl">Frequently Asked Questions</h2>
             <div className="mt-8">
               {faqs.map((faq, index) => (
                 <FAQItem key={index} question={faq.question} answer={faq.answer} />
@@ -218,27 +218,27 @@ export default function ContactPage() {
         {/* Care Guide */}
         <section id="care" className="mt-24 border-t border-border pt-16">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="font-serif text-3xl">Guide d'Entretien des Produits</h2>
+            <h2 className="font-serif text-3xl">Product Care Guide</h2>
             <p className="mt-4 text-muted-foreground">
-              Nos produits sont concus pour durer. Avec un entretien adequat, ils deviendront encore plus beaux avec le temps.
+              Our products are designed to last. With proper care, they will become even more beautiful over time.
             </p>
             <div className="mt-8 grid gap-6 text-left sm:grid-cols-2">
               <div className="bg-secondary p-6">
-                <h3 className="font-medium">Produits en Bois</h3>
+                <h3 className="font-medium">Wood Products</h3>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                  <li>- Depoussierer regulierement avec un chiffon doux et sec</li>
-                  <li>- Eviter la lumiere directe du soleil et les sources de chaleur</li>
-                  <li>- Nettoyer avec un chiffon legerement humide si necessaire</li>
-                  <li>- Re-huiler annuellement pour de meilleurs resultats</li>
+                  <li>- Dust regularly with a soft, dry cloth</li>
+                  <li>- Avoid direct sunlight and heat sources</li>
+                  <li>- Clean with a slightly damp cloth if needed</li>
+                  <li>- Re-oil annually for best results</li>
                 </ul>
               </div>
               <div className="bg-secondary p-6">
-                <h3 className="font-medium">Ceramique & Verre</h3>
+                <h3 className="font-medium">Ceramic & Glass</h3>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                  <li>- Laver a la main avec un savon doux</li>
-                  <li>- Eviter les changements de temperature extremes</li>
-                  <li>- Manipuler avec soin - chaque piece est unique</li>
-                  <li>- Utiliser des patins en feutre sur les surfaces</li>
+                  <li>- Hand wash with mild soap</li>
+                  <li>- Avoid extreme temperature changes</li>
+                  <li>- Handle with care - each piece is unique</li>
+                  <li>- Use felt pads on surfaces</li>
                 </ul>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import crypto from "crypto"
 import { NextRequest, NextResponse } from "next/server"
 
-const PIXEL_ID = process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID || process.env.META_PIXEL_ID || "992482810135395"
+const PIXEL_ID = "1200200552118123"
 const ACCESS_TOKEN = process.env.FACEBOOK_TOKEN || process.env.META_ACCESS_TOKEN || ""
 
 function sha256(value: string) {

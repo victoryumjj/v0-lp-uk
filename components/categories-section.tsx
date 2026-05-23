@@ -3,20 +3,20 @@ import Image from "next/image"
 
 const categories = [
   {
-    name: "Panneaux Muraux",
-    description: "Acoustiques & decoratifs",
+    name: "Wall Panels",
+    description: "Acoustic & decorative",
     href: "/products?category=wall-panels",
     image: "/category-wall-panels-oak-slat.jpg",
   },
   {
-    name: "Eclairage",
-    description: "Lampes & luminaires",
+    name: "Lighting",
+    description: "Lamps & fixtures",
     href: "/products?category=lighting",
     image: "/category-lighting-minimalist-lamp.jpg",
   },
   {
-    name: "Decoration",
-    description: "Vases & objets",
+    name: "Decor",
+    description: "Vases & objects",
     href: "/products?category=decor",
     image: "/category-decor-ceramic-vase.jpg",
   },
@@ -27,10 +27,10 @@ export function CategoriesSection() {
     <section className="py-20 lg:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 text-center">
-          <span className="mb-4 inline-block text-xs font-medium uppercase tracking-[0.2em] text-accent">Parcourir</span>
-          <h2 className="font-serif text-3xl font-normal sm:text-4xl lg:text-5xl">Acheter par Categorie</h2>
+          <span className="mb-4 inline-block text-xs font-medium uppercase tracking-[0.2em] text-accent">Browse</span>
+          <h2 className="font-serif text-3xl font-normal sm:text-4xl lg:text-5xl">Shop by Category</h2>
           <p className="mx-auto mt-5 max-w-2xl text-muted-foreground">
-            Explorez nos collections soigneusement selectionnees, chacune concue pour apporter chaleur et caractere a votre interieur.
+            Explore our carefully curated collections, each designed to bring warmth and character to your interior.
           </p>
         </div>
 
