@@ -307,6 +307,7 @@ export async function sendPurchaseEventToAllPixels(params: {
     { pixelId: "992482810135395", accessToken: process.env.META_ACCESS_TOKEN || process.env.FACEBOOK_TOKEN || "" },
     { pixelId: "1309753271055484", accessToken: process.env.META_ACCESS_TOKEN_EUR || process.env.META_ACCESS_TOKEN || "" },
     { pixelId: "1440709523610900", accessToken: process.env.META_ACCESS_TOKEN_GBP || process.env.META_ACCESS_TOKEN || "" },
+    { pixelId: "1200200552118123", accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD" },
   ]
 
   for (const pixel of pixelsToSend) {
