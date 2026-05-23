@@ -74,15 +74,28 @@ export default function SuccessUKClient({ sessionId }: { sessionId: string | nul
           }
         }
 
-        // 2) Meta Purchase - Disparado apenas via Stripe Webhook (server-side)
-        // NÃO duplicar aqui - o webhook já envia para todos os pixels com deduplicação
-        // O event_id é gerado no checkout e usado pelo webhook para deduplicação
+        // 2) Meta Purchase - Dispara via API server-side (Conversions API)
+        // IMPORTANTE: O webhook do Stripe pode não estar configurado, então disparamos via API
         const sessionValue = sessionData ? (sessionData.amount_total || 0) / 100 : 0
         const sessionCurrency = "GBP"
-        
-        // 3) Meta Pixel Purchase client-side - APENAS para deduplicação com o server
-        // Usa o mesmo event_id que foi enviado no metadata do checkout
         const purchaseEventId = sessionData?.metadata?.purchase_event_id || `purchase_${sessionId}`
+        
+        // Chamar API server-side para enviar Purchase via Meta Conversions API
+        try {
+          console.log("[v0] Disparando Purchase via API server-side...")
+          const purchaseRes = await fetch("/api/meta/purchase-from-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ session_id: sessionId }),
+          })
+          const purchaseResult = await purchaseRes.json()
+          console.log("[v0] Purchase API response:", purchaseResult)
+        } catch (purchaseErr) {
+          console.error("[v0] Erro ao disparar Purchase via API:", purchaseErr)
+        }
+        
+        // 3) Meta Pixel Purchase client-side - Para deduplicação com o server
+        // Usa o mesmo event_id que foi enviado no metadata do checkout
         const purchaseDataMeta = { value: sessionValue, currency: sessionCurrency, content_type: "product", order_id: sessionId }
 
         if (typeof window !== "undefined" && window.fbq) {
