@@ -4,10 +4,10 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
-const categoriesFr = [
-  { id: "wall-panels", name: "Panneaux Muraux", slug: "wall-panels" },
-  { id: "lighting", name: "Eclairage", slug: "lighting" },
-  { id: "decor", name: "Decoration", slug: "decor" },
+const categories = [
+  { id: "wall-panels", name: "Wall Panels", slug: "wall-panels" },
+  { id: "lighting", name: "Lighting", slug: "lighting" },
+  { id: "decor", name: "Decor", slug: "decor" },
 ]
 
 export function ProductFilters() {
@@ -36,9 +36,9 @@ export function ProductFilters() {
           !currentCategory && "bg-foreground text-background hover:bg-foreground/90 hover:text-background",
         )}
       >
-        Tout
+        All
       </Button>
-      {categoriesFr.map((category) => (
+      {categories.map((category) => (
         <Button
           key={category.id}
           variant="outline"

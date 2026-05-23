@@ -37,9 +37,9 @@ export interface Product {
 }
 
 export const categories = [
-  { id: "wall-panels", name: "Panneaux Muraux", slug: "wall-panels" },
-  { id: "lighting", name: "Eclairage", slug: "lighting" },
-  { id: "decor", name: "Decoration", slug: "decor" },
+  { id: "wall-panels", name: "Wall Panels", slug: "wall-panels" },
+  { id: "lighting", name: "Lighting", slug: "lighting" },
+  { id: "decor", name: "Decor", slug: "decor" },
 ]
 
 export const products: Product[] = [
@@ -99,6 +99,7 @@ export const products: Product[] = [
     originalPrice: 28.76,
     currency: "EUR",
     category: "wall-panels",
+    hidden: true,
     images: [
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Marcenaria%20inteligente%20transforma%20o%20seu%20ambiente.Aqui%2C%20o%20painel%20ripado%20com%20iluminac%CC%A7a%CC%83o%20em%20LED%20vai-yF1rklBPX4o4hpK9rzz1YPn4wkn8tc.jpg",
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panneau02-qeu9jY1J99l7kquJK3L2fnpKCxJuHj.avif",
@@ -135,96 +136,96 @@ export const products: Product[] = [
   {
     id: "prod_U4kuz3MBgNjf76",
     slug: "oak-slat-wall-panel",
-    name: "Panneau Mural Lattes Chene",
+    name: "Oak Slat Wall Panel",
     description:
-      "Panneau en lattes de chene naturel artisanal aux tons chauds. Parfait pour creer une atmosphere scandinave chaleureuse.",
+      "Handcrafted natural oak slat panel with warm tones. Perfect for creating a cosy Scandinavian atmosphere.",
     longDescription:
-      "Transformez votre espace avec notre Panneau Mural Lattes Chene premium, fabrique avec soin a partir de chene europeen durable. Chaque panneau presente des lattes precisement espacees qui creent de magnifiques jeux d'ombre et de lumiere tout au long de la journee. Les variations naturelles du grain rendent chaque panneau unique, apportant chaleur et texture a n'importe quelle piece. Ideal pour les salons, chambres ou bureaux recherchant une esthetique nordique authentique.",
+      "Transform your space with our premium Oak Slat Wall Panel, carefully crafted from sustainable European oak. Each panel features precisely spaced slats that create beautiful shadow and light play throughout the day. The natural grain variations make each panel unique, bringing warmth and texture to any room. Ideal for living rooms, bedrooms or offices seeking an authentic Nordic aesthetic.",
     price: 16.80,
-    currency: "EUR",
+    currency: "GBP",
     category: "wall-panels",
     images: [
       "/oak-wood-slat-wall-panel-natural-texture-scandinav.jpg",
       "/oak-slat-panel-installed-living-room-modern.jpg",
       "/oak-wood-panel-close-up-grain-detail.jpg",
     ],
-    features: ["100% Chene europeen", "Systeme d'installation facile", "Proprietes d'absorption sonore", "Bois certifie FSC"],
+    features: ["100% European Oak", "Easy Installation System", "Sound Absorption Properties", "FSC Certified Wood"],
     dimensions: "120cm x 60cm x 2cm",
-    material: "Chene Europeen Massif",
+    material: "Solid European Oak",
     inStock: true,
-    badge: "Meilleure Vente",
+    badge: "Bestseller",
   },
   {
     id: "prod_U4kuODmzE1memh",
     slug: "walnut-acoustic-panel",
-    name: "Panneau Acoustique Noyer",
-    description: "Panneau acoustique noyer premium alliant esthetique elegante et absorption sonore superieure.",
+    name: "Walnut Acoustic Panel",
+    description: "Premium walnut acoustic panel combining elegant aesthetics with superior sound absorption.",
     longDescription:
-      "Decouvrez la fusion parfaite entre forme et fonction avec notre Panneau Acoustique Noyer. Concu avec un noyau acoustique haute densite et recouvert d'un luxueux placage de noyer americain, ce panneau reduit considerablement l'echo et la reverberation tout en ajoutant une chaleur sophistiquee a votre interieur. Les tons chocolat profonds du noyer creent un effet visuel saisissant qui sublime tout espace contemporain ou traditionnel.",
+      "Discover the perfect fusion of form and function with our Walnut Acoustic Panel. Designed with a high-density acoustic core and covered with luxurious American walnut veneer, this panel significantly reduces echo and reverberation whilst adding sophisticated warmth to your interior. The deep chocolate tones of the walnut create a striking visual effect that elevates any contemporary or traditional space.",
     price: 30.00,
-    currency: "EUR",
+    currency: "GBP",
     category: "wall-panels",
     images: [
       "/walnut-acoustic-panel-dark-wood-elegant-modern.jpg",
       "/walnut-panel-home-office-professional.jpg",
       "/acoustic-panel-sound-studio-walnut.jpg",
     ],
-    features: ["Indice NRC 0.85", "Placage noyer americain", "Noyau ignifuge", "Systeme modulaire"],
+    features: ["NRC Rating 0.85", "American Walnut Veneer", "Fire-Resistant Core", "Modular System"],
     dimensions: "120cm x 60cm x 4cm",
-    material: "Placage Noyer / Noyau Acoustique",
+    material: "Walnut Veneer / Acoustic Core",
     inStock: true,
-    badge: "Nouveau",
+    badge: "New",
   },
   {
     id: "prod_U4kuzRsw3B5dBe",
     slug: "minimalist-arc-lamp",
-    name: "Lampadaire Arc Minimaliste",
-    description: "Lampadaire elegant au design arc courbe. Finition laiton avec abat-jour en lin.",
+    name: "Minimalist Arc Floor Lamp",
+    description: "Elegant floor lamp with curved arc design. Brass finish with linen shade.",
     longDescription:
-      "Le Lampadaire Arc Minimaliste incarne l'essence de la philosophie du design scandinave - une simplicite magnifique avec une fonction reflechie. L'arc gracieux en laiton s'etend elegamment au-dessus des espaces de repos, offrant une lumiere ambiante chaleureuse a travers son abat-jour en lin naturel. La base en marbre lestee assure la stabilite tout en ajoutant une touche de luxe. Parfait pour les coins lecture ou comme piece maitresse dans votre salon.",
+      "The Minimalist Arc Floor Lamp embodies the essence of Scandinavian design philosophy - beautiful simplicity with thoughtful function. The graceful brass arc extends elegantly over seating areas, providing warm ambient light through its natural linen shade. The weighted marble base ensures stability whilst adding a touch of luxury. Perfect for reading corners or as a statement piece in your living room.",
     price: 189.00,
-    currency: "EUR",
+    currency: "GBP",
     category: "lighting",
     images: ["/minimalist-arc-floor-lamp-brass-linen-shade.jpg"],
-    features: ["Hauteur d'arc reglable", "Abat-jour en lin naturel", "Base en marbre", "Compatible ampoule E27"],
-    dimensions: "Hauteur: 180cm, Portee arc: 120cm",
-    material: "Laiton / Marbre / Lin",
+    features: ["Adjustable Arc Height", "Natural Linen Shade", "Marble Base", "E27 Bulb Compatible"],
+    dimensions: "Height: 180cm, Arc Reach: 120cm",
+    material: "Brass / Marble / Linen",
     inStock: true,
   },
   {
     id: "prod_U4kuu8uiPc6s44",
     slug: "organic-ceramic-vase",
-    name: "Vase Ceramique Organique",
-    description: "Vase ceramique tourne a la main aux courbes organiques et finition email mat.",
+    name: "Organic Ceramic Vase",
+    description: "Hand-turned ceramic vase with organic curves and matte glaze finish.",
     longDescription:
-      "Chaque Vase Ceramique Organique est individuellement tourne a la main par des artisans qualifies dans notre atelier portugais, rendant chaque piece vraiment unique. Les imperfections deliberees et les courbes organiques celebrent la beaute de l'artisanat, tandis que l'email mat doux dans notre ton d'argile signature ajoute une elegance discrete. Qu'il soit expose vide comme objet sculptural ou rempli de plantes sechees, ce vase apporte une chaleur artisanale a toute surface.",
+      "Each Organic Ceramic Vase is individually hand-turned by skilled artisans in our Portuguese studio, making every piece truly unique. The deliberate imperfections and organic curves celebrate the beauty of craftsmanship, whilst the soft matte glaze in our signature clay tone adds understated elegance. Whether displayed empty as a sculptural object or filled with dried botanicals, this vase brings artisanal warmth to any surface.",
     price: 95.00,
-    currency: "EUR",
+    currency: "GBP",
     category: "decor",
     images: [
       "/organic-ceramic-vase-matte-beige-handmade.jpg",
       "/ceramic-vase-dried-flowers-minimalist.jpg",
       "/handmade-pottery-vase-detail-texture.jpg",
     ],
-    features: ["Fabrique au Portugal", "Email alimentaire", "Interieur etanche", "Piece unique"],
-    dimensions: "Hauteur: 28cm, Diametre: 15cm",
-    material: "Ceramique Gres",
+    features: ["Made in Portugal", "Food-Safe Glaze", "Waterproof Interior", "Unique Piece"],
+    dimensions: "Height: 28cm, Diameter: 15cm",
+    material: "Stoneware Ceramic",
     inStock: true,
     styles: [
-      { id: "matte-white", name: "Blanc Mat", image: "/organic-ceramic-vase-matte-beige-handmade.jpg" },
-      { id: "natural-dried", name: "Naturel avec Fleurs Sechees", image: "/ceramic-vase-dried-flowers-minimalist.jpg" },
-      { id: "blue-painted", name: "Bleu Peint", image: "/handmade-pottery-vase-detail-texture.jpg" },
+      { id: "matte-white", name: "Matte White", image: "/organic-ceramic-vase-matte-beige-handmade.jpg" },
+      { id: "natural-dried", name: "Natural with Dried Flowers", image: "/ceramic-vase-dried-flowers-minimalist.jpg" },
+      { id: "blue-painted", name: "Blue Painted", image: "/handmade-pottery-vase-detail-texture.jpg" },
     ],
   },
   {
     id: "prod_U4kv4CKxEyo0xu",
     slug: "recessed-led-strip-lighting",
-    name: "Kit Ruban LED Encastre",
-    description: "Kit ruban LED blanc chaud 3000K pour eclairage de panneaux encastres. Auto-adhesif avec variateur tactile. 8 pieces incluses.",
+    name: "Recessed LED Strip Kit",
+    description: "Warm white 3000K LED strip kit for recessed panel lighting. Self-adhesive with touch dimmer. 8 pieces included.",
     longDescription:
-      "Sublimez vos panneaux muraux avec notre Kit Ruban LED Encastre professionnel, concu specifiquement pour l'installation derriere les panneaux. Ce kit complet de 8 pieces comprend des rubans LED de plusieurs tailles (18\", 26\", 34\", 42\" - 2 de chaque), un driver LED premium, un variateur tactile et tous les cables de connexion. La temperature de couleur chaude de 3000K cree une ambiance chaleureuse, tandis que le variateur tactile permet un reglage de 10% a 100% de luminosite avec fonction memoire. Caracterise par un ruban adhesif plus epais pour un montage superieur et un boitier en aluminium noir qui disparait derriere les panneaux. Le systeme de connexion rapide rend l'installation simple. Parfait pour chambres, salons, bureaux et murs de canape.",
+      "Enhance your wall panels with our professional Recessed LED Strip Kit, designed specifically for installation behind panels. This complete 8-piece kit includes LED strips of multiple sizes (18\", 26\", 34\", 42\" - 2 of each), a premium LED driver, touch dimmer and all connection cables. The warm 3000K colour temperature creates a cosy ambiance, whilst the touch dimmer allows adjustment from 10% to 100% brightness with memory function. Features thicker adhesive tape for superior mounting and black aluminium housing that disappears behind panels. The quick connection system makes installation simple. Perfect for bedrooms, living rooms, offices and sofa walls.",
     price: 180.00,
-    currency: "EUR",
+    currency: "GBP",
     category: "lighting",
     images: [
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg",
@@ -234,29 +235,29 @@ export const products: Product[] = [
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED030303-P4LLJ1QfKkKzSLlIC8ahDalqeFtXkt.jpg",
     ],
     features: [
-      "8 rubans LED inclus (2x chaque taille)",
-      "Temperature blanc chaud 3000K",
-      "Variateur tactile 10%-100% avec memoire",
-      "Ruban adhesif epais premium",
-      "Boitier aluminium noir",
-      "Transformateur LED inclus",
-      "Cables connexion rapide (2m)",
-      "Parfait pour installation encastree",
+      "8 LED strips included (2x each size)",
+      "Warm white 3000K colour temperature",
+      "Touch dimmer 10%-100% with memory",
+      "Premium thick self-adhesive tape",
+      "Black aluminium housing",
+      "LED transformer included",
+      "Quick connection cables (2m)",
+      "Perfect for recessed installation",
     ],
-    dimensions: "18\", 26\", 34\", 42\" rubans (2 de chaque)",
-    material: "Aluminium Noir / LED",
+    dimensions: "18\", 26\", 34\", 42\" strips (2 of each)",
+    material: "Black Aluminium / LED",
     inStock: true,
-    badge: "Populaire",
+    badge: "Popular",
   },
   {
     id: "prod_U4kvhZVdMgj3T5",
     slug: "wall-preparation-cleaner",
-    name: "Nettoyant Preparation Murale",
-    description: "Nettoyant moussant professionnel pour preparation de surface avant installation. Elimine salete, graisse et taches sans abimer les surfaces.",
+    name: "Wall Preparation Cleaner",
+    description: "Professional foaming cleaner for surface preparation before installation. Removes dirt, grease and stains without damaging surfaces.",
     longDescription:
-      "Preparez parfaitement vos murs avant l'installation des panneaux acoustiques avec notre Nettoyant Moussant de qualite professionnelle. Cette formule puissante mais douce elimine la salete, les eraflures, la graisse, la crasse, les marqueurs, les crayons, les residus de nicotine, les empreintes digitales et le maquillage sans endommager les surfaces peintes. La technologie de mousse adherente garantit l'absence de gouttes et un nettoyage rapide sans frotter. Sans danger sur la plupart des murs peints, portes, plinthes, armoires et papiers peints lavables. Essentiel pour obtenir la meilleure adhesion et finition lors de l'installation des panneaux muraux.",
+      "Perfectly prepare your walls before installing acoustic panels with our professional-grade Foaming Cleaner. This powerful yet gentle formula removes dirt, scuffs, grease, grime, markers, crayons, nicotine residue, fingerprints and makeup without damaging painted surfaces. The clinging foam technology ensures no drips and quick cleaning without scrubbing. Safe on most painted walls, doors, skirting boards, cabinets and washable wallpaper. Essential for achieving the best adhesion and finish when installing wall panels.",
     price: 15.50,
-    currency: "EUR",
+    currency: "GBP",
     category: "decor",
     images: [
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN04-jsHtrQ87vwg45Qyo5RrSkzrJbV2MXC.jpg",
@@ -264,19 +265,19 @@ export const products: Product[] = [
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN05E-ImqfbNfWohct5EliXBJBJy3edDfAHq.jpg",
     ],
     features: [
-      "Nettoyage rapide sans frotter",
-      "Mousse adherente - sans gouttes",
-      "Sans danger sur murs peints",
-      "Elimine salete, graisse, marqueurs",
-      "Elimine residus de nicotine",
-      "Fonctionne sur meubles et plinthes",
+      "Quick cleaning without scrubbing",
+      "Clinging foam - no drips",
+      "Safe on painted walls",
+      "Removes dirt, grease, markers",
+      "Removes nicotine residue",
+      "Works on furniture and skirting boards",
       "510g (18 oz)",
-      "Qualite professionnelle",
+      "Professional quality",
     ],
     dimensions: "510g (18 oz)",
-    material: "Solution Nettoyante Moussante",
+    material: "Foaming Cleaning Solution",
     inStock: true,
-    badge: "Essentiel",
+    badge: "Essential",
   },
   // French version of LED Strip Kit
   {
@@ -631,5 +632,30 @@ export function getFeaturedProductsFrMarket(): Product[] {
     if (p.slug === "flexible-acoustic-panel") return false
     if (p.hidden) return false
     return p.badge
+  })
+}
+
+// UK Market Functions - Show GBP products only
+export function getVisibleProductsUKMarket(): Product[] {
+  return products.filter((p) => {
+    if (p.hidden) return false
+    // Only show GBP products for UK market
+    return p.currency === "GBP"
+  })
+}
+
+export function getProductsByCategoryUKMarket(category: string): Product[] {
+  return products.filter((p) => {
+    if (p.hidden) return false
+    if (p.currency !== "GBP") return false
+    return p.category === category
+  })
+}
+
+export function getFeaturedProductsUKMarket(): Product[] {
+  return products.filter((p) => {
+    if (p.hidden) return false
+    // Only show GBP products with badges for UK market
+    return p.badge && p.currency === "GBP"
   })
 }

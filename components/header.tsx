@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const navigation = [
-  { name: "Boutique", href: "/products" },
-  { name: "Panneaux Muraux", href: "/products?category=wall-panels" },
-  { name: "Eclairage", href: "/products?category=lighting" },
-  { name: "Decoration", href: "/products?category=decor" },
-  { name: "A Propos", href: "/about" },
+  { name: "Shop", href: "/products" },
+  { name: "Wall Panels", href: "/products?category=wall-panels" },
+  { name: "Lighting", href: "/products?category=lighting" },
+  { name: "Decor", href: "/products?category=decor" },
+  { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ]
 
@@ -32,7 +32,7 @@ export function Header() {
           <SheetTrigger asChild className="lg:hidden">
             <Button variant="ghost" size="icon" className="-ml-2">
               <Menu className="h-5 w-5" />
-              <span className="sr-only">Ouvrir le menu</span>
+              <span className="sr-only">Open menu</span>
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-80 bg-background">
@@ -84,7 +84,7 @@ export function Header() {
         <Link href={cartUrl} className="relative">
           <Button variant="ghost" size="icon">
             <ShoppingBag className="h-5 w-5" />
-            <span className="sr-only">Panier</span>
+            <span className="sr-only">Cart</span>
           </Button>
           {totalItems > 0 && (
             <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-foreground text-xs text-background">
