@@ -29,7 +29,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const isFrenchVersion = slug.endsWith("-fr")
   
   // Check if this is a UK version product (English with GBP)
-  const isUKVersion = slug.endsWith("-uk")
+  // Either by slug suffix OR by currency being GBP (for products like LED kit)
+  const isUKVersion = slug.endsWith("-uk") || product.currency === "GBP"
   
   // Get products for "Frequently bought together" section (use French/UK/EN versions based on page)
   const wallCleanerProductId = isFrenchVersion 
