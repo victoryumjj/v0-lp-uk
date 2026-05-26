@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { EmbeddedCheckoutProvider, EmbeddedCheckout } from "@stripe/react-stripe-js"
 import { createCheckoutSessionUK } from "@/app/actions/stripe"
@@ -42,18 +42,24 @@ export function StripeCheckoutUK({ items, onInitiateCheckout, bonusData }: Strip
   const [showCheckout, setShowCheckout] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [checkoutKey, setCheckoutKey] = useState(0)
+
+  // Store current items to use in fetchClientSecret
+  const currentItemsRef = React.useRef(items)
+  currentItemsRef.current = items
 
   const fetchClientSecret = useCallback(async () => {
+    const currentItems = currentItemsRef.current
     try {
       setError(null)
       const eventId = `purchase_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 
-      const totalValue = items.reduce((sum, item) => {
+      const totalValue = currentItems.reduce((sum, item) => {
         const price = item.product.salePrice || item.product.price
         return sum + price * item.quantity
       }, 0)
 
-      const tiktokItems = formatCartForTikTok(items)
+      const tiktokItems = formatCartForTikTok(currentItems)
 
       storePurchaseData({
         contents: tiktokItems,
@@ -69,9 +75,9 @@ export function StripeCheckoutUK({ items, onInitiateCheckout, bonusData }: Strip
       const fbc = getCookie("_fbc")
       const fbp = getCookie("_fbp")
 
-      console.log("[v0] Creating UK checkout session for items:", items.length)
+      console.log("[v0] Creating UK checkout session for items:", currentItems.length, currentItems.map(i => ({ name: i.product.name, price: i.product.price })))
       
-      const result = await createCheckoutSessionUK(items, window.location.origin, {
+      const result = await createCheckoutSessionUK(currentItems, window.location.origin, {
         eventId,
         eventSourceUrl: window.location.href,
         fbc,
@@ -90,20 +96,21 @@ export function StripeCheckoutUK({ items, onInitiateCheckout, bonusData }: Strip
       setError(errorMessage)
       throw err
     }
-  }, [items])
+  }, [])
 
   const handleStartCheckout = async () => {
-    if (items.length === 0) return
+    const currentItems = currentItemsRef.current
+    if (currentItems.length === 0) return
     setLoading(true)
     setError(null)
 
     // Track TikTok InitiateCheckout event BEFORE showing checkout
-    const totalValue = items.reduce((sum, item) => {
+    const totalValue = currentItems.reduce((sum, item) => {
       const price = item.product.salePrice || item.product.price
       return sum + price * item.quantity
     }, 0)
-    const tiktokItems = formatCartForTikTok(items)
-    const numItems = items.reduce((sum, item) => sum + item.quantity, 0)
+    const tiktokItems = formatCartForTikTok(currentItems)
+    const numItems = currentItems.reduce((sum, item) => sum + item.quantity, 0)
 
     try {
       await trackInitiateCheckout({
@@ -120,6 +127,7 @@ export function StripeCheckoutUK({ items, onInitiateCheckout, bonusData }: Strip
     }
 
     onInitiateCheckout?.()
+    setCheckoutKey(prev => prev + 1)
     setShowCheckout(true)
     setLoading(false)
   }
@@ -213,6 +221,7 @@ export function StripeCheckoutUK({ items, onInitiateCheckout, bonusData }: Strip
         )}
 
         <EmbeddedCheckoutProvider 
+          key={checkoutKey}
           stripe={stripePromise} 
           options={{ 
             fetchClientSecret,

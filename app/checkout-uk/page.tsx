@@ -138,7 +138,7 @@ export default function CheckoutUKPage() {
     } catch (e) {}
   }
 
-  // Build a cart-like item array for StripeCheckoutUK (using editable quantity)
+  // Build checkout items including upsells
   const checkoutItems = [
     {
       product: {
@@ -152,6 +152,23 @@ export default function CheckoutUKPage() {
       } as any,
       quantity: orderQuantity,
     },
+    // Add selected upsell products
+    ...selectedUpsells.map(id => {
+      const upsellProduct = UPSELL_PRODUCTS_UK.find(p => p.id === id)
+      if (!upsellProduct) return null
+      return {
+        product: {
+          id: upsellProduct.id,
+          name: upsellProduct.name,
+          price: upsellProduct.price,
+          salePrice: upsellProduct.price,
+          currency: "GBP" as const,
+          image: upsellProduct.image,
+          images: [upsellProduct.image],
+        } as any,
+        quantity: 1,
+      }
+    }).filter(Boolean),
   ]
 
   const handleInitiateCheckout = async () => {
