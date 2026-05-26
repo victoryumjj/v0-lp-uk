@@ -20,8 +20,8 @@ export const UPSELL_PRODUCTS_UK: UpsellProduct[] = [
     id: "led-kit-uk",
     name: "Recessed LED Strip Kit",
     description: "LED lighting for your panels",
-    price: 29.00,
-    originalPrice: 42.00,
+    price: 109.00,
+    originalPrice: 180.00,
     image: LED_KIT_IMAGE,
   },
   {
