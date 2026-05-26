@@ -218,17 +218,25 @@ export default function CheckoutUKPage() {
           {/* Minimal Product Display */}
           <div className="flex items-center gap-4 mb-4 pb-4 border-b border-border">
             {storedOrder.image && (
-              <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
+              <Link 
+                href={`/product/${storedOrder.productId}`}
+                className="relative w-14 h-14 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0 hover:opacity-80 transition-opacity"
+              >
                 <Image
                   src={storedOrder.image}
                   alt={storedOrder.name}
                   fill
                   className="object-cover"
                 />
-              </div>
+              </Link>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-base font-medium text-foreground">{storedOrder.name}</p>
+              <Link 
+                href={`/product/${storedOrder.productId}`}
+                className="text-base font-medium text-foreground hover:text-primary hover:underline transition-colors"
+              >
+                {storedOrder.name}
+              </Link>
               <p className="text-2xl font-bold text-foreground mt-0.5">£{unitPrice.toFixed(2)}</p>
             </div>
           </div>
