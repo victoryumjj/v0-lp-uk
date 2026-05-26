@@ -11,7 +11,7 @@ import { trackInitiateCheckout as trackMetaInitiateCheckout, generateEventId } f
 import { trackInitiateCheckout as trackTikTokInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
 import { getFbpFbc } from "@/lib/fbp-fbc"
 import { getStoredUTMs } from "@/lib/utm-client"
-import { BonusProgressBar } from "@/components/bonus-progress-bar"
+import { UpsellProductsUk } from "@/components/upsell-products-uk"
 
 // Shape that comes from sessionStorage
 interface StoredOrder {
@@ -33,8 +33,6 @@ interface BonusData {
   bonusValue: number
 }
 
-const LED_KIT_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg"
-const LED_KIT_PRODUCT_URL = "/product/recessed-led-strip-lighting"
 const CLEANER_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN04-jsHtrQ87vwg45Qyo5RrSkzrJbV2MXC.jpg"
 const PANEL_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panneu01-COvuniuy0UAMH2wAwPKmS9Tlev4Qrt.avif"
 
@@ -212,19 +210,15 @@ export default function CheckoutUKPage() {
           </div>
         </div>
 
-        {/* Bonus Progress Bar - Unlock at £85 */}
-        <BonusProgressBar currentTotal={totalGBP} threshold={85} className="mb-4" />
+        {/* Upsell Products - Add These Too */}
+        <UpsellProductsUk className="mb-4" />
 
         {/* Order Summary Card */}
         <div className="rounded-xl bg-white border border-border shadow-sm p-5 mb-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider mb-4">
-            Order Summary
-          </h2>
-
-          {/* Main product item */}
-          <div className="flex items-center gap-3 mb-3">
+          {/* Minimal Product Display */}
+          <div className="flex items-center gap-4 mb-4 pb-4 border-b border-border">
             {storedOrder.image && (
-              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-secondary/30 flex-shrink-0">
+              <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
                 <Image
                   src={storedOrder.image}
                   alt={storedOrder.name}
@@ -234,59 +228,42 @@ export default function CheckoutUKPage() {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium leading-tight">{storedOrder.name}</p>
-              {/* Quantity selector */}
-              <div className="flex items-center gap-1 mt-1.5">
-                <button
-                  type="button"
-                  onClick={() => handleQuantityChange(-1)}
-                  disabled={orderQuantity <= 1}
-                  className="flex h-7 w-7 items-center justify-center rounded border border-border bg-white text-muted-foreground hover:bg-secondary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="h-3 w-3" />
-                </button>
-                <span className="w-8 text-center text-sm font-semibold">{orderQuantity}</span>
-                <button
-                  type="button"
-                  onClick={() => handleQuantityChange(1)}
-                  disabled={orderQuantity >= 99}
-                  className="flex h-7 w-7 items-center justify-center rounded border border-border bg-white text-muted-foreground hover:bg-secondary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="h-3 w-3" />
-                </button>
-              </div>
+              <p className="text-base font-medium text-foreground">{storedOrder.name}</p>
+              <p className="text-2xl font-bold text-foreground mt-0.5">£{unitPrice.toFixed(2)}</p>
             </div>
-            <p className="text-sm font-semibold flex-shrink-0">£{totalGBP.toFixed(2)}</p>
           </div>
 
-          {/* LED kit bonus item — shown when total >= £85 */}
-          {totalGBP >= 85 && (
-            <div className="flex items-center gap-3 mb-4 rounded-lg border border-dashed border-emerald-400 bg-emerald-50 px-3 py-2.5">
-              <a href={LED_KIT_PRODUCT_URL} target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 rounded-lg overflow-hidden bg-white flex-shrink-0 block border border-emerald-200">
-                <Image
-                  src={LED_KIT_IMAGE}
-                  alt="Recessed LED Strip Kit"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </a>
-              <div className="flex-1 min-w-0">
-                <a
-                  href={LED_KIT_PRODUCT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium leading-tight text-emerald-800 underline underline-offset-2 hover:text-emerald-600"
-                >
-                  Recessed LED Strip Kit
-                </a>
-                <p className="text-xs text-emerald-700 mt-0.5">FREE with orders over £85</p>
-              </div>
-              <p className="text-sm font-semibold flex-shrink-0 text-emerald-700 line-through opacity-60">£42.00</p>
+          {/* Delivery Notice */}
+          <div className="flex items-center gap-2 mb-4 p-3 rounded-lg bg-blue-50 border border-blue-100">
+            <Package className="h-4 w-4 text-blue-600 flex-shrink-0" />
+            <p className="text-sm text-blue-700">Arrives within <strong>6 days</strong></p>
+          </div>
+
+          {/* Quantity selector */}
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm text-muted-foreground">Quantity</span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(-1)}
+                disabled={orderQuantity <= 1}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white text-muted-foreground hover:bg-secondary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                aria-label="Decrease quantity"
+              >
+                <Minus className="h-3.5 w-3.5" />
+              </button>
+              <span className="w-10 text-center text-base font-semibold">{orderQuantity}</span>
+              <button
+                type="button"
+                onClick={() => handleQuantityChange(1)}
+                disabled={orderQuantity >= 99}
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-white text-muted-foreground hover:bg-secondary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                aria-label="Increase quantity"
+              >
+                <Plus className="h-3.5 w-3.5" />
+              </button>
             </div>
-          )}
+          </div>
 
           {/* Bonus Items Section */}
           {bonusData && (

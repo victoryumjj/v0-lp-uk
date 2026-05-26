@@ -11,7 +11,7 @@ import { trackInitiateCheckout as trackMetaInitiateCheckout, generateEventId } f
 import { trackInitiateCheckout as trackTikTokInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
 import { getFbpFbc } from "@/lib/fbp-fbc"
 import { getStoredUTMs } from "@/lib/utm-client"
-import { BonusProgressBar } from "@/components/bonus-progress-bar"
+import { UpsellProductsFr } from "@/components/upsell-products-fr"
 
 // Shape that comes from sessionStorage
 interface StoredOrder {
@@ -33,8 +33,6 @@ interface BonusData {
   bonusValue: number
 }
 
-const LED_KIT_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg"
-const LED_KIT_PRODUCT_URL = "/product/recessed-led-strip-lighting-fr"
 const CLEANER_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN04-jsHtrQ87vwg45Qyo5RrSkzrJbV2MXC.jpg"
 const PANEL_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panneu01-COvuniuy0UAMH2wAwPKmS9Tlev4Qrt.avif"
 
@@ -200,19 +198,15 @@ export default function CheckoutFrPage() {
           </div>
         </div>
 
-        {/* Bonus Progress Bar - Unlock at €100 */}
-        <BonusProgressBar currentTotal={totalEur} threshold={100} className="mb-4" />
+        {/* Upsell Products - Leve Também */}
+        <UpsellProductsFr className="mb-4" />
 
         {/* Order Summary Card */}
         <div className="rounded-xl bg-white border border-border shadow-sm p-5 mb-4">
-          <h2 className="text-sm font-semibold uppercase tracking-wider mb-4">
-            Récapitulatif de la commande
-          </h2>
-
-          {/* Main product item */}
-          <div className="flex items-center gap-3 mb-3">
+          {/* Minimal Product Display */}
+          <div className="flex items-center gap-4 mb-4 pb-4 border-b border-border">
             {storedOrder.image && (
-              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-secondary/30 flex-shrink-0">
+              <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-secondary/20 flex-shrink-0">
                 <Image
                   src={storedOrder.image}
                   alt={storedOrder.name}
@@ -222,38 +216,22 @@ export default function CheckoutFrPage() {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium leading-tight">{storedOrder.name}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Qté : {storedOrder.quantity}</p>
+              <p className="text-base font-medium text-foreground">{storedOrder.name}</p>
+              <p className="text-2xl font-bold text-foreground mt-0.5">€{storedOrder.price.toFixed(2)}</p>
             </div>
-            <p className="text-sm font-semibold flex-shrink-0">€{totalEur.toFixed(2)}</p>
           </div>
 
-          {/* LED kit bonus item — shown when total >= €100 */}
-          {totalEur >= 100 && (
-            <div className="flex items-center gap-3 mb-4 rounded-lg border border-dashed border-emerald-400 bg-emerald-50 px-3 py-2.5">
-              <a href={LED_KIT_PRODUCT_URL} target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 rounded-lg overflow-hidden bg-white flex-shrink-0 block border border-emerald-200">
-                <Image
-                  src={LED_KIT_IMAGE}
-                  alt="Kit Ruban LED Encastré"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </a>
-              <div className="flex-1 min-w-0">
-                <a
-                  href={LED_KIT_PRODUCT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium leading-tight text-emerald-800 underline underline-offset-2 hover:text-emerald-600"
-                >
-                  Kit Ruban LED Encastré
-                </a>
-                <p className="text-xs text-emerald-700 mt-0.5">Bonus commande +€100, inclus gratuitement</p>
-              </div>
-              <p className="text-sm font-semibold flex-shrink-0 text-emerald-700 line-through opacity-60">€49,00</p>
-            </div>
-          )}
+          {/* Delivery Notice */}
+          <div className="flex items-center gap-2 mb-4 p-3 rounded-lg bg-blue-50 border border-blue-100">
+            <Package className="h-4 w-4 text-blue-600 flex-shrink-0" />
+            <p className="text-sm text-blue-700">Livraison sous <strong>6 jours</strong></p>
+          </div>
+
+          {/* Quantity display */}
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm text-muted-foreground">Quantité</span>
+            <span className="text-base font-semibold">{storedOrder.quantity}</span>
+          </div>
 
           {/* Bonus Items Section */}
           {bonusData && (
