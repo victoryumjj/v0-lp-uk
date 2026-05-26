@@ -1,13 +1,12 @@
 "use client"
 
-import { useState } from "react"
 import { Plus, Check } from "lucide-react"
 import Image from "next/image"
 
 const LED_KIT_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg"
 const GLUE_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN04-jsHtrQ87vwg45Qyo5RrSkzrJbV2MXC.jpg"
 
-interface UpsellProduct {
+export interface UpsellProduct {
   id: string
   name: string
   description: string
@@ -16,13 +15,13 @@ interface UpsellProduct {
   image: string
 }
 
-const UPSELL_PRODUCTS: UpsellProduct[] = [
+export const UPSELL_PRODUCTS_UK: UpsellProduct[] = [
   {
     id: "led-kit-uk",
     name: "Recessed LED Strip Kit",
     description: "LED lighting for your panels",
-    price: 25.00,
-    originalPrice: 42.00,
+    price: 109.00,
+    originalPrice: 180.00,
     image: LED_KIT_IMAGE,
   },
   {
@@ -48,16 +47,12 @@ export function UpsellProductsUk({
   selectedProducts = [],
   className = "" 
 }: UpsellProductsUkProps) {
-  const [localSelected, setLocalSelected] = useState<string[]>(selectedProducts)
-
   const handleToggle = (product: UpsellProduct) => {
-    const isSelected = localSelected.includes(product.id)
+    const isSelected = selectedProducts.includes(product.id)
     
     if (isSelected) {
-      setLocalSelected(prev => prev.filter(id => id !== product.id))
       onRemoveProduct?.(product.id)
     } else {
-      setLocalSelected(prev => [...prev, product.id])
       onAddProduct?.(product)
     }
   }
@@ -72,8 +67,8 @@ export function UpsellProductsUk({
 
       {/* Products */}
       <div className="space-y-3">
-        {UPSELL_PRODUCTS.map((product) => {
-          const isSelected = localSelected.includes(product.id)
+        {UPSELL_PRODUCTS_UK.map((product) => {
+          const isSelected = selectedProducts.includes(product.id)
           
           return (
             <button
