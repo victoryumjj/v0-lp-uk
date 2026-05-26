@@ -1,0 +1,133 @@
+"use client"
+
+import { useState } from "react"
+import { Plus, Check } from "lucide-react"
+import Image from "next/image"
+
+const LED_KIT_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg"
+const GLUE_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN04-jsHtrQ87vwg45Qyo5RrSkzrJbV2MXC.jpg"
+
+interface UpsellProduct {
+  id: string
+  name: string
+  description: string
+  price: number
+  originalPrice?: number
+  image: string
+}
+
+const UPSELL_PRODUCTS: UpsellProduct[] = [
+  {
+    id: "led-kit-fr",
+    name: "Kit Ruban LED Encastre",
+    description: "Eclairage LED pour vos panneaux",
+    price: 29.00,
+    originalPrice: 49.00,
+    image: LED_KIT_IMAGE,
+  },
+  {
+    id: "glue-kit-fr",
+    name: "Colle de Fixation Pro",
+    description: "Colle speciale pour panneaux acoustiques",
+    price: 14.90,
+    originalPrice: 24.90,
+    image: GLUE_IMAGE,
+  },
+]
+
+interface UpsellProductsFrProps {
+  onAddProduct?: (product: UpsellProduct) => void
+  onRemoveProduct?: (productId: string) => void
+  selectedProducts?: string[]
+  className?: string
+}
+
+export function UpsellProductsFr({ 
+  onAddProduct, 
+  onRemoveProduct, 
+  selectedProducts = [],
+  className = "" 
+}: UpsellProductsFrProps) {
+  const [localSelected, setLocalSelected] = useState<string[]>(selectedProducts)
+
+  const handleToggle = (product: UpsellProduct) => {
+    const isSelected = localSelected.includes(product.id)
+    
+    if (isSelected) {
+      setLocalSelected(prev => prev.filter(id => id !== product.id))
+      onRemoveProduct?.(product.id)
+    } else {
+      setLocalSelected(prev => [...prev, product.id])
+      onAddProduct?.(product)
+    }
+  }
+
+  return (
+    <div className={`rounded-xl border border-border bg-white p-4 ${className}`}>
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-3">
+        <Plus className="w-4 h-4 text-[#FF6B00]" />
+        <span className="text-sm font-semibold text-foreground">Emportez Aussi</span>
+      </div>
+
+      {/* Products */}
+      <div className="space-y-3">
+        {UPSELL_PRODUCTS.map((product) => {
+          const isSelected = localSelected.includes(product.id)
+          
+          return (
+            <button
+              key={product.id}
+              onClick={() => handleToggle(product)}
+              className={`w-full flex items-center gap-3 p-3 rounded-lg border-2 transition-all duration-200 text-left ${
+                isSelected 
+                  ? "border-[#FF6B00] bg-orange-50" 
+                  : "border-gray-200 bg-white hover:border-gray-300"
+              }`}
+            >
+              {/* Product Image */}
+              <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+
+              {/* Product Info */}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground leading-tight">
+                  {product.name}
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {product.description}
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm font-bold text-[#FF6B00]">
+                    €{product.price.toFixed(2)}
+                  </span>
+                  {product.originalPrice && (
+                    <span className="text-xs text-muted-foreground line-through">
+                      €{product.originalPrice.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Toggle Indicator */}
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
+                isSelected 
+                  ? "bg-[#FF6B00] text-white" 
+                  : "border-2 border-gray-300 bg-white"
+              }`}>
+                {isSelected && <Check className="w-4 h-4" />}
+              </div>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}

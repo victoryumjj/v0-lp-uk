@@ -11,7 +11,7 @@ import { trackInitiateCheckout as trackMetaInitiateCheckout, generateEventId } f
 import { trackInitiateCheckout as trackTikTokInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
 import { getFbpFbc } from "@/lib/fbp-fbc"
 import { getStoredUTMs } from "@/lib/utm-client"
-import { BonusProgressBar } from "@/components/bonus-progress-bar"
+import { UpsellProductsFr } from "@/components/upsell-products-fr"
 
 // Shape that comes from sessionStorage
 interface StoredOrder {
@@ -33,8 +33,6 @@ interface BonusData {
   bonusValue: number
 }
 
-const LED_KIT_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg"
-const LED_KIT_PRODUCT_URL = "/product/recessed-led-strip-lighting-fr"
 const CLEANER_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN04-jsHtrQ87vwg45Qyo5RrSkzrJbV2MXC.jpg"
 const PANEL_IMAGE = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panneu01-COvuniuy0UAMH2wAwPKmS9Tlev4Qrt.avif"
 
@@ -200,8 +198,8 @@ export default function CheckoutFrPage() {
           </div>
         </div>
 
-        {/* Bonus Progress Bar - Unlock at €100 */}
-        <BonusProgressBar currentTotal={totalEur} threshold={100} className="mb-4" />
+        {/* Upsell Products - Leve Também */}
+        <UpsellProductsFr className="mb-4" />
 
         {/* Order Summary Card */}
         <div className="rounded-xl bg-white border border-border shadow-sm p-5 mb-4">
@@ -227,33 +225,6 @@ export default function CheckoutFrPage() {
             </div>
             <p className="text-sm font-semibold flex-shrink-0">€{totalEur.toFixed(2)}</p>
           </div>
-
-          {/* LED kit bonus item — shown when total >= €100 */}
-          {totalEur >= 100 && (
-            <div className="flex items-center gap-3 mb-4 rounded-lg border border-dashed border-emerald-400 bg-emerald-50 px-3 py-2.5">
-              <a href={LED_KIT_PRODUCT_URL} target="_blank" rel="noopener noreferrer" className="relative w-16 h-16 rounded-lg overflow-hidden bg-white flex-shrink-0 block border border-emerald-200">
-                <Image
-                  src={LED_KIT_IMAGE}
-                  alt="Kit Ruban LED Encastré"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </a>
-              <div className="flex-1 min-w-0">
-                <a
-                  href={LED_KIT_PRODUCT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm font-medium leading-tight text-emerald-800 underline underline-offset-2 hover:text-emerald-600"
-                >
-                  Kit Ruban LED Encastré
-                </a>
-                <p className="text-xs text-emerald-700 mt-0.5">Bonus commande +€100, inclus gratuitement</p>
-              </div>
-              <p className="text-sm font-semibold flex-shrink-0 text-emerald-700 line-through opacity-60">€49,00</p>
-            </div>
-          )}
 
           {/* Bonus Items Section */}
           {bonusData && (
