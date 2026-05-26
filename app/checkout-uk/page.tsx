@@ -47,6 +47,7 @@ export default function CheckoutUKPage() {
   const [ready, setReady] = useState(false)
   const [orderQuantity, setOrderQuantity] = useState(1)
   const [selectedUpsells, setSelectedUpsells] = useState<string[]>([])
+  const [checkoutStarted, setCheckoutStarted] = useState(false)
 
   // Calculate upsell total
   const upsellTotal = selectedUpsells.reduce((sum, id) => {
@@ -174,6 +175,7 @@ export default function CheckoutUKPage() {
   const handleInitiateCheckout = async () => {
     if (initiated) return
     setInitiated(true)
+    setCheckoutStarted(true)
 
     const eventId = generateEventId("ic")
 
@@ -244,13 +246,15 @@ export default function CheckoutUKPage() {
           </div>
         </div>
 
-        {/* Upsell Products - Add These Too */}
-        <UpsellProductsUk 
-          className="mb-4" 
-          onAddProduct={handleAddUpsell}
-          onRemoveProduct={handleRemoveUpsell}
-          selectedProducts={selectedUpsells}
-        />
+        {/* Upsell Products - Add These Too (hidden after checkout started) */}
+        {!checkoutStarted && (
+          <UpsellProductsUk 
+            className="mb-4" 
+            onAddProduct={handleAddUpsell}
+            onRemoveProduct={handleRemoveUpsell}
+            selectedProducts={selectedUpsells}
+          />
+        )}
 
         {/* Order Summary Card */}
         <div className="rounded-xl bg-white border border-border shadow-sm p-5 mb-4">
