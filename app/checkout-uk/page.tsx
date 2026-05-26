@@ -11,7 +11,7 @@ import { trackInitiateCheckout as trackMetaInitiateCheckout, generateEventId } f
 import { trackInitiateCheckout as trackTikTokInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
 import { getFbpFbc } from "@/lib/fbp-fbc"
 import { getStoredUTMs } from "@/lib/utm-client"
-import { UpsellProductsUk } from "@/components/upsell-products-uk"
+import { UpsellProductsUk, UPSELL_PRODUCTS_UK, type UpsellProduct } from "@/components/upsell-products-uk"
 
 // Shape that comes from sessionStorage
 interface StoredOrder {
@@ -46,6 +46,22 @@ export default function CheckoutUKPage() {
   const [bonusData, setBonusData] = useState<BonusData | null>(null)
   const [ready, setReady] = useState(false)
   const [orderQuantity, setOrderQuantity] = useState(1)
+  const [selectedUpsells, setSelectedUpsells] = useState<string[]>([])
+
+  // Calculate upsell total
+  const upsellTotal = selectedUpsells.reduce((sum, id) => {
+    const product = UPSELL_PRODUCTS_UK.find(p => p.id === id)
+    return sum + (product?.price || 0)
+  }, 0)
+
+  // Handle upsell product selection
+  const handleAddUpsell = (product: UpsellProduct) => {
+    setSelectedUpsells(prev => [...prev, product.id])
+  }
+
+  const handleRemoveUpsell = (productId: string) => {
+    setSelectedUpsells(prev => prev.filter(id => id !== productId))
+  }
 
   useEffect(() => {
     // Scroll to top when page loads
@@ -99,9 +115,10 @@ export default function CheckoutUKPage() {
 
   if (!ready || !storedOrder) return null
 
-  // Calculate total based on editable quantity
+  // Calculate total based on editable quantity + upsells
   const unitPrice = storedOrder.price
-  const totalGBP = unitPrice * orderQuantity
+  const productTotal = unitPrice * orderQuantity
+  const totalGBP = productTotal + upsellTotal
   const isFreeShipping = totalGBP >= 80
   
   // Handler to update quantity
@@ -211,7 +228,12 @@ export default function CheckoutUKPage() {
         </div>
 
         {/* Upsell Products - Add These Too */}
-        <UpsellProductsUk className="mb-4" />
+        <UpsellProductsUk 
+          className="mb-4" 
+          onAddProduct={handleAddUpsell}
+          onRemoveProduct={handleRemoveUpsell}
+          selectedProducts={selectedUpsells}
+        />
 
         {/* Order Summary Card */}
         <div className="rounded-xl bg-white border border-border shadow-sm p-5 mb-4">
@@ -360,6 +382,24 @@ export default function CheckoutUKPage() {
           {/* Totals */}
           <div className="border-t border-border pt-3 space-y-2">
             <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">{storedOrder.name} x{orderQuantity}</span>
+              <span>£{productTotal.toFixed(2)}</span>
+            </div>
+            {selectedUpsells.length > 0 && (
+              <>
+                {selectedUpsells.map(id => {
+                  const product = UPSELL_PRODUCTS_UK.find(p => p.id === id)
+                  if (!product) return null
+                  return (
+                    <div key={id} className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">{product.name}</span>
+                      <span>£{product.price.toFixed(2)}</span>
+                    </div>
+                  )
+                })}
+              </>
+            )}
+            <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Shipping</span>
               <span className={isFreeShipping ? "text-green-600 font-semibold" : ""}>
                 {isFreeShipping ? "FREE" : "£7.00"}
@@ -371,7 +411,7 @@ export default function CheckoutUKPage() {
                 <span className="text-green-600 font-semibold">£0.00</span>
               </div>
             )}
-            <div className="flex justify-between font-semibold">
+            <div className="flex justify-between font-semibold pt-2 border-t border-border">
               <span>Total</span>
               <span className="text-lg">£{totalGBP.toFixed(2)}</span>
             </div>
