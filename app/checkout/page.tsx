@@ -5,7 +5,9 @@ import { TikTokCheckout } from "@/components/tiktok-checkout"
 export default function CheckoutPage() {
   return (
     <>
-      <TikTokCheckout />
+      <Suspense fallback={null}>
+        <TikTokCheckout />
+      </Suspense>
       <Suspense fallback={null}>
         <CheckoutContent />
       </Suspense>
