@@ -122,7 +122,7 @@ export function TikTokCheckout() {
       {/* TikTok Pixel Script */}
       <Script
         id="tiktok-pixel-checkout"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         onLoad={handleScriptLoad}
         dangerouslySetInnerHTML={{
           __html: `
