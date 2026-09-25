@@ -11,7 +11,9 @@ import { trackAddPaymentInfo, trackInitiateCheckout, formatCartForTikTok, storeP
 import { Button } from "@/components/ui/button"
 import { Loader2, AlertCircle, RefreshCw } from "lucide-react"
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_atio_STRIPE_PUBLISHABLE_KEY!,
+)
 
 interface CartItem {
   product: {
