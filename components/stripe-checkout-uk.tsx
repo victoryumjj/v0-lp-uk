@@ -19,7 +19,9 @@ interface BonusData {
   bonusValue: number
 }
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_atio_STRIPE_PUBLISHABLE_KEY!,
+)
 
 interface CartItem {
   product: {
