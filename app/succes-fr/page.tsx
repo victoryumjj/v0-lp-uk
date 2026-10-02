@@ -3,9 +3,9 @@ import SuccesFrClient from "./succes-fr-client"
 export default async function SuccesFrPage({
   searchParams,
 }: {
-  searchParams: Promise<{ session_id?: string }>
+  searchParams: Promise<{ paypal_order?: string }>
 }) {
   const params = await searchParams
-  const sessionId = params.session_id ?? null
-  return <SuccesFrClient sessionId={sessionId} />
+  const paypalOrderId = params.paypal_order ?? null
+  return <SuccesFrClient paypalOrderId={paypalOrderId} />
 }
