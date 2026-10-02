@@ -552,7 +552,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
         <ShoppingBag className="mr-2 h-4 w-4" />
         {product.currency === "BRL"
           ? `Comprar - R$${(displayPrice * quantity).toFixed(2)}`
-          : `Buy Now - £${displayPrice * quantity}`}
+          : `Buy Now - ${product.id === "prod_test_2eur" ? "€" : "£"}${displayPrice * quantity}`}
       </Button>
     </div>
   )
