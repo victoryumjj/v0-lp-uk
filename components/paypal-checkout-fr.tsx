@@ -28,6 +28,7 @@ const COPY: PayPalCheckoutCopy = {
   shippingMissing: "Veuillez indiquer une adresse de livraison pour finaliser la commande.",
   processing: "Confirmation du paiement...",
   cardButtonLabel: "Payer par carte bancaire",
+  cartUpdated: "Le total de votre commande a change. Veuillez choisir a nouveau votre moyen de paiement.",
 }
 
 interface PayPalCheckoutFrProps {

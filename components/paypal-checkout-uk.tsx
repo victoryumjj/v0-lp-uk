@@ -28,6 +28,7 @@ const COPY: PayPalCheckoutCopy = {
   shippingMissing: "Please provide a delivery address to complete your order.",
   processing: "Confirming your payment...",
   cardButtonLabel: "Pay with debit or credit card",
+  cartUpdated: "Your order total changed. Please choose your payment method again.",
 }
 
 interface PayPalCheckoutUKProps {

@@ -37,6 +37,7 @@ export interface PayPalCheckoutCopy {
   shippingMissing: string
   processing: string
   cardButtonLabel: string
+  cartUpdated: string
 }
 
 interface PayPalCheckoutProps {
@@ -49,6 +50,9 @@ interface PayPalCheckoutProps {
 }
 
 const CURRENCY: Record<PayPalMarket, string> = { UK: "GBP", FR: "EUR" }
+
+// PayPal web components render inline by default (they don't stretch): force full width
+const PAYPAL_BUTTON_STYLE = { display: "block", width: "100%", maxWidth: "100%" } as const
 const LOCALE: Record<PayPalMarket, string> = { UK: "en-GB", FR: "fr-FR" }
 
 // ─── SDK loader (one script per page) ───────────────────────────────────────
@@ -97,6 +101,11 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
   const itemsRef = useRef(items)
   itemsRef.current = items
 
+  // Cart signature: if the cart changes after a PayPal order was created, that order
+  // (and an open card form) holds the OLD total → discard it and start fresh.
+  const cartKey = JSON.stringify(items.map((i) => [i.product.id, i.quantity, unitPriceOf(i)]))
+  const orderCartKeyRef = useRef<string | null>(null)
+
   const paypalButtonRef = useRef<HTMLElement | null>(null)
   const cardButtonRef = useRef<HTMLElement | null>(null)
 
@@ -105,6 +114,7 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
     const current = itemsRef.current
     setError(null)
     setNotice(null)
+    orderCartKeyRef.current = JSON.stringify(current.map((i) => [i.product.id, i.quantity, unitPriceOf(i)]))
 
     // Keep the existing TikTok Purchase helper data (read on the success page)
     const totalValue = current.reduce((sum, i) => sum + unitPriceOf(i) * i.quantity, 0)
@@ -163,6 +173,18 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
     },
     [copy],
   )
+
+  // Quantity / upsell changed after the payment form was opened → rebuild the buttons
+  // so the next payment uses the new total (the old PayPal order is never captured).
+  useEffect(() => {
+    if (!orderCartKeyRef.current || orderCartKeyRef.current === cartKey || processing) return
+    orderCartKeyRef.current = null
+    setPaypalAvailable(false)
+    setCardAvailable(false)
+    setError(null)
+    setNotice(copy.cartUpdated)
+    setAttempt((a) => a + 1)
+  }, [cartKey, processing, copy.cartUpdated])
 
   // ── SDK init (when the payment step is shown) ─────────────────────────────
   useEffect(() => {
@@ -304,10 +326,10 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
   }
 
   return (
-    <div className="w-full space-y-3">
-      <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1">
-        <Lock className="h-3 w-3" />
-        {copy.securePayment}
+    <div className="w-full space-y-4">
+      <p className="text-[11px] leading-snug text-muted-foreground text-center flex items-center justify-center gap-1.5 px-2">
+        <Lock className="h-3 w-3 flex-shrink-0" />
+        <span>{copy.securePayment}</span>
       </p>
 
       {children}
@@ -335,7 +357,9 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         </div>
       )}
 
-      {notice && !error && <p className="text-xs text-center text-muted-foreground">{notice}</p>}
+      {notice && !error && (
+        <p className="rounded-lg bg-secondary/50 px-3 py-2 text-xs text-center text-muted-foreground">{notice}</p>
+      )}
 
       {processing && (
         <div className="flex items-center justify-center gap-2 py-3 text-sm text-muted-foreground">
@@ -350,10 +374,23 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         </div>
       )}
 
-      <div key={attempt} className={processing ? "pointer-events-none opacity-50 space-y-3" : "space-y-3"}>
-        <paypal-button ref={paypalButtonRef} type="pay" hidden={!paypalAvailable || undefined}></paypal-button>
-        <paypal-basic-card-container hidden={!cardAvailable || undefined}>
-          <paypal-basic-card-button ref={cardButtonRef} aria-label={copy.cardButtonLabel}></paypal-basic-card-button>
+      {/* Payment buttons: full width of the card, same width, even spacing */}
+      <div
+        key={attempt}
+        className={`flex w-full flex-col gap-2.5 ${processing ? "pointer-events-none opacity-50" : ""}`}
+      >
+        <paypal-button
+          ref={paypalButtonRef}
+          type="pay"
+          hidden={!paypalAvailable || undefined}
+          style={PAYPAL_BUTTON_STYLE}
+        ></paypal-button>
+        <paypal-basic-card-container hidden={!cardAvailable || undefined} style={PAYPAL_BUTTON_STYLE}>
+          <paypal-basic-card-button
+            ref={cardButtonRef}
+            aria-label={copy.cardButtonLabel}
+            style={PAYPAL_BUTTON_STYLE}
+          ></paypal-basic-card-button>
         </paypal-basic-card-container>
       </div>
     </div>
