@@ -127,7 +127,7 @@ export default function ClientProductPage({
   const t = isFrenchVersion ? frenchTranslations : englishTranslations
   
   // Determine currency symbol based on version
-  const currencySymbol = isFrenchVersion ? "€" : "£"
+  const currencySymbol = isFrenchVersion || product.id === "prod_test_2eur" ? "€" : "£"
   const { addItem, totalItems } = useCart()
   const { opacity, isVisible } = useScrollVisibility()
   const [showStickyCta, setShowStickyCta] = useState(false)

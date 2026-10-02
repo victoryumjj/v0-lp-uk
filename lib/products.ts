@@ -86,6 +86,24 @@ export const products: Product[] = [
     dimensions: "270cm W x 110cm H x 0.5cm D",
     material: "Premium Wood Veneer with Acoustic Felt Backing",
   },
+  // Test product (€2) to validate the live checkout. Hidden: reachable only via /product/test-product
+  {
+    id: "prod_test_2eur",
+    slug: "test-product",
+    name: "Test Product",
+    description: "Test product used to validate the payment flow.",
+    longDescription: "Test product used to validate the live checkout and the thank-you page. Not shipped.",
+    price: 2.0,
+    currency: "EUR",
+    category: "decor",
+    hidden: true,
+    noShipping: true,
+    images: [
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panneu01-COvuniuy0UAMH2wAwPKmS9Tlev4Qrt.avif",
+    ],
+    features: ["Test product", "Not shipped"],
+    inStock: true,
+  },
   // French version of Flexible Acoustic Panel (FR market)
   {
     id: "prod_U2rumuoWXebtgj",
