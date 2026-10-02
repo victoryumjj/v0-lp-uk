@@ -62,6 +62,35 @@ async function getAccessToken(): Promise<string> {
   return json.access_token
 }
 
+/**
+ * Browser-safe SDK token bound to the given domain (Web SDK v6 `clientToken`).
+ * Init via a domain-bound token avoids eligibility failures that occur with bare
+ * clientId init on live apps whose domain isn't registered in the PayPal dashboard.
+ */
+export async function generateClientToken(domain: string): Promise<string> {
+  const { clientId, secret } = getCredentials()
+  const body = new URLSearchParams({
+    grant_type: "client_credentials",
+    response_type: "client_token",
+    intent: "sdk_init",
+  })
+  body.append("domains[]", domain)
+
+  const res = await fetch(`${getApiBase()}/v1/oauth2/token`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${clientId}:${secret}`).toString("base64")}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: body.toString(),
+    cache: "no-store",
+  })
+
+  if (!res.ok) throw new PayPalApiError(`PayPal client token failed (${res.status})`, res.status)
+  const json = (await res.json()) as { access_token: string }
+  return json.access_token
+}
+
 // ─── Errors ──────────────────────────────────────────────────────────────────
 export class PayPalApiError extends Error {
   status: number

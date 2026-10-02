@@ -197,11 +197,11 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         setSdkReady(false)
         const cfgRes = await fetch("/api/paypal/config")
         if (!cfgRes.ok) throw new Error("config")
-        const { clientId, env } = await cfgRes.json()
+        const { clientId, clientToken, env } = await cfgRes.json()
 
         const paypal = await loadPayPalSdk(env)
         const sdk = await paypal.createInstance({
-          clientId,
+          ...(clientToken ? { clientToken } : { clientId }),
           components: ["paypal-payments", "paypal-guest-payments"],
           pageType: "checkout",
           locale: LOCALE[market],
