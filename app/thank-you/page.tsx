@@ -1,13 +1,7 @@
-import ThankYouClient from "./thank-you-client"
+import { redirect } from "next/navigation"
 
-export default async function ThankYouPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ session_id?: string }>
-}) {
-  // ✓ FIXED: In Next.js 16, searchParams is a Promise and must be awaited
-  const params = await searchParams
-  const sessionId = params.session_id ?? null
-  
-  return <ThankYouClient sessionId={sessionId} />
+// This page only served the old Stripe checkout. Payments now go through PayPal
+// (/success-uk and /succes-fr), so old links are sent to the home page.
+export default function ThankYouPage() {
+  redirect("/")
 }

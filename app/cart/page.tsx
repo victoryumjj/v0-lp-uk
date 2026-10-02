@@ -5,8 +5,7 @@ import { ArrowLeft, ArrowRight, ShoppingBag, AlertTriangle } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { CartItem } from "@/components/cart-item"
 import { Button } from "@/components/ui/button"
-import { PaymentRequestButton } from "@/components/payment-request-button"
-import { StripeCheckoutFr } from "@/components/stripe-checkout-fr"
+import { PayPalCheckoutFr } from "@/components/paypal-checkout-fr"
 import { formatPrice } from "@/lib/price"
 import { trackInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
 import { getFbpFbc } from "@/lib/fbp-fbc"
@@ -173,42 +172,16 @@ export default function CartPage() {
               </div>
 
               <div className="mt-6 space-y-4">
-                <PaymentRequestButton
-                  amount={totalPrice}
-                  items={items.map((item) => ({
-                    name: item.product.name,
-                    quantity: item.quantity,
-                  }))}
-                  currency={currencyCode}
-                  onSuccess={(paymentIntent) => {
-                    console.log("[v0] Payment success:", paymentIntent)
-                    window.location.href = `/succes-fr?session_id=${paymentIntent.id}`
-                  }}
-                  onError={(error) => {
-                    console.error("[v0] Payment error:", error)
-                    alert(`Echec du paiement: ${error}`)
-                  }}
-                />
-
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-border"></div>
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-secondary px-2 text-muted-foreground">Ou</span>
-                  </div>
-                </div>
-
                 {hasMixedCurrencies ? (
                   <div className="text-center text-sm text-red-600 font-semibold p-4 bg-red-50 rounded">
                     Veuillez vider votre panier pour proceder au paiement
                   </div>
                 ) : (
-                  <StripeCheckoutFr items={items} onInitiateCheckout={handleInitiateCheckout} />
+                  <PayPalCheckoutFr items={items} onInitiateCheckout={handleInitiateCheckout} />
                 )}
               </div>
 
-              <p className="mt-4 text-center text-xs text-muted-foreground">Paiement securise par Stripe</p>
+              <p className="mt-4 text-center text-xs text-muted-foreground">Paiement securise par PayPal</p>
             </div>
           </div>
         </div>

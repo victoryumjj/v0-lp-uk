@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle, Package, RotateCcw, ShoppingCart, Star } from "lucide-react"
-import { trackPurchase, identifyUser, trackEventWithUser } from "@/lib/tiktok-events"
-import { updateMetaUserData } from "@/lib/meta-pixel"
 import { useCart } from "@/lib/cart-context"
+import { useConfirmedPayPalPurchase } from "@/lib/paypal/use-confirmed-purchase"
 
 declare global {
   interface Window {
@@ -25,125 +24,31 @@ const LED_UPSELL = {
   image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg",
 }
 
-export default function SuccessUKClient({ sessionId }: { sessionId: string | null }) {
-  const firedRef = useRef(false)
+export default function SuccessUKClient({ paypalOrderId = null }: { paypalOrderId?: string | null }) {
   const { clearCart } = useCart()
   const [purchaseData, setPurchaseData] = useState<any>(null)
 
-  useEffect(() => {
-    if (!sessionId || firedRef.current) return
-    firedRef.current = true
-    clearCart()
+  // PayPal: Purchase fires only after the server confirms the payment (status === "paid")
+  const paypalSummary = useConfirmedPayPalPurchase(paypalOrderId, {
+    metaPixelId: "1200200552118123",
+    googleAdsSendTo: "AW-16953354830/_coaCO30w_8bEM7U_pM_",
+  })
 
-    // Clear pre-checkout data after success
+  const ppClearedRef = useRef(false)
+  useEffect(() => {
+    if (!paypalOrderId || ppClearedRef.current) return
+    ppClearedRef.current = true
+    clearCart()
     try {
       sessionStorage.removeItem("checkout_order_uk")
       sessionStorage.removeItem("checkout_bonus_uk")
-    } catch (e) {
-      // ignore
-    }
+    } catch {}
+  }, [paypalOrderId, clearCart])
 
-    ;(async () => {
-      try {
-        // 1) Fetch session details
-        let sessionData: any = null
-        const sessionRes = await fetch(`/api/stripe/session?session_id=${sessionId}`)
-        if (sessionRes.ok) {
-          sessionData = await sessionRes.json()
-          setPurchaseData(sessionData)
-          
-          // Update Meta Pixel with user data for Advanced Matching (immediate + future page loads)
-          const customerDetailsMeta = sessionData?.customer_details
-          if (customerDetailsMeta) {
-            let firstName: string | undefined
-            let lastName: string | undefined
-            if (customerDetailsMeta.name) {
-              const nameParts = customerDetailsMeta.name.trim().split(' ')
-              if (nameParts.length >= 1) firstName = nameParts[0]
-              if (nameParts.length >= 2) lastName = nameParts[nameParts.length - 1]
-            }
-            
-            // This updates the pixel immediately AND saves to localStorage for future visits
-            updateMetaUserData({
-              email: customerDetailsMeta.email || undefined,
-              phone: customerDetailsMeta.phone || undefined,
-              firstName,
-              lastName,
-              externalId: sessionId || undefined,
-            })
-          }
-        }
+  useEffect(() => {
+    if (paypalSummary) setPurchaseData(paypalSummary)
+  }, [paypalSummary])
 
-        // 2) Meta Purchase - Dispara via API server-side (Conversions API)
-        // IMPORTANTE: O webhook do Stripe pode não estar configurado, então disparamos via API
-        const sessionValue = sessionData ? (sessionData.amount_total || 0) / 100 : 0
-        const sessionCurrency = "GBP"
-        const purchaseEventId = sessionData?.metadata?.purchase_event_id || `purchase_${sessionId}`
-        
-        // Chamar API server-side para enviar Purchase via Meta Conversions API
-        try {
-          console.log("[v0] Disparando Purchase via API server-side...")
-          const purchaseRes = await fetch("/api/meta/purchase-from-session", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ session_id: sessionId }),
-          })
-          const purchaseResult = await purchaseRes.json()
-          console.log("[v0] Purchase API response:", purchaseResult)
-        } catch (purchaseErr) {
-          console.error("[v0] Erro ao disparar Purchase via API:", purchaseErr)
-        }
-        
-        // 3) Meta Pixel Purchase client-side - Para deduplicação com o server
-        // Usa o mesmo event_id que foi enviado no metadata do checkout
-        const purchaseDataMeta = { value: sessionValue, currency: sessionCurrency, content_type: "product", order_id: sessionId }
-
-        if (typeof window !== "undefined" && window.fbq) {
-          // Dispara APENAS para o pixel UK2 1200200552118123
-          window.fbq("trackSingle", "1200200552118123", "Purchase", purchaseDataMeta, { eventID: purchaseEventId })
-        }
-
-        // 4) TikTok Purchase with Advanced Matching
-        // Identify user with email/phone from Stripe BEFORE tracking Purchase
-        const customerDetails = sessionData?.customer_details
-        if (customerDetails) {
-          await identifyUser({
-            email: customerDetails.email || undefined,
-            phone_number: customerDetails.phone || undefined,
-            external_id: sessionId || undefined,
-          })
-        }
-        
-        let tiktokData: any = null
-        try {
-          const stored = sessionStorage.getItem("tiktok_purchase_data")
-          if (stored) {
-            tiktokData = JSON.parse(stored)
-            sessionStorage.removeItem("tiktok_purchase_data")
-          }
-        } catch {}
-        
-        // Track Purchase event (user already identified above)
-        await trackPurchase({
-          contents: tiktokData?.contents || [],
-          value: tiktokData?.value || sessionValue,
-          currency: "GBP",
-          status: "completed",
-          description: "Purchase completed",
-        }).catch(() => {})
-
-        // 5) Google Ads conversion
-        if (typeof window !== "undefined" && window.gtag) {
-          window.gtag("event", "conversion", {
-            send_to: "AW-16953354830/_coaCO30w_8bEM7U_pM_",
-            value: sessionValue,
-            currency: "GBP",
-            transaction_id: sessionId,
-          })
-        }
-      } catch {}
-    })()
-  }, [sessionId, clearCart])
 
   return (
     <div className="min-h-screen bg-[#f9f7f4] py-10 px-4">
