@@ -218,11 +218,19 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
           onWarn: (warn: unknown) => console.warn("[PayPal] SDK warning:", warn),
         }
 
-        const eligible = await sdk.findEligibleMethods({ currencyCode: currency })
+        // Eligibility lookup can fail on live accounts (ERR_INIT_FIND_ELIGIBLE_METHODS)
+        // even though orders work, so treat a failed lookup as "PayPal is available".
+        let paypalEligible = true
+        try {
+          const eligible = await sdk.findEligibleMethods({ currencyCode: currency })
+          paypalEligible = eligible.isEligible("paypal")
+        } catch (err) {
+          console.warn("[PayPal] Eligibility check failed, showing PayPal anyway:", err)
+        }
         if (cancelled) return
 
         // PayPal wallet button
-        if (eligible.isEligible("paypal")) {
+        if (paypalEligible) {
           const session = sdk.createPayPalOneTimePaymentSession(sessionOptions)
           setPaypalAvailable(true)
           const onClick = async () => {
