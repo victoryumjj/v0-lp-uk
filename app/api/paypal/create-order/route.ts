@@ -12,34 +12,6 @@ import {
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 
-const clean = (v: unknown, max = 300) => (typeof v === "string" ? v.trim().slice(0, max) : "")
-
-/**
- * Optional delivery address sent by Apple Pay / Google Pay (the PayPal window collects
- * its own). Only accepted for the market's delivery countries.
- */
-function readShipping(raw: any, allowedCountries: string[]) {
-  if (!raw || typeof raw !== "object") return null
-  const country = clean(raw.countryCode, 2).toUpperCase()
-  const line1 = clean(raw.addressLine1)
-  const city = clean(raw.city, 120)
-  const postalCode = clean(raw.postalCode, 60)
-  if (!allowedCountries.includes(country)) throw new CheckoutValidationError("SHIPPING_COUNTRY_NOT_SUPPORTED")
-  if (!line1 || !city || !postalCode) throw new CheckoutValidationError("SHIPPING_ADDRESS_INVALID")
-  return {
-    type: "SHIPPING",
-    name: { full_name: clean(raw.fullName, 300) || "Customer" },
-    address: {
-      address_line_1: line1,
-      address_line_2: clean(raw.addressLine2) || undefined,
-      admin_area_2: city,
-      admin_area_1: clean(raw.region, 120) || undefined,
-      postal_code: postalCode,
-      country_code: country,
-    },
-  }
-}
-
 function readUtms(request: NextRequest): Record<string, string> {
   try {
     const raw = request.cookies.get("_utm_data")?.value
@@ -76,16 +48,7 @@ export async function POST(request: NextRequest) {
     throw err
   }
 
-  const { currency, shippingCountries } = MARKETS[market]
-
-  let shipping: ReturnType<typeof readShipping> = null
-  try {
-    shipping = readShipping(body?.shipping, shippingCountries)
-  } catch (err) {
-    const code = err instanceof Error ? err.message : "SHIPPING_ADDRESS_INVALID"
-    console.warn("[PayPal] create-order rejected:", { market, reason: code })
-    return NextResponse.json({ error: code }, { status: 400 })
-  }
+  const { currency } = MARKETS[market]
   const total = centsToValue(totalCents(lines))
   const utms = readUtms(request)
 
@@ -116,7 +79,6 @@ export async function POST(request: NextRequest) {
           unit_amount: { currency_code: currency, value: centsToValue(l.unitCents) },
           category: "PHYSICAL_GOODS",
         })),
-        ...(shipping ? { shipping } : {}),
       },
     ],
   }
