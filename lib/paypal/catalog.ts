@@ -24,7 +24,7 @@ export const MARKETS: Record<
 > = {
   UK: {
     currency: "GBP",
-    shippingCountries: ["GB", "IE", "GI"],
+    shippingCountries: ["GB"], // United Kingdom only
     successPath: "/success-uk",
     locale: "en-GB",
   },
