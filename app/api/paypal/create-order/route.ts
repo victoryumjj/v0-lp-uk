@@ -40,25 +40,6 @@ function readShipping(raw: any, allowedCountries: string[]) {
   }
 }
 
-/** Return/cancel URLs for the redirect flow — only accepted on this site's own host. */
-function readReturnUrls(request: NextRequest, raw: unknown) {
-  if (typeof raw !== "string" || raw.length > 2000) return null
-  try {
-    const url = new URL(raw)
-    const host = request.headers.get("x-forwarded-host") || request.headers.get("host")
-    if (!host || url.host !== host || !/^https?:$/.test(url.protocol)) return null
-    url.hash = ""
-    for (const key of ["paypal_return", "paypal_cancel", "token", "PayerID"]) url.searchParams.delete(key)
-    const returnUrl = new URL(url)
-    returnUrl.searchParams.set("paypal_return", "1")
-    const cancelUrl = new URL(url)
-    cancelUrl.searchParams.set("paypal_cancel", "1")
-    return { returnUrl: returnUrl.toString(), cancelUrl: cancelUrl.toString() }
-  } catch {
-    return null
-  }
-}
-
 function readUtms(request: NextRequest): Record<string, string> {
   try {
     const raw = request.cookies.get("_utm_data")?.value
@@ -107,7 +88,6 @@ export async function POST(request: NextRequest) {
   }
   const total = centsToValue(totalCents(lines))
   const utms = readUtms(request)
-  const returnUrls = readReturnUrls(request, body?.returnUrl)
 
   // custom_id (max 127 chars) keeps a compact attribution trail visible in PayPal
   const customId = [market, utms.utm_source, utms.utm_campaign, utms.utm_content]
@@ -139,22 +119,6 @@ export async function POST(request: NextRequest) {
         ...(shipping ? { shipping } : {}),
       },
     ],
-    // Same-tab redirect flow: PayPal sends the buyer back to the checkout page
-    ...(returnUrls
-      ? {
-          payment_source: {
-            paypal: {
-              experience_context: {
-                return_url: returnUrls.returnUrl,
-                cancel_url: returnUrls.cancelUrl,
-                user_action: "PAY_NOW",
-                shipping_preference: "GET_FROM_FILE",
-                locale: market === "FR" ? "fr-FR" : "en-GB",
-              },
-            },
-          },
-        }
-      : {}),
   }
 
   try {

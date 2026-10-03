@@ -126,7 +126,7 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
   }, [])
 
   // ── Server calls ──────────────────────────────────────────────────────────
-  const createOrder = useCallback(async (shipping?: WalletShipping, sameTabRedirect = false): Promise<{ orderId: string }> => {
+  const createOrder = useCallback(async (shipping?: WalletShipping): Promise<{ orderId: string }> => {
     const current = itemsRef.current
     setError(null)
     setNotice(null)
@@ -145,7 +145,6 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         market,
         items: current.map((i) => ({ id: i.product.id, quantity: i.quantity, unitPrice: unitPriceOf(i) })),
         ...(shipping ? { shipping } : {}),
-        ...(sameTabRedirect ? { returnUrl: window.location.href } : {}),
       }),
     })
     const data = await res.json().catch(() => ({}))
@@ -203,28 +202,6 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
     },
     [captureOnServer],
   )
-
-  // Buyer came back from the same-tab PayPal / card page → capture on the server
-  const returnHandledRef = useRef(false)
-  useEffect(() => {
-    if (returnHandledRef.current) return
-    const url = new URL(window.location.href)
-    const returned = url.searchParams.get("paypal_return") === "1"
-    const cancelledReturn = url.searchParams.get("paypal_cancel") === "1"
-    if (!returned && !cancelledReturn) return
-    returnHandledRef.current = true
-
-    const orderId = url.searchParams.get("token")
-    for (const key of ["paypal_return", "paypal_cancel", "token", "PayerID"]) url.searchParams.delete(key)
-    window.history.replaceState(null, "", url.toString())
-    setShowCheckout(true)
-
-    if (cancelledReturn || !orderId) {
-      setNotice(copy.cancelled)
-      return
-    }
-    void onApprove({ orderId })
-  }, [onApprove, copy.cancelled])
 
   // Quantity / upsell changed after the payment form was opened → rebuild the buttons
   // so the next payment uses the new total (the old PayPal order is never captured).
@@ -293,33 +270,18 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         }
         if (cancelled) return
 
-        // PayPal / card pages open in this same tab (no popup) and come back to this page
-        // Guest card checkout only supports "auto"; with targetElement the card form renders on this page
-        const startSameTab = async (session: any, label: string, targetElement?: HTMLElement | null) => {
-          const isCard = !!targetElement
-          try {
-            // Do not await createOrder() before start(): keeps the browser's user activation
-            const result = await session.start(
-              isCard
-                ? { presentationMode: "auto", targetElement }
-                : { presentationMode: "redirect", autoRedirect: { enabled: false } },
-              createOrder(undefined, !isCard),
-            )
-            if (result?.redirectURL) {
-              setProcessing(true)
-              window.location.assign(result.redirectURL)
-            }
-          } catch (err) {
-            console.error(label, err)
-            setProcessing(false)
-          }
-        }
-
         // PayPal wallet button
         if (paypalEligible) {
           const session = sdk.createPayPalOneTimePaymentSession(sessionOptions)
           setPaypalAvailable(true)
-          const onClick = () => startSameTab(session, "[PayPal] start error:")
+          const onClick = async () => {
+            try {
+              // Do not await createOrder() before start(): keeps the browser's user activation
+              await session.start({ presentationMode: "auto" }, createOrder())
+            } catch (err) {
+              console.error("[PayPal] start error:", err)
+            }
+          }
           const el = paypalButtonRef.current
           el?.addEventListener("click", onClick)
           cleanups.push(() => el?.removeEventListener("click", onClick))
@@ -330,7 +292,13 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
           const guestSession = await sdk.createPayPalGuestOneTimePaymentSession(sessionOptions)
           if (cancelled) return
           setCardAvailable(true)
-          const onCardClick = () => startSameTab(guestSession, "[PayPal] card start error:", cardButtonRef.current)
+          const onCardClick = async () => {
+            try {
+              await guestSession.start({ presentationMode: "auto" }, createOrder())
+            } catch (err) {
+              console.error("[PayPal] card start error:", err)
+            }
+          }
           const cardEl = cardButtonRef.current
           cardEl?.addEventListener("click", onCardClick)
           cleanups.push(() => cardEl?.removeEventListener("click", onCardClick))
