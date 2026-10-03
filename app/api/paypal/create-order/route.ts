@@ -90,6 +90,13 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     const info = err instanceof PayPalApiError ? { status: err.status, issue: err.issue, debugId: err.debugId } : String(err)
     console.error("[PayPal] create-order failed:", info)
-    return NextResponse.json({ error: "Could not start payment. Please try again." }, { status: 502 })
+    // The PayPal error code (no secrets) is returned so the cause is visible on screen
+    const code =
+      err instanceof PayPalApiError ? err.issue || `HTTP_${err.status}` : "NETWORK_ERROR"
+    const ref = err instanceof PayPalApiError ? err.debugId : undefined
+    return NextResponse.json(
+      { error: "Could not start payment. Please try again.", code, ref },
+      { status: 502 },
+    )
   }
 }

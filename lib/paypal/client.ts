@@ -53,8 +53,16 @@ async function getAccessToken(): Promise<string> {
   })
 
   if (!res.ok) {
-    // Do not log the response body: it may echo credentials-related info
-    throw new PayPalApiError(`PayPal auth failed (${res.status})`, res.status)
+    // Only the OAuth error code is read (e.g. "invalid_client"); never the full body
+    let oauthError = ""
+    try {
+      oauthError = String((await res.json())?.error || "")
+    } catch {}
+    throw new PayPalApiError(
+      `PayPal auth failed (${res.status})`,
+      res.status,
+      `AUTH_FAILED${oauthError ? `_${oauthError.toUpperCase()}` : ""}`,
+    )
   }
 
   const json = (await res.json()) as { access_token: string; expires_in: number }
