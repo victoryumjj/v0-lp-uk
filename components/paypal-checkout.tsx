@@ -132,7 +132,9 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
     })
     const data = await res.json().catch(() => ({}))
     if (!res.ok || !data.orderId) {
-      const message = data?.error || copy.genericError
+      const message = data?.code
+        ? `${data?.error || copy.genericError} (${data.code}${data?.ref ? ` · ref ${data.ref}` : ""})`
+        : data?.error || copy.genericError
       setError(message)
       throw new Error(message)
     }
