@@ -24,7 +24,7 @@ const COPY: PayPalCheckoutCopy = {
   genericError: "We couldn't process the payment. Please try again.",
   cancelled: "Payment cancelled. You can try again whenever you're ready.",
   declined: "Your payment method was declined. Please try another card or PayPal.",
-  shippingNotSupported: "Sorry, we only deliver to the United Kingdom, Ireland and Gibraltar.",
+  shippingNotSupported: "Sorry, we only deliver to the United Kingdom.",
   shippingMissing: "Please provide a delivery address to complete your order.",
   processing: "Confirming your payment...",
   cardButtonLabel: "Pay with debit or credit card",
