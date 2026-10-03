@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { AlertCircle, Loader2, Lock, RefreshCw } from "lucide-react"
 import { formatCartForTikTok, storePurchaseData, trackInitiateCheckout } from "@/lib/tiktok-events"
+import { describeError, setupWallets, type CaptureResult, type WalletShipping } from "@/components/paypal-wallets"
 
 /**
  * PayPal checkout (JavaScript SDK v6).
@@ -55,6 +56,12 @@ const CURRENCY: Record<PayPalMarket, string> = { UK: "GBP", FR: "EUR" }
 const PAYPAL_BUTTON_STYLE = { display: "block", width: "100%", maxWidth: "100%" } as const
 const LOCALE: Record<PayPalMarket, string> = { UK: "en-GB", FR: "fr-FR" }
 
+// Delivery countries accepted inside the PayPal window (the server re-checks before capture)
+const SHIPPING_COUNTRIES: Record<PayPalMarket, string[]> = {
+  UK: ["GB"],
+  FR: ["FR", "BE", "CH", "LU", "MC", "DE", "NL", "ES", "IT", "PT", "AT", "IE"],
+}
+
 // ─── SDK loader (one script per page) ───────────────────────────────────────
 let sdkPromise: Promise<any> | null = null
 
@@ -93,7 +100,22 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
   const [notice, setNotice] = useState<string | null>(null)
   const [cardAvailable, setCardAvailable] = useState(false)
   const [paypalAvailable, setPaypalAvailable] = useState(false)
+  const [applePayAvailable, setApplePayAvailable] = useState(false)
+  const [googlePayAvailable, setGooglePayAvailable] = useState(false)
   const [attempt, setAttempt] = useState(0)
+
+  // On-screen diagnostics: add ?pp_debug=1 to the checkout URL (works on phones, no console needed)
+  const [debugEnabled, setDebugEnabled] = useState(false)
+  const [debugLines, setDebugLines] = useState<string[]>([])
+  useEffect(() => {
+    try {
+      setDebugEnabled(new URLSearchParams(window.location.search).has("pp_debug"))
+    } catch {}
+  }, [])
+  const addDebug = useCallback((msg: string) => {
+    console.info("[PayPal debug]", msg)
+    setDebugLines((lines) => [...lines.slice(-40), `${new Date().toISOString().slice(11, 19)} ${msg}`])
+  }, [])
 
   const currency = CURRENCY[market]
 
@@ -108,9 +130,16 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
 
   const paypalButtonRef = useRef<HTMLElement | null>(null)
   const cardButtonRef = useRef<HTMLElement | null>(null)
+  const applePayRef = useRef<HTMLDivElement | null>(null)
+  const googlePayRef = useRef<HTMLDivElement | null>(null)
+
+  const getTotal = useCallback(() => {
+    const cents = itemsRef.current.reduce((sum, i) => sum + Math.round(unitPriceOf(i) * 100) * i.quantity, 0)
+    return (cents / 100).toFixed(2)
+  }, [])
 
   // ── Server calls ──────────────────────────────────────────────────────────
-  const createOrder = useCallback(async (): Promise<{ orderId: string }> => {
+  const createOrder = useCallback(async (shipping?: WalletShipping): Promise<{ orderId: string }> => {
     const current = itemsRef.current
     setError(null)
     setNotice(null)
@@ -128,36 +157,36 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
       body: JSON.stringify({
         market,
         items: current.map((i) => ({ id: i.product.id, quantity: i.quantity, unitPrice: unitPriceOf(i) })),
+        ...(shipping ? { shipping } : {}),
       }),
     })
     const data = await res.json().catch(() => ({}))
     if (!res.ok || !data.orderId) {
-      const message = data?.code
-        ? `${data?.error || copy.genericError} (${data.code}${data?.ref ? ` · ref ${data.ref}` : ""})`
-        : data?.error || copy.genericError
+      const message =
+        data?.error === "SHIPPING_COUNTRY_NOT_SUPPORTED"
+          ? copy.shippingNotSupported
+          : data?.error === "SHIPPING_ADDRESS_INVALID"
+            ? copy.shippingMissing
+            : data?.code
+              ? `${data?.error || copy.genericError} (${data.code}${data?.ref ? ` · ref ${data.ref}` : ""})`
+              : data?.error || copy.genericError
       setError(message)
       throw new Error(message)
     }
     return { orderId: data.orderId }
-  }, [market, currency, copy.genericError])
+  }, [market, currency, copy.genericError, copy.shippingNotSupported, copy.shippingMissing])
 
-  const onApprove = useCallback(
-    async (data: { orderId: string }) => {
-      setProcessing(true)
-      setError(null)
+  // Server confirms + captures; returns where to go next (success page) or an error message
+  const captureOnServer = useCallback(
+    async (orderId: string): Promise<CaptureResult> => {
       try {
         const res = await fetch("/api/paypal/capture-order", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ orderId: data.orderId, pageUrl: window.location.href }),
+          body: JSON.stringify({ orderId, pageUrl: window.location.href }),
         })
         const result = await res.json().catch(() => ({}))
-
-        if (result.redirectUrl) {
-          window.location.assign(result.redirectUrl)
-          return
-        }
-
+        if (result.redirectUrl) return { redirectUrl: result.redirectUrl, message: null }
         const message =
           result.errorCode === "INSTRUMENT_DECLINED"
             ? copy.declined
@@ -166,14 +195,27 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
               : result.errorCode === "SHIPPING_ADDRESS_MISSING"
                 ? copy.shippingMissing
                 : copy.genericError
-        setError(message)
+        return { redirectUrl: null, message }
       } catch {
-        setError(copy.genericError)
-      } finally {
-        setProcessing(false)
+        return { redirectUrl: null, message: copy.genericError }
       }
     },
     [copy],
+  )
+
+  const onApprove = useCallback(
+    async (data: { orderId: string }) => {
+      setProcessing(true)
+      setError(null)
+      const result = await captureOnServer(data.orderId)
+      if (result.redirectUrl) {
+        window.location.assign(result.redirectUrl)
+        return
+      }
+      setError(result.message)
+      setProcessing(false)
+    },
+    [captureOnServer],
   )
 
   // Quantity / upsell changed after the payment form was opened → rebuild the buttons
@@ -183,6 +225,8 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
     orderCartKeyRef.current = null
     setPaypalAvailable(false)
     setCardAvailable(false)
+    setApplePayAvailable(false)
+    setGooglePayAvailable(false)
     setError(null)
     setNotice(copy.cartUpdated)
     setAttempt((a) => a + 1)
@@ -200,6 +244,7 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         const cfgRes = await fetch("/api/paypal/config")
         if (!cfgRes.ok) throw new Error("config")
         const { clientId, clientToken, env } = await cfgRes.json()
+        addDebug(`config: env=${env} clientToken=${clientToken ? "yes" : "no"} host=${window.location.host}`)
 
         const paypal = await loadPayPalSdk(env)
         const sdk = await paypal.createInstance({
@@ -218,6 +263,16 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
             setError(copy.genericError)
           },
           onWarn: (warn: unknown) => console.warn("[PayPal] SDK warning:", warn),
+          // Blocks delivery addresses outside the allowed countries directly in the PayPal form
+          onShippingAddressChange: async (data: {
+            errors?: Record<string, string>
+            shippingAddress?: { countryCode?: string }
+          }) => {
+            const country = data?.shippingAddress?.countryCode
+            if (!country || !SHIPPING_COUNTRIES[market].includes(country)) {
+              throw new Error(data?.errors?.COUNTRY_ERROR || copy.shippingNotSupported)
+            }
+          },
         }
 
         // Eligibility lookup can fail on live accounts (ERR_INIT_FIND_ELIGIBLE_METHODS)
@@ -228,6 +283,7 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
           paypalEligible = eligible.isEligible("paypal")
         } catch (err) {
           console.warn("[PayPal] Eligibility check failed, showing PayPal anyway:", err)
+          addDebug(`paypal: findEligibleMethods FAILED → ${describeError(err)}`)
         }
         if (cancelled) return
 
@@ -268,6 +324,35 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         }
 
         setSdkReady(true)
+
+        // Apple Pay / Google Pay: only shown when PayPal + the device support them
+        setupWallets({
+          paypal,
+          clientId,
+          clientToken,
+          env,
+          locale: LOCALE[market],
+          currency,
+          allowedCountries: SHIPPING_COUNTRIES[market],
+          messages: {
+            shippingNotSupported: copy.shippingNotSupported,
+            genericError: copy.genericError,
+            declined: copy.declined,
+            cancelled: copy.cancelled,
+          },
+          getTotal,
+          createOrder: (shipping) => createOrder(shipping),
+          captureOnServer,
+          appleContainer: applePayRef.current,
+          googleContainer: googlePayRef.current,
+          onAppleAvailable: () => !cancelled && setApplePayAvailable(true),
+          onGoogleAvailable: () => !cancelled && setGooglePayAvailable(true),
+          setProcessing,
+          setError,
+          setNotice,
+          isCancelled: () => cancelled,
+          debug: addDebug,
+        }).catch((err) => console.warn("[PayPal] Wallets not available:", err))
       } catch (err) {
         console.error("[PayPal] init failed:", err)
         if (!cancelled) setError(copy.genericError)
@@ -278,7 +363,7 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
       cancelled = true
       cleanups.forEach((fn) => fn())
     }
-  }, [showCheckout, attempt, market, currency, createOrder, onApprove, copy])
+  }, [showCheckout, attempt, market, currency, createOrder, onApprove, captureOnServer, getTotal, copy, addDebug])
 
   // ── Start button (same as before) ─────────────────────────────────────────
   const handleStartCheckout = async () => {
@@ -310,6 +395,8 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
     setNotice(null)
     setPaypalAvailable(false)
     setCardAvailable(false)
+    setApplePayAvailable(false)
+    setGooglePayAvailable(false)
     setAttempt((a) => a + 1)
   }
 
@@ -389,6 +476,9 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
         key={attempt}
         className={`flex w-full flex-col gap-2.5 ${processing ? "pointer-events-none opacity-50" : ""}`}
       >
+        {/* Apple Pay / Google Pay (filled in by components/paypal-wallets.ts when eligible) */}
+        <div ref={applePayRef} hidden={!applePayAvailable} style={{ width: "100%", minHeight: 48 }} />
+        <div ref={googlePayRef} hidden={!googlePayAvailable} style={{ width: "100%", height: 48 }} />
         <paypal-button
           ref={paypalButtonRef}
           type="pay"
@@ -403,6 +493,11 @@ export function PayPalCheckout({ market, items, onInitiateCheckout, copy, childr
           ></paypal-basic-card-button>
         </paypal-basic-card-container>
       </div>
+      {debugEnabled && (
+        <pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap break-all rounded-md bg-black p-2 text-[10px] leading-snug text-green-400">
+          {debugLines.length ? debugLines.join("\n") : "PayPal debug: waiting…"}
+        </pre>
+      )}
     </div>
   )
 }
