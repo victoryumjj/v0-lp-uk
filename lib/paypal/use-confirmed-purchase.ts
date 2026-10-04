@@ -64,11 +64,19 @@ export function useConfirmedPayPalPurchase(
       const firedKey = `pp_purchase_tracked_${orderId}`
       try {
         if (localStorage.getItem(firedKey)) return
-        localStorage.setItem(firedKey, "1")
       } catch {}
 
       const { metaPixelId, googleAdsSendTo } = optsRef.current
       const w = window as any
+
+      // Pixel scripts load "afterInteractive": wait for them before firing, and only
+      // mark the order as tracked once fbq exists (otherwise a refresh can retry).
+      for (let i = 0; i < 20 && !w.fbq; i++) await sleep(250)
+      if (w.fbq) {
+        try {
+          localStorage.setItem(firedKey, "1")
+        } catch {}
+      }
 
       // Meta: browser event with the same eventID as the server CAPI event → deduplicated
       try {

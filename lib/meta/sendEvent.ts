@@ -12,6 +12,10 @@ export interface PixelConfig {
   accessToken: string
 }
 
+function primaryAccessToken(): string {
+  return process.env.META_ACCESS_TOKEN_UK2 || process.env.META_ACCESS_TOKEN || ""
+}
+
 // Returns the pixel that matches the given currency, falling back to the
 // primary pixel defined by META_PIXEL_ID / META_ACCESS_TOKEN.
 export function getPixelForCurrency(currency: string): PixelConfig {
@@ -35,7 +39,7 @@ export function getPixelForCurrency(currency: string): PixelConfig {
   // Fallback to primary pixel (UK2)
   return {
     pixelId: "1200200552118123",
-    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
+    accessToken: primaryAccessToken(),
   }
 }
 
@@ -56,7 +60,7 @@ export function getAllConfiguredPixels(): PixelConfig[] {
   // Ensure primary pixel (UK2) is always included
   const primary = {
     pixelId: "1200200552118123",
-    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
+    accessToken: primaryAccessToken(),
   }
   if (primary.pixelId && primary.accessToken && !seen.has(primary.pixelId)) {
     result.push(primary)
@@ -216,7 +220,7 @@ async function _sendToPixel(
 export async function sendMetaEvent(data: MetaEventData): Promise<MetaApiResponse> {
   const pixel: PixelConfig = {
     pixelId: "1200200552118123",
-    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
+    accessToken: primaryAccessToken(),
   }
   return _sendToPixel(data, pixel)
 }
@@ -234,7 +238,7 @@ export async function sendMetaEventForCurrency(
 export async function sendMetaEventToUKPixel(data: MetaEventData): Promise<MetaApiResponse> {
   const ukPixel: PixelConfig = {
     pixelId: "1200200552118123",
-    accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD",
+    accessToken: primaryAccessToken(),
   }
   
   return _sendToPixel(data, ukPixel)
@@ -299,7 +303,7 @@ export async function sendPurchaseEventToAllPixels(params: {
 
   // List of all pixels to send to - APENAS pixel UK2
   const pixelsToSend = [
-    { pixelId: "1200200552118123", accessToken: process.env.META_ACCESS_TOKEN_UK2 || "EAAFFeozJ3JUBRsPZB828NsSwmmz5TrVur6FZBGpagmYaeG0Lw6WbiO8oQYTnS87ZBQHDKdtHb9ijOY4ipZB7OI8S6f2qPZAGgzshoMwvH3ydM8uvtamcq6ByTx7jiG1ca4rv7eFAG6PPO7EVr5LWI2ZAbORwPHpF3rkMHZBS6080ZAR5RQnVTDjOm88b2NiP9AZDZD" },
+    { pixelId: "1200200552118123", accessToken: primaryAccessToken() },
   ]
 
   for (const pixel of pixelsToSend) {
@@ -309,10 +313,10 @@ export async function sendPurchaseEventToAllPixels(params: {
     }
 
     try {
-      // Use unique event ID per pixel to avoid deduplication issues
+      // Must match the browser Pixel eventID exactly so Meta deduplicates server + browser
       const pixelEventData = {
         ...eventData,
-        eventId: `${params.eventId || params.orderId}_${pixel.pixelId.slice(-4)}`,
+        eventId: params.eventId || `purchase_${params.orderId}`,
       }
       const result = await _sendToPixel(pixelEventData, pixel)
       results.push({ pixelId: pixel.pixelId, result })
