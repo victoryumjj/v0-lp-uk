@@ -86,7 +86,11 @@ export async function finalizeOrder(
 
   // Already captured (double click, refresh, webhook arrived first…)
   if (order.status === "COMPLETED") {
-    return { status: mapOrderStatus(order), orderId, market, order }
+    const status = mapOrderStatus(order)
+    // The webhook may have captured first (without browser cookies): still send from here
+    // with fbc/fbp; the shared event_id lets Meta deduplicate.
+    if (status === "paid" && opts.sendPurchase) await sendServerPurchase(order, opts.tracking)
+    return { status, orderId, market, order }
   }
 
   if (order.status !== "APPROVED") {
