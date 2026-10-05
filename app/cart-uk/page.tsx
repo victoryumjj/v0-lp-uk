@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, ShoppingBag, AlertTriangle } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { CartItem } from "@/components/cart-item"
 import { Button } from "@/components/ui/button"
-import { PayPalCheckoutUK } from "@/components/paypal-checkout-uk"
+import { CheckoutUK } from "@/components/checkout-uk"
 import { formatPrice } from "@/lib/price"
 import { trackInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
 import { getFbpFbc } from "@/lib/fbp-fbc"
@@ -154,10 +154,10 @@ export default function CartUKPage() {
               </div>
 
               <div className="mt-6 space-y-4">
-                <PayPalCheckoutUK items={ukItems} onInitiateCheckout={handleInitiateCheckout} />
+                <CheckoutUK items={ukItems} onInitiateCheckout={handleInitiateCheckout} />
               </div>
 
-              <p className="mt-4 text-center text-xs text-muted-foreground">Secure payment powered by PayPal</p>
+              <p className="mt-4 text-center text-xs text-muted-foreground">Secure payment</p>
             </div>
           </div>
         </div>

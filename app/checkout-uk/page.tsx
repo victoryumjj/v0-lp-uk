@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useCart } from "@/lib/cart-context"
-import { PayPalCheckoutUK } from "@/components/paypal-checkout-uk"
+import { CheckoutUK } from "@/components/checkout-uk"
 import { ArrowLeft, Lock, Package, RotateCcw, Star, Gift, Check, Wrench, Minus, Plus } from "lucide-react"
 import { trackInitiateCheckout as trackMetaInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
 import { trackInitiateCheckout as trackTikTokInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
@@ -463,7 +463,7 @@ export default function CheckoutUKPage() {
 
         {/* PayPal Checkout */}
         <div className="rounded-xl bg-white border border-border shadow-sm p-5 mb-4">
-          <PayPalCheckoutUK items={checkoutItems} onInitiateCheckout={handleInitiateCheckout} bonusData={bonusData} />
+          <CheckoutUK items={checkoutItems} onInitiateCheckout={handleInitiateCheckout} bonusData={bonusData} />
 
           {/* Payment icons */}
           <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">
