@@ -123,8 +123,11 @@ export function Footer() {
             </span>
             <span>EIN 86-3505108</span>
             <span>Director: Amber Johnson</span>
-            <span>413 FAIRGREEN AVE, CASSELBERRY, FL 32707</span>
-          </address>
+  <span>413 FAIRGREEN AVE, CASSELBERRY, FL 32707</span>
+  <a href="tel:+447456073174" className="hover:text-foreground">
+  +44 7456 073174
+  </a>
+  </address>
           <div className="flex gap-6">
             <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
               Privacy Policy
