@@ -1,10 +1,9 @@
 import "server-only"
 
 import { products } from "@/lib/products"
-import type { PayPalOrder } from "./client"
 
 /**
- * Server-side source of truth for checkout prices.
+ * Server-side source of truth for checkout prices (Stripe checkout).
  *
  * IMPORTANT: this file does NOT define new prices. It mirrors the prices that
  * already exist on the site so the server can REJECT any amount that the
@@ -154,47 +153,7 @@ export function totalCents(lines: ValidatedLine[]) {
   return lines.reduce((sum, l) => sum + l.unitCents * l.quantity, 0)
 }
 
-/**
- * Re-validates an order fetched from PayPal before capture / before reporting it as paid.
- * Protects against orders that were not built by our server (e.g. created directly
- * with the public client ID at an arbitrary amount).
- */
-export function validatePayPalOrder(order: PayPalOrder): { ok: true; market: Market } | { ok: false; reason: string } {
-  const unit = order.purchase_units?.[0]
-  if (!unit) return { ok: false, reason: "no purchase unit" }
-  if (order.purchase_units.length !== 1) return { ok: false, reason: "multiple purchase units" }
-
-  const market = unit.reference_id
-  if (!isMarket(market)) return { ok: false, reason: "unknown market" }
-
-  const currency = MARKETS[market].currency
-  if (unit.amount?.currency_code !== currency) return { ok: false, reason: "currency mismatch" }
-
-  const items = unit.items || []
-  if (items.length === 0) return { ok: false, reason: "no items" }
-
-  let lines: ValidatedLine[]
-  try {
-    lines = validateRequestedItems(
-      market,
-      items.map((i) => ({ id: i.sku || "", quantity: Number(i.quantity), unitPrice: Number(i.unit_amount?.value) })),
-    )
-  } catch (err) {
-    return { ok: false, reason: err instanceof Error ? err.message : "invalid items" }
-  }
-
-  for (const i of items) {
-    if (i.unit_amount?.currency_code !== currency) return { ok: false, reason: "item currency mismatch" }
-  }
-
-  const expected = totalCents(lines)
-  const b = unit.amount.breakdown || {}
-  const extras = [b.shipping, b.tax_total, b.handling, b.insurance, b.discount, b.shipping_discount].some(
-    (m) => m && toCents(Number(m.value)) !== 0,
-  )
-  if (extras) return { ok: false, reason: "unexpected breakdown amounts" }
-  if (toCents(Number(b.item_total?.value)) !== expected) return { ok: false, reason: "item total mismatch" }
-  if (toCents(Number(unit.amount.value)) !== expected) return { ok: false, reason: "amount mismatch" }
-
-  return { ok: true, market }
+/** Display name of a catalog item (falls back to the id). */
+export function productName(market: Market, id: string): string {
+  return CATALOGS[market].get(id)?.name ?? id
 }

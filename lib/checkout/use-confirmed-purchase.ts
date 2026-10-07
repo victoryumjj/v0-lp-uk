@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { identifyUser, trackPurchase } from "@/lib/tiktok-events"
 import { updateMetaUserData } from "@/lib/meta-pixel"
 
-export interface PayPalOrderSummary {
+export interface OrderSummary {
   orderId: string
   status: "pending" | "paid" | "failed" | "cancelled" | "refunded"
   currency: string
@@ -19,14 +19,14 @@ export interface PayPalOrderSummary {
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
-async function fetchStatus(orderId: string): Promise<PayPalOrderSummary | null> {
+async function fetchStatus(orderId: string): Promise<OrderSummary | null> {
   // A capture can be briefly "pending": poll a few times before giving up
   for (let attempt = 0; attempt < 6; attempt++) {
     try {
-      const res = await fetch(`/api/paypal/order-status?order_id=${encodeURIComponent(orderId)}`, { cache: "no-store" })
+      const res = await fetch(`/api/stripe/session-status?session_id=${encodeURIComponent(orderId)}`, { cache: "no-store" })
       if (res.status === 404 || res.status === 400) return null
       if (res.ok) {
-        const data = (await res.json()) as PayPalOrderSummary
+        const data = (await res.json()) as OrderSummary
         if (data.status !== "pending" || attempt === 5) return data
       }
     } catch {}
@@ -36,15 +36,15 @@ async function fetchStatus(orderId: string): Promise<PayPalOrderSummary | null> 
 }
 
 /**
- * Success-page logic for PayPal orders.
+ * Success-page logic for Stripe Checkout sessions.
  * Purchase (Meta Pixel, TikTok, Google Ads) fires ONLY when the server confirms
  * status === "paid", and only once per order on this browser.
  */
-export function useConfirmedPayPalPurchase(
+export function useConfirmedPurchase(
   orderId: string | null,
   opts: { metaPixelId: string; googleAdsSendTo: string; onConfirmed?: () => void },
 ) {
-  const [summary, setSummary] = useState<PayPalOrderSummary | null>(null)
+  const [summary, setSummary] = useState<OrderSummary | null>(null)
   const startedRef = useRef(false)
   const optsRef = useRef(opts)
   optsRef.current = opts
