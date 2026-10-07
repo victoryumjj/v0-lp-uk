@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle, Package, RotateCcw, ShoppingCart, Star } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
-import { useConfirmedPayPalPurchase } from "@/lib/paypal/use-confirmed-purchase"
+import { useConfirmedPurchase } from "@/lib/checkout/use-confirmed-purchase"
 
 declare global {
   interface Window {
@@ -24,30 +24,30 @@ const LED_UPSELL = {
   image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg",
 }
 
-export default function SuccessUKClient({ paypalOrderId = null }: { paypalOrderId?: string | null }) {
+export default function SuccessUKClient({ sessionId = null }: { sessionId?: string | null }) {
   const { clearCart } = useCart()
   const [purchaseData, setPurchaseData] = useState<any>(null)
 
-  // PayPal: Purchase fires only after the server confirms the payment (status === "paid")
-  const paypalSummary = useConfirmedPayPalPurchase(paypalOrderId, {
+  // Stripe: Purchase fires only after the server confirms the payment (status === "paid")
+  const orderSummary = useConfirmedPurchase(sessionId, {
     metaPixelId: "1200200552118123",
     googleAdsSendTo: "AW-16953354830/_coaCO30w_8bEM7U_pM_",
   })
 
   const ppClearedRef = useRef(false)
   useEffect(() => {
-    if (!paypalOrderId || ppClearedRef.current) return
+    if (!sessionId || ppClearedRef.current) return
     ppClearedRef.current = true
     clearCart()
     try {
       sessionStorage.removeItem("checkout_order_uk")
       sessionStorage.removeItem("checkout_bonus_uk")
     } catch {}
-  }, [paypalOrderId, clearCart])
+  }, [sessionId, clearCart])
 
   useEffect(() => {
-    if (paypalSummary) setPurchaseData(paypalSummary)
-  }, [paypalSummary])
+    if (orderSummary) setPurchaseData(orderSummary)
+  }, [orderSummary])
 
 
   return (
