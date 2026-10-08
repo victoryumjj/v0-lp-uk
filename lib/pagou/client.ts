@@ -9,13 +9,13 @@ import { createHmac, timingSafeEqual } from "node:crypto"
  * external_ref and do not move money, so no idempotency field is sent.
  *
  * Env vars (Vercel only, never in the browser):
- *   PAGOU_ENV             "sandbox" (default) | "production"
+ *   PAGOU_ENV             "production" (default) | "sandbox"
  *   PAGOU_API_KEY         secret API key for the selected environment
  *   PAGOU_WEBHOOK_SECRET  webhook "Security Token" (Settings → Integrations)
  */
 
 function baseUrl() {
-  return process.env.PAGOU_ENV === "production" ? "https://api.pagou.ai" : "https://api.sandbox.pagou.ai"
+  return process.env.PAGOU_ENV === "sandbox" ? "https://api.sandbox.pagou.ai" : "https://api.pagou.ai"
 }
 
 export class PagouApiError extends Error {
