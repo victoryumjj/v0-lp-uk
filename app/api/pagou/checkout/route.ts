@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createCheckoutLink, PagouApiError } from "@/lib/pagou/client"
-import { CheckoutValidationError, isMarket, MARKETS, validateRequestedItems } from "@/lib/checkout/catalog"
+import { absoluteImageUrl, CheckoutValidationError, isMarket, MARKETS, validateRequestedItems } from "@/lib/checkout/catalog"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -34,6 +34,7 @@ export async function POST(request: NextRequest) {
   }
 
   const currency = MARKETS[market].currency
+  const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin
   try {
     const link = await createCheckoutLink({
       title: "Slatura Wood order",
@@ -46,6 +47,8 @@ export async function POST(request: NextRequest) {
         quantity: l.quantity,
         currency,
         type: "physical" as const,
+        // Product photo shown in the Pagou order summary (absolute https URL, from the server catalog)
+        ...(absoluteImageUrl(l.image, siteOrigin) ? { image_url: absoluteImageUrl(l.image, siteOrigin) } : {}),
       })),
     })
 
