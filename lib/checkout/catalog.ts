@@ -45,12 +45,39 @@ export const centsToValue = (c: number) => (c / 100).toFixed(2)
 interface CatalogEntry {
   name: string
   unitCents: Set<number>
+  /** Product image (absolute https URL or site-relative path) */
+  image?: string
+}
+
+/** Prefer formats every checkout renders (jpg/png/webp) over avif/others. */
+function pickImage(images: Array<string | undefined>): string | undefined {
+  const list = images.filter((u): u is string => typeof u === "string" && u.length > 0)
+  return list.find((u) => /\.(jpe?g|png|webp)(\?|$)/i.test(u)) ?? list[0]
+}
+
+/** Turns a site-relative image path into an absolute URL (external services can't open "/img.jpg"). */
+export function absoluteImageUrl(image: string | undefined, origin: string): string | undefined {
+  if (!image) return undefined
+  try {
+    const url = new URL(image, origin)
+    return url.protocol === "https:" ? url.toString() : undefined
+  } catch {
+    return undefined
+  }
 }
 
 // Upsells shown on /checkout-uk (same ids/prices as components/upsell-products-uk.tsx)
-const UK_EXTRA_ITEMS: Record<string, { name: string; price: number }> = {
-  "led-kit-uk": { name: "Recessed LED Strip Kit", price: 109.0 },
-  "glue-kit-uk": { name: "Pro Fixing Adhesive", price: 12.9 },
+const UK_EXTRA_ITEMS: Record<string, { name: string; price: number; image: string }> = {
+  "led-kit-uk": {
+    name: "Recessed LED Strip Kit",
+    price: 109.0,
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/LED0101-NcQN4b3GARfX7EQhQSIcnMbQB9NsFa.jpg",
+  },
+  "glue-kit-uk": {
+    name: "Pro Fixing Adhesive",
+    price: 12.9,
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CLEAN04-jsHtrQ87vwg45Qyo5RrSkzrJbV2MXC.jpg",
+  },
 }
 
 // FR flexible panel: extra unit prices produced by the existing FR offers
@@ -68,12 +95,12 @@ function buildCatalog(market: Market): Map<string, CatalogEntry> {
 
   for (const p of products) {
     if ((p.currency || "").toUpperCase() !== currency) continue
-    map.set(p.id, { name: p.name, unitCents: new Set([toCents(p.price)]) })
+    map.set(p.id, { name: p.name, unitCents: new Set([toCents(p.price)]), image: pickImage(p.images ?? []) })
   }
 
   if (market === "UK") {
     for (const [id, item] of Object.entries(UK_EXTRA_ITEMS)) {
-      map.set(id, { name: item.name, unitCents: new Set([toCents(item.price)]) })
+      map.set(id, { name: item.name, unitCents: new Set([toCents(item.price)]), image: item.image })
     }
   }
 
@@ -109,6 +136,7 @@ export interface ValidatedLine {
   name: string
   quantity: number
   unitCents: number
+  image?: string
 }
 
 export class CheckoutValidationError extends Error {
@@ -143,7 +171,7 @@ export function validateRequestedItems(market: Market, items: unknown): Validate
       throw new CheckoutValidationError(`Invalid price for ${entry.name}`)
     }
 
-    lines.push({ id, name: entry.name, quantity, unitCents })
+    lines.push({ id, name: entry.name, quantity, unitCents, image: entry.image })
   }
 
   return lines
