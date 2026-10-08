@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useCart } from "@/lib/cart-context"
-import { StripeCheckoutFr } from "@/components/stripe-checkout-fr"
+import { PagouCheckoutFr } from "@/components/pagou-checkout-fr"
 import { ArrowLeft, Lock, Package, RotateCcw, Star, Gift, Check, Wrench } from "lucide-react"
 import { trackInitiateCheckout as trackMetaInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
 import { trackInitiateCheckout as trackTikTokInitiateCheckout, formatCartForTikTok } from "@/lib/tiktok-events"
@@ -109,7 +109,7 @@ export default function CheckoutFrPage() {
   const totalEur = storedOrder.totalPrice
   const isFreeShipping = totalEur >= 80
 
-  // Build a cart-like item array for StripeCheckoutFr
+  // Build a cart-like item array for PagouCheckoutFr
   const checkoutItems = [
     {
       product: {
@@ -368,9 +368,9 @@ export default function CheckoutFrPage() {
           </div>
         </div>
 
-        {/* Stripe Embedded Checkout */}
+        {/* Pagou Checkout */}
         <div className="rounded-xl bg-white border border-border shadow-sm p-5 mb-4">
-          <StripeCheckoutFr items={checkoutItems} onInitiateCheckout={handleInitiateCheckout} bonusData={bonusData} />
+          <PagouCheckoutFr items={checkoutItems} onInitiateCheckout={handleInitiateCheckout} bonusData={bonusData} />
 
           {/* Payment icons */}
           <div className="mt-4 flex items-center justify-center gap-2 flex-wrap">

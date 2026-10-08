@@ -1,11 +1,7 @@
 import SuccesFrClient from "./succes-fr-client"
 
-export default async function SuccesFrPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ session_id?: string }>
-}) {
-  const params = await searchParams
-  const sessionId = params.session_id ?? null
-  return <SuccesFrClient sessionId={sessionId} />
+// Payment is confirmed by the Pagou webhook on the server, which also sends the
+// Meta Purchase (Conversions API). This page only thanks the buyer.
+export default function SuccesFrPage() {
+  return <SuccesFrClient />
 }
