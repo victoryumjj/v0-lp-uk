@@ -11,7 +11,7 @@ import { CHECKOUT_SOURCE } from "../lib/stripe/server"
 const key = process.env.STRIPE_SECRET_KEY || process.env.atio_STRIPE_SECRET_KEY
 if (!key) throw new Error("STRIPE_SECRET_KEY is not configured")
 const stripe = new Stripe(key)
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.slaturadecori.com"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.woodslatura.com"
 
 interface Merged {
   name: string
