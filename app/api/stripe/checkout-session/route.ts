@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import type Stripe from "stripe"
 import { CHECKOUT_SOURCE, getStripe } from "@/lib/stripe/server"
-import { CheckoutValidationError, isMarket, MARKETS, validateRequestedItems } from "@/lib/checkout/catalog"
+import { absoluteImageUrl, CheckoutValidationError, isMarket, MARKETS, validateRequestedItems } from "@/lib/checkout/catalog"
 import { getClientIpFromHeaders, getUserAgentFromHeaders } from "@/lib/meta/cookies"
 
 export const runtime = "nodejs"
@@ -62,19 +62,29 @@ export async function POST(request: NextRequest) {
 
   const origin = request.nextUrl.origin
 
-  try {
-    const session = await getStripe().checkout.sessions.create({
-      ui_mode: "embedded_page",
-      mode: "payment",
-      locale: (locale === "fr-FR" ? "fr" : "en-GB") as Stripe.Checkout.SessionCreateParams.Locale,
-      line_items: lines.map((l) => ({
+  // Products are synced to Stripe with the same id (scripts/sync-stripe-products.ts).
+  // If one is missing there, fall back to inline product_data so checkout never breaks.
+  const buildLineItems = (linkProducts: boolean): Stripe.Checkout.SessionCreateParams.LineItem[] =>
+    lines.map((l) => {
+      const image = absoluteImageUrl(l.image, origin)
+      return {
         quantity: l.quantity,
         price_data: {
           currency: currency.toLowerCase(),
           unit_amount: l.unitCents,
-          product_data: { name: l.name, metadata: { sku: l.id } },
+          ...(linkProducts
+            ? { product: l.id }
+            : { product_data: { name: l.name, metadata: { sku: l.id }, ...(image ? { images: [image] } : {}) } }),
         },
-      })),
+      }
+    })
+
+  try {
+    const params: Stripe.Checkout.SessionCreateParams = {
+      ui_mode: "embedded_page",
+      mode: "payment",
+      locale: (locale === "fr-FR" ? "fr" : "en-GB") as Stripe.Checkout.SessionCreateParams.Locale,
+      line_items: buildLineItems(true),
       shipping_address_collection: {
         allowed_countries: shippingCountries as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[],
       },
@@ -82,7 +92,16 @@ export async function POST(request: NextRequest) {
       return_url: `${origin}${successPath}?session_id={CHECKOUT_SESSION_ID}`,
       metadata,
       payment_intent_data: { metadata: { source: CHECKOUT_SOURCE, market } },
-    })
+    }
+
+    let session: Stripe.Checkout.Session
+    try {
+      session = await getStripe().checkout.sessions.create(params)
+    } catch (err: any) {
+      if (err?.code !== "resource_missing") throw err
+      console.warn("[Stripe] product not synced, using inline product data:", err?.param)
+      session = await getStripe().checkout.sessions.create({ ...params, line_items: buildLineItems(false) })
+    }
 
     console.log("[Stripe] Session created:", { id: session.id, market, amount: session.amount_total, currency })
     return NextResponse.json({ clientSecret: session.client_secret })

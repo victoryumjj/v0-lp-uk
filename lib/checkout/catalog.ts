@@ -89,13 +89,19 @@ const FR_PANEL_EXTRA_UNIT_PRICES = [14.49, 249.0 / 12]
 const EN_PANEL_ID = "prod_U4kuSjp9pwoOzo"
 const EN_PANEL_PACK_UNIT_PRICES = [17.9, 32.0 / 2, 60.0 / 4, 85.0 / 6]
 
+// Stripe Checkout doesn't render .avif, so products with only avif photos get a jpg here
+const CHECKOUT_IMAGE_OVERRIDES: Record<string, string> = {
+  [EN_PANEL_ID]: "/flexible01.jpg",
+}
+
 function buildCatalog(market: Market): Map<string, CatalogEntry> {
   const currency = MARKETS[market].currency
   const map = new Map<string, CatalogEntry>()
 
   for (const p of products) {
     if ((p.currency || "").toUpperCase() !== currency) continue
-    map.set(p.id, { name: p.name, unitCents: new Set([toCents(p.price)]), image: pickImage(p.images ?? []) })
+    const image = CHECKOUT_IMAGE_OVERRIDES[p.id] ?? pickImage(p.images ?? [])
+    map.set(p.id, { name: p.name, unitCents: new Set([toCents(p.price)]), image })
   }
 
   if (market === "UK") {
@@ -123,6 +129,23 @@ function buildCatalog(market: Market): Map<string, CatalogEntry> {
 const CATALOGS: Record<Market, Map<string, CatalogEntry>> = {
   UK: buildCatalog("UK"),
   FR: buildCatalog("FR"),
+}
+
+export interface CatalogItem {
+  id: string
+  name: string
+  image?: string
+  unitCents: number[]
+}
+
+/** Every sellable item of a market with all accepted unit prices (used to sync Stripe products). */
+export function listCatalog(market: Market): CatalogItem[] {
+  return [...CATALOGS[market].entries()].map(([id, e]) => ({
+    id,
+    name: e.name,
+    image: e.image,
+    unitCents: [...e.unitCents].sort((a, b) => a - b),
+  }))
 }
 
 export interface RequestedItem {
