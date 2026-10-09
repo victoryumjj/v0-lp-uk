@@ -119,11 +119,8 @@ export function Footer() {
         <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-10 sm:flex-row">
           <address className="flex flex-col gap-1 text-center text-xs not-italic leading-relaxed text-muted-foreground sm:text-left">
             <span className="font-medium text-foreground">
-              &copy; {new Date().getFullYear()} EARTH &amp; AIR ANESTHESIA, LLC. All rights reserved.
+              &copy; {new Date().getFullYear()} SLATURA WOOD. All rights reserved.
             </span>
-            <span>EIN 86-3505108</span>
-            <span>Director: Amber Johnson</span>
-  <span>413 FAIRGREEN AVE, CASSELBERRY, FL 32707</span>
   <a href="tel:+447456073174" className="hover:text-foreground">
   +44 7456 073174
   </a>

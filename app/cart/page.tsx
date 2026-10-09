@@ -1,11 +1,14 @@
 "use client"
 
+import { useEffect } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowLeft, ArrowRight, ShoppingBag, AlertTriangle } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { CartItem } from "@/components/cart-item"
 import { Button } from "@/components/ui/button"
-import { PagouCheckoutFr } from "@/components/pagou-checkout-fr"
+import { StripeCheckoutFr } from "@/components/stripe-checkout-fr"
+import { isUKItem } from "@/lib/checkout/market"
 import { formatPrice } from "@/lib/price"
 import { trackInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
 import { getFbpFbc } from "@/lib/fbp-fbc"
@@ -14,6 +17,13 @@ import { BonusProgressBar } from "@/components/bonus-progress-bar"
 
 export default function CartPage() {
   const { items, totalPrice, clearCart } = useCart()
+  const router = useRouter()
+
+  // UK (GBP) products are never charged in EUR: send them to the UK cart
+  const hasUKItems = items.some(isUKItem)
+  useEffect(() => {
+    if (hasUKItems) router.replace("/cart-uk")
+  }, [hasUKItems, router])
 
   const hasFlexiblePanel = items.some((item) => item.product.slug === "flexible-acoustic-panel-fr")
   
@@ -177,11 +187,11 @@ export default function CartPage() {
                     Veuillez vider votre panier pour proceder au paiement
                   </div>
                 ) : (
-                  <PagouCheckoutFr items={items} onInitiateCheckout={handleInitiateCheckout} />
+                  <StripeCheckoutFr items={items} onInitiateCheckout={handleInitiateCheckout} />
                 )}
               </div>
 
-              <p className="mt-4 text-center text-xs text-muted-foreground">Paiement securise</p>
+              <p className="mt-4 text-center text-xs text-muted-foreground">Paiement securise par Stripe</p>
             </div>
           </div>
         </div>

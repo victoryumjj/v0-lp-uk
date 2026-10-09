@@ -5,7 +5,8 @@ import { ArrowLeft, ArrowRight, ShoppingBag, AlertTriangle } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { CartItem } from "@/components/cart-item"
 import { Button } from "@/components/ui/button"
-import { PagouCheckoutUK } from "@/components/pagou-checkout-uk"
+import { StripeCheckoutUK } from "@/components/stripe-checkout-uk"
+import { isUKItem } from "@/lib/checkout/market"
 import { formatPrice } from "@/lib/price"
 import { trackInitiateCheckout, generateEventId } from "@/lib/meta-pixel"
 import { getFbpFbc } from "@/lib/fbp-fbc"
@@ -15,7 +16,7 @@ export default function CartUKPage() {
   const { items, totalPrice, clearCart } = useCart()
 
   // Filter to UK items only (GBP)
-  const ukItems = items.filter((item) => item.product.currency === "GBP")
+  const ukItems = items.filter(isUKItem)
   const ukTotalPrice = ukItems.reduce((sum, item) => {
     const price = item.product.salePrice || item.product.price
     return sum + price * item.quantity
@@ -154,10 +155,10 @@ export default function CartUKPage() {
               </div>
 
               <div className="mt-6 space-y-4">
-                <PagouCheckoutUK items={ukItems} onInitiateCheckout={handleInitiateCheckout} />
+                <StripeCheckoutUK items={ukItems} onInitiateCheckout={handleInitiateCheckout} />
               </div>
 
-              <p className="mt-4 text-center text-xs text-muted-foreground">Secure payment</p>
+              <p className="mt-4 text-center text-xs text-muted-foreground">Secure payment powered by Stripe</p>
             </div>
           </div>
         </div>

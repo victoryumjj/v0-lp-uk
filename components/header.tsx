@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { isUKItem } from "@/lib/checkout/market"
 import { useState } from "react"
 import { Menu, ShoppingBag, X } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
@@ -21,7 +22,7 @@ export function Header() {
   const [open, setOpen] = useState(false)
   
   // Determine cart URL based on currency of items
-  const hasUKItems = items.some((item) => item.product.currency === "GBP")
+  const hasUKItems = items.some(isUKItem)
   const cartUrl = hasUKItems ? "/cart-uk" : "/cart"
 
   return (

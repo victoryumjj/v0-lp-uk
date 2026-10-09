@@ -3,7 +3,7 @@ import "server-only"
 import { products } from "@/lib/products"
 
 /**
- * Server-side source of truth for checkout prices (Pagou checkout).
+ * Server-side source of truth for checkout prices (Stripe checkout).
  *
  * IMPORTANT: this file does NOT define new prices. It mirrors the prices that
  * already exist on the site so the server can REJECT any amount that the
@@ -110,8 +110,10 @@ function buildCatalog(market: Market): Map<string, CatalogEntry> {
 
     // /cart (generic store) always charged in EUR at the listed number, whatever the
     // product's catalog currency. Kept identical to the previous checkout.
+    // GBP (UK) products are never sold in EUR: they must use the UK checkout.
     for (const p of products) {
-      if (!map.has(p.id)) map.set(p.id, { name: p.name, unitCents: new Set([toCents(p.price)]) })
+      if ((p.currency || "").toUpperCase() === "GBP") continue
+      if (!map.has(p.id)) map.set(p.id, { name: p.name, unitCents: new Set([toCents(p.price)]), image: pickImage(p.images ?? []) })
     }
     const en = map.get(EN_PANEL_ID)
     if (en) for (const price of EN_PANEL_PACK_UNIT_PRICES) en.unitCents.add(toCents(price))
