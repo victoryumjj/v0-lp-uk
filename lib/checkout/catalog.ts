@@ -3,7 +3,7 @@ import "server-only"
 import { products } from "@/lib/products"
 
 /**
- * Server-side source of truth for checkout prices (Pagou checkout).
+ * Server-side source of truth for checkout prices (Stripe checkout).
  *
  * IMPORTANT: this file does NOT define new prices. It mirrors the prices that
  * already exist on the site so the server can REJECT any amount that the

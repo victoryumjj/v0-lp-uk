@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle, Package, RotateCcw, ShoppingCart, Star } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
+import { useConfirmedPurchase } from "@/lib/checkout/use-confirmed-purchase"
 
 declare global {
   interface Window {
@@ -23,21 +24,29 @@ const LED_UPSELL = {
   image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/kit-ruban-led-encastre-fr.jpg",
 }
 
-export default function SuccesFrClient() {
+export default function SuccesFrClient({ sessionId = null }: { sessionId?: string | null }) {
   const { clearCart } = useCart()
-  const [purchaseData] = useState<any>(null)
+  const [purchaseData, setPurchaseData] = useState<any>(null)
 
-  // Pagou: the payment is confirmed by the Pagou webhook on the server, which sends the
-  // Meta Purchase (Conversions API). The browser does NOT fire Purchase on this page.
-  const clearedRef = useRef(false)
+  // Stripe: Purchase fires only after the server confirms the payment (status === "paid")
+  const orderSummary = useConfirmedPurchase(sessionId, {
+    metaPixelId: "1440709523610900",
+    googleAdsSendTo: "AW-16953354830/_coaCO30w_8bEM7U_pM_",
+  })
+
+  const ppClearedRef = useRef(false)
   useEffect(() => {
-    if (clearedRef.current) return
-    clearedRef.current = true
+    if (!sessionId || ppClearedRef.current) return
+    ppClearedRef.current = true
     clearCart()
     try {
       sessionStorage.removeItem("checkout_order_fr")
     } catch {}
-  }, [clearCart])
+  }, [sessionId, clearCart])
+
+  useEffect(() => {
+    if (orderSummary) setPurchaseData(orderSummary)
+  }, [orderSummary])
 
 
   return (
