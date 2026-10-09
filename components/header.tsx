@@ -6,6 +6,7 @@ import { Menu, ShoppingBag, X } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { ChristmasGarland, ChristmasStar } from "@/components/christmas-decor"
 
 const navigation = [
   { name: "Shop", href: "/products" },
@@ -64,6 +65,7 @@ export function Header() {
         </Sheet>
 
         <Link href="/" className="flex items-center font-serif text-xl font-medium tracking-[0.2em] text-foreground transition-opacity hover:opacity-80 sm:text-2xl lg:text-2xl">
+          <ChristmasStar />
           SLATURA WOOD
         </Link>
 
@@ -93,6 +95,7 @@ export function Header() {
           )}
         </Link>
       </nav>
+      <ChristmasGarland />
     </header>
   )
 }
