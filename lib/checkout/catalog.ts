@@ -125,6 +125,23 @@ const CATALOGS: Record<Market, Map<string, CatalogEntry>> = {
   FR: buildCatalog("FR"),
 }
 
+export interface CatalogItem {
+  id: string
+  name: string
+  image?: string
+  unitCents: number[]
+}
+
+/** Every sellable item of a market with all accepted unit prices (used to sync Stripe products). */
+export function listCatalog(market: Market): CatalogItem[] {
+  return [...CATALOGS[market].entries()].map(([id, e]) => ({
+    id,
+    name: e.name,
+    image: e.image,
+    unitCents: [...e.unitCents].sort((a, b) => a - b),
+  }))
+}
+
 export interface RequestedItem {
   id: string
   quantity: number
