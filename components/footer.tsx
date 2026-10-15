@@ -119,7 +119,7 @@ export function Footer() {
         <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-border/50 pt-10 sm:flex-row sm:items-start">
           <address className="flex flex-col items-center gap-1 text-center text-xs not-italic leading-relaxed text-muted-foreground sm:items-start sm:text-left">
             <span className="font-medium text-foreground">EARTH &amp; AIR WOOD, LLC</span>
-            <span>EIN: 86-32445108</span>
+            <span>EIN: 86-3245108</span>
             <span>Director: Amber Johnson</span>
             <span>411 Fairgreen Ave, Casselberry, FL 32707</span>
           </address>
