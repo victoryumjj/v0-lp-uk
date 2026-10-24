@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { Check } from "lucide-react"
 import { christmasCategories, christmasProducts, getChristmasProduct } from "@/lib/christmas"
 import { ChristmasGallery } from "@/components/christmas/christmas-gallery"
+import { ChristmasBuyBox } from "@/components/christmas/christmas-buy-box"
 import { ChristmasProductCard } from "@/components/christmas/christmas-product-card"
 
 export function generateStaticParams() {
@@ -66,40 +67,9 @@ export default async function ChristmasProductPage({ params }: { params: Promise
                 <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">{category.name}</p>
               )}
               <h1 className="font-serif text-3xl text-balance sm:text-4xl">{product.name}</h1>
-              <p className="text-xl font-medium">
-                {product.price !== null ? `£${product.price.toFixed(2)}` : "Price coming soon"}
-              </p>
             </div>
 
-            {product.options && (
-              <fieldset className="flex flex-col gap-3">
-                <legend className="mb-3 text-sm font-medium">{product.options.label}</legend>
-                <div className="flex flex-wrap gap-2">
-                  {product.options.values.map((value, i) => (
-                    <label key={value} className="cursor-pointer">
-                      <input
-                        type="radio"
-                        name="option"
-                        value={value}
-                        defaultChecked={i === 0}
-                        className="peer sr-only"
-                      />
-                      <span className="inline-flex h-10 items-center rounded-full border border-border px-4 text-sm transition-colors peer-checked:border-foreground peer-checked:bg-foreground peer-checked:text-background peer-focus-visible:ring-2 peer-focus-visible:ring-ring">
-                        {value}
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </fieldset>
-            )}
-
-            <button
-              type="button"
-              disabled={product.price === null}
-              className="inline-flex h-12 items-center justify-center rounded-md bg-foreground px-6 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {product.price !== null ? "Add to basket" : "Coming soon"}
-            </button>
+            <ChristmasBuyBox product={product} />
 
             <ul className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
               <li>Free UK delivery</li>

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Star } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { getChristmasCategory, type ChristmasProduct } from "@/lib/christmas"
+import { formatPriceRange, getChristmasCategory, type ChristmasProduct } from "@/lib/christmas"
 
 const tileClass = {
   sage: "bg-tile-sage",
@@ -51,7 +51,7 @@ export function ChristmasProductCard({ product, showCategory = false, size = "de
           {product.name}
         </h3>
         <p className={cn("font-semibold text-foreground", size === "compact" ? "text-xs" : "text-sm")}>
-          {product.price !== null ? `£${product.price.toFixed(2)}` : (
+          {formatPriceRange(product) ?? (
             <span className="font-normal text-muted-foreground">Price coming soon</span>
           )}
         </p>
