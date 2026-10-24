@@ -71,12 +71,6 @@ export default async function ChristmasProductPage({ params }: { params: Promise
 
             <ChristmasBuyBox product={product} />
 
-            <ul className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted-foreground">
-              <li>Free UK delivery</li>
-              <li>30-day returns</li>
-              <li>Secure checkout</li>
-            </ul>
-
             {product.description && (
               <div className="flex flex-col gap-3 border-t border-border pt-6">
                 <h2 className="font-serif text-xl">Description</h2>
