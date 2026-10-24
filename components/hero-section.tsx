@@ -27,7 +27,7 @@ export function HeroSection() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="h-14 border-foreground/20 px-10 text-sm font-medium uppercase tracking-wider bg-transparent hover:bg-foreground/5">
-                <Link href="/about">Our Story</Link>
+                <Link href="/christmas">Shop Christmas</Link>
               </Button>
             </div>
             {/* Trust badges */}

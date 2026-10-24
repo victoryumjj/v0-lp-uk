@@ -6,10 +6,12 @@ import { Menu, ShoppingBag, X } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { StringLights } from "@/components/christmas/string-lights"
 
 const navigation = [
   { name: "Shop", href: "/products" },
   { name: "Wall Panels", href: "/products?category=wall-panels" },
+  { name: "Christmas", href: "/christmas", festive: true },
   { name: "Lighting", href: "/products?category=lighting" },
   { name: "Decor", href: "/products?category=decor" },
   { name: "About", href: "/about" },
@@ -53,7 +55,9 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-lg text-foreground/80 transition-colors hover:text-foreground"
+                  className={`text-lg transition-colors ${
+                    "festive" in item ? "text-festive" : "text-foreground/80 hover:text-foreground"
+                  }`}
                   onClick={() => setOpen(false)}
                 >
                   {item.name}
@@ -73,7 +77,9 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-[13px] font-medium uppercase tracking-wider text-foreground/60 transition-colors duration-200 hover:text-foreground"
+              className={`text-[13px] font-medium uppercase tracking-wider transition-colors duration-200 ${
+                "festive" in item ? "text-festive hover:text-festive/80" : "text-foreground/60 hover:text-foreground"
+              }`}
             >
               {item.name}
             </Link>
@@ -93,6 +99,7 @@ export function Header() {
           )}
         </Link>
       </nav>
+      <StringLights />
     </header>
   )
 }
