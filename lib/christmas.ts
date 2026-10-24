@@ -109,7 +109,19 @@ export const christmasProducts: ChristmasProduct[] = [
       "Bring a touch of festive sparkle to your tree with this pack of 50 glass baubles. The assortment includes a mix of shiny, matt, glittered and ribbed finishes for a beautifully coordinated look. Hanging loops are attached for easy decorating.",
     details: ["Pack of 50 glass baubles", "Shiny, matt, glitter and ribbed finishes", "Hanging loops attached", "Colour: Red"],
   }),
-  item("6 Pack Satin Stripe Baubles", "baubles-bows"),
+  item("6 Pack Satin Stripe Baubles", "baubles-bows", {
+    price: 15,
+    images: photos("satin-stripe-baubles", 3),
+    description:
+      "Bring a glamorous pop of colour to your festive décor with this six-pack of jewel-tone baubles. The traditional round shapes come in a striped design with a luxurious satin finish. A pre-tied metallic thread loop means they're ready to hang fresh from the box.",
+    details: [
+      "Pack of 6 round baubles",
+      "Jewel-tone striped design",
+      "Luxurious satin finish",
+      "Pre-tied metallic thread hanging loop",
+      "Colour: Red Mix",
+    ],
+  }),
   item("80 Pack Mix Shatterproof Baubles", "baubles-bows", {
     price: 20,
     images: photos("80-pack-mix-shatterproof-baubles", 6),
@@ -130,7 +142,18 @@ export const christmasProducts: ChristmasProduct[] = [
       "With their flocked surfaces embellished with glittery ridged detailing, these baubles are an opulent choice. They come in a selection of red and green colourways for a traditional feel. Hanging strings add the finishing touch.",
     details: ["Pack of 9 baubles", "Flocked finish with glitter ridged detailing", "Brushed brass-look caps", "Hanging strings included", "Colour: Red Mix"],
   }),
-  item("3 Pack Velvet Bows", "baubles-bows"),
+  item("3 Pack Velvet Bows", "baubles-bows", {
+    price: 8,
+    images: photos("velvet-bows", 3),
+    description:
+      "Bring a luxurious touch to your Christmas decorations with this set of three velvet bows. Each one is finished with a tonal ribbon loop, so it's ready to hang.",
+    details: [
+      "Pack of 3 velvet bows",
+      "Soft velvet-like fabric",
+      "Tonal ribbon hanging loop",
+      "Colour: Green",
+    ],
+  }),
   item("Velvet Bow Decoration", "baubles-bows", {
     price: 18,
     images: photos("velvet-bow-decoration", 5),
@@ -167,7 +190,18 @@ export const christmasProducts: ChristmasProduct[] = [
       "This autumnal garland brings a stylish seasonal look to your home. It features a mix of faux foliage along with a burgundy-coloured bow and golden bells.",
     details: ["Mixed faux foliage", "Burgundy-coloured bow", "Golden bell accents", "Colour: Green Mix"],
   }),
-  item("Plain Bow Wreath", "garlands-wreaths"),
+  item("Plain Bow Wreath", "garlands-wreaths", {
+    price: 25,
+    images: photos("plain-bow-wreath", 4),
+    description:
+      "Embrace classic festive styling with this delightful wreath. It's decorated with an oversized red bow for a traditional look. The plain foliage allows the bow to do the talking.",
+    details: [
+      "Lush green foliage wreath",
+      "Oversized red bow",
+      "Classic, traditional styling",
+      "Colour: Green Mix",
+    ],
+  }),
   item("Real Winter Berry Wreath", "garlands-wreaths", {
     price: 75,
     images: photos("real-winter-berry-wreath", 4),
@@ -187,7 +221,18 @@ export const christmasProducts: ChristmasProduct[] = [
       "'Tis the season to be jolly, and this cheerful wreath helps create a welcoming atmosphere. Lavish sprays of realistic-looking red berries are mounted on a traditional woven base. A hanging loop adds a practical touch.",
     details: ["Realistic red berry sprays", "Traditional woven base", "Hanging loop", "Colour: Red"],
   }),
-  item("Set of 3 Mini Bow Wreaths", "garlands-wreaths"),
+  item("Set of 3 Mini Bow Wreaths", "garlands-wreaths", {
+    price: 25,
+    images: photos("mini-bow-wreaths", 4),
+    description:
+      "Perfect for adding a classic seasonal touch to your decor, these three mini wreaths are decorated with luxe velvet bows. Each festive piece features lush green foliage.",
+    details: [
+      "Set of 3 mini wreaths",
+      "Luxe velvet bows",
+      "Lush green foliage",
+      "Colour: Green Mix",
+    ],
+  }),
 
   item("300 Bright White LED Mains Lights", "lights-home", {
     price: 14,
