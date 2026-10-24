@@ -1,6 +1,7 @@
 import "server-only"
 
 import { products } from "@/lib/products"
+import { christmasCartId, christmasProducts } from "@/lib/christmas"
 
 /**
  * Server-side source of truth for checkout prices (Stripe checkout).
@@ -107,6 +108,24 @@ function buildCatalog(market: Market): Map<string, CatalogEntry> {
   if (market === "UK") {
     for (const [id, item] of Object.entries(UK_EXTRA_ITEMS)) {
       map.set(id, { name: item.name, unitCents: new Set([toCents(item.price)]), image: item.image })
+    }
+
+    for (const p of christmasProducts) {
+      const image = pickImage(p.images)
+      const optionPrices = p.options?.prices
+      if (p.options && optionPrices?.length) {
+        p.options.values.forEach((value, i) => {
+          const price = optionPrices[i]
+          if (price === undefined) return
+          map.set(christmasCartId(p.slug, i), {
+            name: `${p.name} – ${value}`,
+            unitCents: new Set([toCents(price)]),
+            image,
+          })
+        })
+      } else if (p.price !== null) {
+        map.set(christmasCartId(p.slug), { name: p.name, unitCents: new Set([toCents(p.price)]), image })
+      }
     }
   }
 

@@ -21,9 +21,9 @@ export function ChristmasPanelCarousel() {
   return (
     <section
       aria-labelledby="christmas-panel-title"
-      className="mt-12 border-y border-border/60 bg-card py-10 sm:mt-16 sm:rounded-sm sm:border sm:px-8"
+      className="mt-8 overflow-hidden rounded-md border border-border/60 bg-card px-4 py-8 sm:px-6"
     >
-      <div className="flex flex-col gap-3 px-1 sm:px-0">
+      <div className="flex flex-col gap-3">
         <ChristmasEyebrow />
         <h2 id="christmas-panel-title" className="font-serif text-2xl text-balance sm:text-3xl">
           Make your new wall feel like Christmas
@@ -33,9 +33,9 @@ export function ChristmasPanelCarousel() {
         </p>
       </div>
 
-      <ul className="-mx-4 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 [scrollbar-width:none]">
+      <ul className="mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none]">
         {items.map((product) => (
-          <li key={product.slug} className="w-[38%] shrink-0 snap-start sm:w-44">
+          <li key={product.slug} className="w-[calc((100%-0.75rem)/2.3)] shrink-0 snap-start sm:w-40">
             <Link href={`/christmas/${product.slug}`} className="block">
               <ChristmasProductCard product={product} size="compact" />
             </Link>

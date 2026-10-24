@@ -560,6 +560,8 @@ window.addEventListener("scroll", handleScroll, { passive: true })
             {isFrenchVersion && isFlexibleAcousticPanel && <VideoGalleryFr />}
             {isUKVersion && isFlexibleAcousticPanel && <VideoGalleryUK />}
 
+            {isUKVersion && isFlexibleAcousticPanel && <ChristmasPanelCarousel />}
+
             {/* Acoustic Line Section - Only for Flexible Acoustic Panel */}
             {isFlexibleAcousticPanel && (
               <div id="acoustic-line-section" className="scroll-mt-4">
@@ -654,8 +656,6 @@ window.addEventListener("scroll", handleScroll, { passive: true })
 
         {/* Product Description Section */}
         {isFlexibleAcousticPanel && <ProductDescriptionSection />}
-
-        {isUKVersion && isFlexibleAcousticPanel && <ChristmasPanelCarousel />}
 
         {/* FAQ Section - FR and UK - before reviews */}
         {isFrenchVersion && isFlexibleAcousticPanel && (

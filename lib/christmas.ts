@@ -46,6 +46,10 @@ const item = (
   ...extra,
 })
 
+/** Cart/checkout id. Each priced option gets its own id so different sizes stay separate lines. */
+export const christmasCartId = (slug: string, optionIndex?: number) =>
+  optionIndex === undefined ? `xmas-${slug}` : `xmas-${slug}--${optionIndex}`
+
 const photos = (base: string, count: number) =>
   Array.from({ length: count }, (_, i) => `/images/christmas/${base}-${i + 1}.avif`)
 
