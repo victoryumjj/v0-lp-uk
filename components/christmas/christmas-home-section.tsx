@@ -25,13 +25,13 @@ export function ChristmasHomeSection() {
           </Button>
         </div>
 
-        <nav aria-label="Christmas categories" className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-          <ul className="flex w-max gap-2">
+        <nav aria-label="Christmas categories">
+          <ul className="flex flex-wrap gap-2">
             {christmasCategories.map((category) => (
               <li key={category.id}>
                 <Link
                   href={`/christmas?category=${category.id}`}
-                  className="inline-flex h-9 items-center rounded-full border border-border px-4 text-sm text-foreground transition-colors hover:border-foreground"
+                  className="inline-flex h-9 items-center whitespace-nowrap rounded-full border border-border px-4 text-sm text-foreground transition-colors hover:border-foreground"
                 >
                   {category.name}
                 </Link>

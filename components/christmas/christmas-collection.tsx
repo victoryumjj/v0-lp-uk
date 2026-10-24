@@ -18,8 +18,8 @@ export function ChristmasCollection({ initialCategory = "all" }: { initialCatego
 
   return (
     <div className="flex flex-col gap-12">
-      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0" role="group" aria-label="Filter by category">
-        <div className="flex w-max gap-2">
+      <div role="group" aria-label="Filter by category">
+        <div className="flex flex-wrap gap-2">
           {chips.map((chip) => {
             const active = filter === chip.id
             return (
@@ -33,7 +33,7 @@ export function ChristmasCollection({ initialCategory = "all" }: { initialCatego
                   window.history.replaceState(null, "", url)
                 }}
                 className={cn(
-                  "inline-flex h-9 items-center rounded-full border px-4 text-sm transition-colors",
+                  "inline-flex h-9 items-center whitespace-nowrap rounded-full border px-4 text-sm transition-colors",
                   active
                     ? "border-foreground bg-foreground text-background"
                     : "border-border bg-transparent text-foreground hover:border-foreground",
