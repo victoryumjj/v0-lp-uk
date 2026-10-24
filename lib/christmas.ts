@@ -72,7 +72,13 @@ export const christmasProducts: ChristmasProduct[] = [
       "Colour: Green",
     ],
   }),
-  item("Light Up Bristle Treescape Decoration", "trees"),
+  item("Light Up Bristle Treescape Decoration", "trees", {
+    price: 30,
+    images: photos("light-up-bristle-treescape", 4),
+    description:
+      "Add some Scandi chic to your festive decor with this light-up decoration. It features a wooden base with nine individual trees sat on top. Each features a sprinkling of LED lights for that all-important festive glow.",
+    details: ["Wooden base with 9 bristle trees", "Integrated LED lights", "Ideal for mantels and table centrepieces", "Colour: Multi"],
+  }),
   item("Scallop Rattan Tree Skirt", "trees", {
     price: 35,
     images: photos("scallop-rattan-tree-skirt", 4),
@@ -96,11 +102,17 @@ export const christmasProducts: ChristmasProduct[] = [
       "Introduce luxurious textures to your tree decor with this 10-pack of velvety flocked and smooth matte baubles. The oversized design makes them ideal for when you want to add real impact to your tree, along a garland or to bring wow-factor to your wreath. Made with a shatterproof construction for safety.",
     details: ["Pack of 10 oversized baubles", "Mix of velvety flocked and smooth matte finishes", "Shatterproof construction", "Colour: Red"],
   }),
-  item("50 Pack Glass Baubles", "baubles-bows"),
+  item("50 Pack Glass Baubles", "baubles-bows", {
+    price: 25,
+    images: photos("50-pack-glass-baubles", 3),
+    description:
+      "Bring a touch of festive sparkle to your tree with this pack of 50 glass baubles. The assortment includes a mix of shiny, matt, glittered and ribbed finishes for a beautifully coordinated look. Hanging loops are attached for easy decorating.",
+    details: ["Pack of 50 glass baubles", "Shiny, matt, glitter and ribbed finishes", "Hanging loops attached", "Colour: Red"],
+  }),
   item("6 Pack Satin Stripe Baubles", "baubles-bows"),
   item("80 Pack Mix Shatterproof Baubles", "baubles-bows", {
     price: 20,
-    images: photos("80-pack-mix-shatterproof-baubles", 3),
+    images: photos("80-pack-mix-shatterproof-baubles", 6),
     description:
       "Decorate your tree in one simple and coordinated go with this 80-pack of baubles. It includes a mix of ribbed, glittery and polished round styles, alongside smaller faceted designs in matching finishes. A plastic construction ensures they're shatterproof for added durability. Re-use the box to keep them safely stored away at the end of the season.",
     details: [
@@ -108,8 +120,8 @@ export const christmasProducts: ChristmasProduct[] = [
       "Ribbed, glitter, polished and faceted styles",
       "Shatterproof plastic construction",
       "Reusable storage box",
-      "Colour: Brown Mix",
     ],
+    options: { label: "Colour", values: ["Brown Mix", "Gold"] },
   }),
   item("9 Pack Flocked Ridged Baubles", "baubles-bows", {
     price: 12,
@@ -127,7 +139,13 @@ export const christmasProducts: ChristmasProduct[] = [
     details: ["Plush velvet finish", "Colour: Rust", "Integrated hanging loop", "Ideal for trees, mantels, mirrors and doors"],
   }),
 
-  item("6ft Light Up Green Garland", "garlands-wreaths"),
+  item("6ft Light Up Green Garland", "garlands-wreaths", {
+    price: 45,
+    images: photos("6ft-light-up-green-garland", 4),
+    description:
+      "This Cotswold green garland features a lavish display of realistic greenery that lends a timeless feel to your decorations. Pine cones add texture and contrast, while warm white lights create a welcoming glow. This piece is battery-powered for easy operation.",
+    details: ["Length: 6ft", "Realistic Cotswold greenery with pine cones", "Warm white LED lights", "Battery operated", "Colour: Green Mix"],
+  }),
   item("Pre Lit Red Berry Garland", "garlands-wreaths", {
     price: 12,
     images: photos("pre-lit-red-berry-garland", 3),
