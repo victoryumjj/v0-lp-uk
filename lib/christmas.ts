@@ -81,7 +81,13 @@ export const christmasProducts: ChristmasProduct[] = [
     details: ["Height: 12 inches", "Natural rattan weave", "Scalloped trim", "Comes in three parts for easy storage", "Colour: Brown"],
     options: { label: "Size", values: ["24 Inches", "28 Inches"], prices: [35, 40] },
   }),
-  item("Textured Tinsel Tree Skirt", "trees"),
+  item("Textured Tinsel Tree Skirt", "trees", {
+    price: 18,
+    images: photos("textured-tinsel-tree-skirt", 3),
+    description:
+      "Complete the base of your Christmas tree with this round tree skirt, finished in shimmering tinsel for extra sparkle. The textured surface catches the light beautifully, adding a festive finishing touch to your display. It's a simple way to hide the tree stand while keeping the look polished.",
+    details: ["Round tree skirt", "Shimmering textured tinsel finish", "Conceals the tree stand", "Colour: Silver"],
+  }),
 
   item("10 Pack Flocked Oversized Shatterproof Baubles", "baubles-bows", {
     price: 10,
@@ -122,7 +128,13 @@ export const christmasProducts: ChristmasProduct[] = [
   }),
 
   item("6ft Light Up Green Garland", "garlands-wreaths"),
-  item("Pre Lit Red Berry Garland", "garlands-wreaths"),
+  item("Pre Lit Red Berry Garland", "garlands-wreaths", {
+    price: 12,
+    images: photos("pre-lit-red-berry-garland", 3),
+    description:
+      "Add a sophisticated touch to your festive decorations with this light-up garland. Its natural-looking branches are festooned with sprays of red berries. The warm white LED lights are battery-operated for easy placement — drape it over a mantelpiece or shape it along a wall or shelf.",
+    details: ["Pre-lit with warm white LEDs", "Battery operated", "Natural-look branches with red berries", "Colour: Red Mix"],
+  }),
   item("Velvet Bell and Bow Garland", "garlands-wreaths", {
     price: 12,
     images: photos("velvet-bell-and-bow-garland", 2),
@@ -130,7 +142,13 @@ export const christmasProducts: ChristmasProduct[] = [
       "This velvet garland is decorated with bells and bows for a festive finishing touch. It's a simple way to dress a bannister, mantelpiece or doorway for the season.",
     details: ["Soft velvet finish", "Decorated with bells and bows", "Ideal for bannisters, mantels and doorways", "Colour: Red Mix"],
   }),
-  item("Autumn Bow Garland", "garlands-wreaths"),
+  item("Autumn Bow Garland", "garlands-wreaths", {
+    price: 30,
+    images: photos("autumn-bow-garland", 4),
+    description:
+      "This autumnal garland brings a stylish seasonal look to your home. It features a mix of faux foliage along with a burgundy-coloured bow and golden bells.",
+    details: ["Mixed faux foliage", "Burgundy-coloured bow", "Golden bell accents", "Colour: Green Mix"],
+  }),
   item("Plain Bow Wreath", "garlands-wreaths"),
   item("Real Winter Berry Wreath", "garlands-wreaths"),
   item("Red Berry Wreath", "garlands-wreaths"),
@@ -150,7 +168,13 @@ export const christmasProducts: ChristmasProduct[] = [
     ],
   }),
   item("6 Pack Light Up Clip-On Decorations", "lights-home"),
-  item("Scalloped Rattan Extra Large Pendant Light", "lights-home"),
+  item("Scalloped Rattan Extra Large Pendant Light", "lights-home", {
+    price: 150,
+    images: photos("scalloped-rattan-pendant-light", 5),
+    description:
+      "This Scandi-inspired pendant light is made from woven rattan for a natural look. Its scalloped edges give it a graceful shape, while the extra large size makes it a striking addition to any room.",
+    details: ["Extra large pendant", "Woven natural rattan", "Scalloped edges", "Scandi-inspired design", "Colour: Brown"],
+  }),
   item("Rattan Scallop Tray", "lights-home", { price: 15 }),
   item("Pure Cotton Astley Floral Christmas Bedding Set", "lights-home", {
     price: 45,
