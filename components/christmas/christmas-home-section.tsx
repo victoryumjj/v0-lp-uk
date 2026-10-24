@@ -42,7 +42,7 @@ export function ChristmasHomeSection() {
 
         <div className="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-4 lg:gap-6">
           {featured.map((product) => (
-            <Link key={product.slug} href={`/christmas?category=${product.category}`} className="block">
+            <Link key={product.slug} href={`/christmas/${product.slug}`} className="block">
               <ChristmasProductCard product={product} showCategory />
             </Link>
           ))}

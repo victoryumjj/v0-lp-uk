@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { christmasCategories, christmasProducts, type ChristmasCategoryId } from "@/lib/christmas"
 import { ChristmasProductCard } from "./christmas-product-card"
@@ -55,7 +56,9 @@ export function ChristmasCollection({ initialCategory = "all" }: { initialCatego
             <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:gap-6">
               {items.map((product) => (
                 <li key={product.slug}>
-                  <ChristmasProductCard product={product} />
+                  <Link href={`/christmas/${product.slug}`} className="block">
+                    <ChristmasProductCard product={product} />
+                  </Link>
                 </li>
               ))}
             </ul>

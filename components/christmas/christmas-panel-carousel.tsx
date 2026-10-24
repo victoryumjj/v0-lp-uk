@@ -36,7 +36,7 @@ export function ChristmasPanelCarousel() {
       <ul className="-mx-4 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 [scrollbar-width:none]">
         {items.map((product) => (
           <li key={product.slug} className="w-[38%] shrink-0 snap-start sm:w-44">
-            <Link href={`/christmas?category=${product.category}`} className="block">
+            <Link href={`/christmas/${product.slug}`} className="block">
               <ChristmasProductCard product={product} size="compact" />
             </Link>
           </li>
