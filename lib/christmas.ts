@@ -53,11 +53,32 @@ export const christmasProducts: ChristmasProduct[] = [
   item("Scallop Rattan Tree Skirt", "trees"),
   item("Textured Tinsel Tree Skirt", "trees"),
 
-  item("10 Pack Flocked Oversized Shatterproof Baubles", "baubles-bows"),
+  item("10 Pack Flocked Oversized Shatterproof Baubles", "baubles-bows", {
+    images: photos("10-pack-flocked-oversized-baubles", 3),
+    description:
+      "Introduce luxurious textures to your tree decor with this 10-pack of velvety flocked and smooth matte baubles. The oversized design makes them ideal for when you want to add real impact to your tree, along a garland or to bring wow-factor to your wreath. Made with a shatterproof construction for safety.",
+    details: ["Pack of 10 oversized baubles", "Mix of velvety flocked and smooth matte finishes", "Shatterproof construction", "Colour: Red"],
+  }),
   item("50 Pack Glass Baubles", "baubles-bows"),
   item("6 Pack Satin Stripe Baubles", "baubles-bows"),
-  item("80 Pack Mix Shatterproof Baubles", "baubles-bows"),
-  item("9 Pack Flocked Ridged Baubles", "baubles-bows"),
+  item("80 Pack Mix Shatterproof Baubles", "baubles-bows", {
+    images: photos("80-pack-mix-shatterproof-baubles", 3),
+    description:
+      "Decorate your tree in one simple and coordinated go with this 80-pack of baubles. It includes a mix of ribbed, glittery and polished round styles, alongside smaller faceted designs in matching finishes. A plastic construction ensures they're shatterproof for added durability. Re-use the box to keep them safely stored away at the end of the season.",
+    details: [
+      "Pack of 80 coordinated baubles",
+      "Ribbed, glitter, polished and faceted styles",
+      "Shatterproof plastic construction",
+      "Reusable storage box",
+      "Colour: Brown Mix",
+    ],
+  }),
+  item("9 Pack Flocked Ridged Baubles", "baubles-bows", {
+    images: photos("9-pack-flocked-ridged-baubles", 3),
+    description:
+      "With their flocked surfaces embellished with glittery ridged detailing, these baubles are an opulent choice. They come in a selection of red and green colourways for a traditional feel. Hanging strings add the finishing touch.",
+    details: ["Pack of 9 baubles", "Flocked finish with glitter ridged detailing", "Brushed brass-look caps", "Hanging strings included", "Colour: Red Mix"],
+  }),
   item("3 Pack Velvet Bows", "baubles-bows"),
   item("Velvet Bow Decoration", "baubles-bows", {
     images: photos("velvet-bow-decoration", 5),
@@ -68,7 +89,12 @@ export const christmasProducts: ChristmasProduct[] = [
 
   item("6ft Light Up Green Garland", "garlands-wreaths"),
   item("Pre Lit Red Berry Garland", "garlands-wreaths"),
-  item("Velvet Bell and Bow Garland", "garlands-wreaths"),
+  item("Velvet Bell and Bow Garland", "garlands-wreaths", {
+    images: photos("velvet-bell-and-bow-garland", 2),
+    description:
+      "This velvet garland is decorated with bells and bows for a festive finishing touch. It's a simple way to dress a bannister, mantelpiece or doorway for the season.",
+    details: ["Soft velvet finish", "Decorated with bells and bows", "Ideal for bannisters, mantels and doorways", "Colour: Red Mix"],
+  }),
   item("Autumn Bow Garland", "garlands-wreaths"),
   item("Plain Bow Wreath", "garlands-wreaths"),
   item("Real Winter Berry Wreath", "garlands-wreaths"),
