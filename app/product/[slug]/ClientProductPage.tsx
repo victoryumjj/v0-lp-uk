@@ -19,6 +19,7 @@ import { PeopleViewing } from "@/components/people-viewing"
 import { ProductCard } from "@/components/product-card" // Added import for ProductCard
 import { RecessedLedSection } from "@/components/recessed-led-section"
 import { SamplesSection } from "@/components/samples-section"
+import { ChristmasPanelCarousel } from "@/components/christmas/christmas-panel-carousel"
 import { AcousticLineSection } from "@/components/acoustic-line-section"
 import { CountdownTimerFr } from "@/components/countdown-timer-fr"
 import { ExitIntentPopupFr } from "@/components/exit-intent-popup-fr"
@@ -653,6 +654,8 @@ window.addEventListener("scroll", handleScroll, { passive: true })
 
         {/* Product Description Section */}
         {isFlexibleAcousticPanel && <ProductDescriptionSection />}
+
+        {isUKVersion && isFlexibleAcousticPanel && <ChristmasPanelCarousel />}
 
         {/* FAQ Section - FR and UK - before reviews */}
         {isFrenchVersion && isFlexibleAcousticPanel && (
