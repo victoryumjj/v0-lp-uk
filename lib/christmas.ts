@@ -168,8 +168,25 @@ export const christmasProducts: ChristmasProduct[] = [
     details: ["Mixed faux foliage", "Burgundy-coloured bow", "Golden bell accents", "Colour: Green Mix"],
   }),
   item("Plain Bow Wreath", "garlands-wreaths"),
-  item("Real Winter Berry Wreath", "garlands-wreaths"),
-  item("Red Berry Wreath", "garlands-wreaths"),
+  item("Real Winter Berry Wreath", "garlands-wreaths", {
+    price: 75,
+    images: photos("real-winter-berry-wreath", 4),
+    description:
+      "Bring seasonal charm to your home with this beautifully crafted winter berry wreath, designed to add a rich and festive touch to any door or wall. Featuring a blend of vibrant berries and complementary foliage, it creates a classic winter look full of colour, texture and natural appeal. Perfect for welcoming guests throughout the festive period, this elegant wreath offers a timeless decorative statement that instantly enhances your Christmas décor.",
+    details: [
+      "Real foliage and berries",
+      "Sourced from trusted, sustainable growers",
+      "Ideal for doors and walls",
+      "Delivered from late November",
+    ],
+  }),
+  item("Red Berry Wreath", "garlands-wreaths", {
+    price: 35,
+    images: photos("red-berry-wreath", 4),
+    description:
+      "'Tis the season to be jolly, and this cheerful wreath helps create a welcoming atmosphere. Lavish sprays of realistic-looking red berries are mounted on a traditional woven base. A hanging loop adds a practical touch.",
+    details: ["Realistic red berry sprays", "Traditional woven base", "Hanging loop", "Colour: Red"],
+  }),
   item("Set of 3 Mini Bow Wreaths", "garlands-wreaths"),
 
   item("300 Bright White LED Mains Lights", "lights-home", {
@@ -185,7 +202,19 @@ export const christmasProducts: ChristmasProduct[] = [
       "Indoor and outdoor use",
     ],
   }),
-  item("6 Pack Light Up Clip-On Decorations", "lights-home"),
+  item("6 Pack Light Up Clip-On Candle Decorations", "lights-home", {
+    price: 20,
+    images: photos("clip-on-candle-decorations", 5),
+    description:
+      "Bring a vintage-inspired feel to your tree with this six-pack of candle decorations. Each piece is made in a clip-on style, with a fluted brass base and a warm white light. They're battery-powered for convenient placement, and come with a handy remote control timer.",
+    details: [
+      "Pack of 6 clip-on candles",
+      "Fluted brass-look base",
+      "Warm white LED light",
+      "Battery operated with remote control timer",
+      "Colour: Gold Mix",
+    ],
+  }),
   item("Scalloped Rattan Extra Large Pendant Light", "lights-home", {
     price: 150,
     images: photos("scalloped-rattan-pendant-light", 5),
