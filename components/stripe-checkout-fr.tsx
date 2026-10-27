@@ -169,7 +169,7 @@ export function StripeCheckoutFr({ items, onInitiateCheckout, bonusData }: Strip
         </div>
         <button
           onClick={handleRetry}
-          className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-base py-3 px-6 transition-colors duration-200"
+          className="w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base py-3 px-6 transition-colors duration-200 rounded-full"
         >
           <RefreshCw className="h-4 w-4" />
           Reessayer
@@ -254,7 +254,7 @@ export function StripeCheckoutFr({ items, onInitiateCheckout, bonusData }: Strip
     <button
       onClick={handleStartCheckout}
       disabled={loading || items.length === 0}
-      className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-lg py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-lg py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
     >
       {loading ? (
         <>

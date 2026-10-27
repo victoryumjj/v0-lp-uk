@@ -22,8 +22,8 @@ export function StockUrgencyBarFr() {
           }}
         />
       </div>
-      <p className="text-xs text-[#6B5B4E]">
-        <span className="text-[#C8522A] font-medium">73% des stocks vendus</span>
+      <p className="text-xs text-muted-foreground">
+        <span className="text-primary font-medium">73% des stocks vendus</span>
         {" | "}Il reste <strong>47 panneaux</strong>
       </p>
     </div>

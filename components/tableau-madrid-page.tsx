@@ -305,7 +305,7 @@ export function TableauMadridPage({ product }: Props) {
           </div>
           <button
             onClick={handleAddToCart}
-            className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-4 rounded-xl font-bold text-base transition-all hover:bg-accent/90 active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-2 bg-accent text-accent-foreground py-4 rounded-full font-bold text-base transition-all hover:bg-accent/90 active:scale-[0.98]"
           >
             {added ? (
               <>

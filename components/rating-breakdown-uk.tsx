@@ -12,30 +12,30 @@ const RATING_DISTRIBUTION = [
 
 export function RatingBreakdownUK() {
   return (
-    <div className="flex gap-6 items-center p-5 bg-[#FAF7F2] rounded-xl mb-6 flex-wrap">
+    <div className="flex gap-6 items-center p-5 bg-card rounded-xl mb-6 flex-wrap">
       {/* Big score */}
       <div className="flex flex-col items-center">
-        <span className="text-4xl sm:text-5xl font-bold text-[#2C1810]">4.8</span>
+        <span className="text-4xl sm:text-5xl font-bold text-foreground">4.8</span>
         <div className="flex gap-0.5 mt-1">
           {[1, 2, 3, 4, 5].map((i) => (
-            <Star key={i} className="w-4 h-4 fill-[#C8522A] text-[#C8522A]" />
+            <Star key={i} className="w-4 h-4 fill-[#C8522A] text-primary" />
           ))}
         </div>
-        <span className="text-xs text-[#6B5B4E] mt-1">2,134 verified reviews</span>
+        <span className="text-xs text-muted-foreground mt-1">2,134 verified reviews</span>
       </div>
 
       {/* Bars */}
       <div className="flex-1 min-w-[200px] flex flex-col gap-1.5">
         {RATING_DISTRIBUTION.map(({ stars, pct }) => (
           <div key={stars} className="flex items-center gap-2 text-xs">
-            <span className="w-5 text-[#6B5B4E]">{stars}</span>
+            <span className="w-5 text-muted-foreground">{stars}</span>
             <div className="flex-1 h-2 bg-[#E8DDD4] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#C8522A] rounded-full transition-all duration-1000"
+                className="h-full bg-primary rounded-full transition-all duration-1000"
                 style={{ width: `${pct}%` }}
               />
             </div>
-            <span className="w-8 text-right text-[#8B7B70]">{pct}%</span>
+            <span className="w-8 text-right text-muted-foreground">{pct}%</span>
           </div>
         ))}
       </div>

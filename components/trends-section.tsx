@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function TrendsSection() {
@@ -11,7 +11,7 @@ export function TrendsSection() {
           {/* Image Grid */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-4">
-              <div className="aspect-[3/4] overflow-hidden">
+              <div className="aspect-[3/4] overflow-hidden rounded-[28px]">
                 <Image
                   src="/trend-japandi-interior-natural-wood.jpg"
                   alt="Japandi interior with natural wood elements"
@@ -21,7 +21,7 @@ export function TrendsSection() {
                   sizes="(max-width: 1024px) 50vw, 25vw"
                 />
               </div>
-              <div className="aspect-square overflow-hidden">
+              <div className="aspect-square overflow-hidden rounded-[28px]">
                 <Image
                   src="/trend-acoustic-panel-office-modern.jpg"
                   alt="Modern office with acoustic panels"
@@ -33,7 +33,7 @@ export function TrendsSection() {
               </div>
             </div>
             <div className="mt-8 space-y-4">
-              <div className="aspect-square overflow-hidden">
+              <div className="aspect-square overflow-hidden rounded-[28px]">
                 <Image
                   src="/trend-minimalist-lamp-bedroom.jpg"
                   alt="Minimalist lamp in a bedroom"
@@ -43,7 +43,7 @@ export function TrendsSection() {
                   sizes="(max-width: 1024px) 50vw, 25vw"
                 />
               </div>
-              <div className="aspect-[3/4] overflow-hidden">
+              <div className="aspect-[3/4] overflow-hidden rounded-[28px]">
                 <Image
                   src="/trend-ceramic-decor-shelf.jpg"
                   alt="Ceramic decor on minimalist shelf"
@@ -58,25 +58,31 @@ export function TrendsSection() {
 
           {/* Content */}
           <div className="lg:pl-8">
-            <span className="text-sm font-medium uppercase tracking-widest text-muted-foreground">Design Trends</span>
-            <h2 className="mt-4 font-serif text-3xl leading-tight sm:text-4xl lg:text-5xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">Design Trends</span>
+            <h2 className="mt-4 font-serif text-4xl font-medium leading-tight sm:text-5xl lg:text-6xl">
               The Art of Japandi Style
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               Where Japanese minimalism meets Scandinavian functionality. Our collection embodies the perfect balance between warmth and simplicity, creating spaces that are both serene and inviting.
             </p>
             <ul className="mt-8 space-y-4">
-              <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span className="text-muted-foreground">Natural materials that age beautifully over time</span>
+              <li className="flex items-center gap-3">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-card text-accent">
+                  <Check className="h-4 w-4" aria-hidden="true" />
+                </span>
+                <span className="text-foreground/80">Natural materials that age beautifully over time</span>
               </li>
-              <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span className="text-muted-foreground">Clean lines with organic, handcrafted details</span>
+              <li className="flex items-center gap-3">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-card text-accent">
+                  <Check className="h-4 w-4" aria-hidden="true" />
+                </span>
+                <span className="text-foreground/80">Clean lines with organic, handcrafted details</span>
               </li>
-              <li className="flex items-start gap-3">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
-                <span className="text-muted-foreground">Neutral palettes that create calm, focused environments</span>
+              <li className="flex items-center gap-3">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-card text-accent">
+                  <Check className="h-4 w-4" aria-hidden="true" />
+                </span>
+                <span className="text-foreground/80">Neutral palettes that create calm, focused environments</span>
               </li>
             </ul>
             <Button asChild className="mt-8" size="lg">

@@ -313,7 +313,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
           disabled={!product.inStock}
           onClick={handleCustomAdd}
           data-add-to-cart="true"
-          className="w-full flex items-center justify-center gap-2 rounded-full bg-[#2D2A26] hover:bg-[#1a1816] text-white font-medium text-base py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 rounded-full bg-[#2D2A26] hover:bg-[#1a1816] text-white font-medium text-base py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
         >
           <ShoppingCart className="h-5 w-5 flex-shrink-0" />
           Buy Now - {customTotalFr.toFixed(2).replace(".", ",")} GBP
@@ -448,7 +448,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
           disabled={!product.inStock}
           onClick={handleBuyNowDirect}
           data-add-to-cart="true"
-          className="w-full flex items-center justify-center gap-3 rounded-full bg-[#FF6B00] hover:bg-[#e05e00] text-white font-semibold text-lg py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-3 rounded-full bg-primary hover:bg-primary/90 text-white font-semibold text-lg py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
         >
           <ShoppingCart className="h-5 w-5 flex-shrink-0" />
           Buy Now - £{ukTotalPrice.toFixed(2)}
@@ -472,7 +472,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
                 onClick={() => setSelectedQtyOptionEn(option)}
                 className={`w-full rounded-lg border-2 px-4 py-3 transition-all ${
                   isSelected
-                    ? "border-[#FF6B00] bg-orange-50"
+                    ? "border-primary bg-orange-50"
                     : "border-gray-200 bg-white hover:border-gray-300"
                 }`}
               >
@@ -510,7 +510,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
           disabled={!product.inStock}
           onClick={() => handleBuyNow()}
           data-add-to-cart="true"
-          className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-base py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <ShoppingCart className="h-5 w-5 flex-shrink-0" />
           Order Now £{selectedQtyOptionEn.price.toFixed(2)}

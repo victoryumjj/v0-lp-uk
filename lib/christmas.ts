@@ -58,7 +58,7 @@ export const christmasProducts: ChristmasProduct[] = [
     price: 30,
     images: photos("2ft-rattan-tree", 4),
     description:
-      "A natural rattan tree with tiered scalloped edges that brings warm, handcrafted texture to festive styling. Standing 2ft tall, it makes a charming accent on a sideboard, mantelpiece or console — pair it with the Rattan Scallop Tray to complete the look.",
+      "A natural rattan tree with tiered scalloped edges that brings warm, handcrafted texture to festive styling. Standing 2ft tall, it makes a charming accent on a sideboard, mantelpiece or console.",
     details: ["Height: 2ft", "Hand-woven natural rattan", "Tiered scalloped design", "Colour: Natural"],
   }),
   item("8ft Pre Lit Grand Fir Christmas Tree", "trees", {
@@ -271,7 +271,6 @@ export const christmasProducts: ChristmasProduct[] = [
       "This Scandi-inspired pendant light is made from woven rattan for a natural look. Its scalloped edges give it a graceful shape, while the extra large size makes it a striking addition to any room.",
     details: ["Extra large pendant", "Woven natural rattan", "Scalloped edges", "Scandi-inspired design", "Colour: Brown"],
   }),
-  item("Rattan Scallop Tray", "lights-home", { price: 15 }),
   item("Pure Cotton Astley Floral Christmas Bedding Set", "lights-home", {
     price: 45,
     priceMax: 85,

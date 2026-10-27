@@ -64,7 +64,7 @@ export function StickyCartBarFr({ selectedPrice = 24.90, originalPrice = 29.80 }
 
   return (
     <div
-      className={`fixed left-0 right-0 z-[9999] bg-[#2C1810] border-t border-white/10 px-4 py-3 transition-all duration-300 ${
+      className={`fixed left-0 right-0 z-[9999] bg-foreground border-t border-white/10 px-4 py-3 transition-all duration-300 ${
         visible && hasItemsInCart && !isCheckoutPage ? "bottom-0" : "-bottom-20"
       }`}
       style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
@@ -74,25 +74,25 @@ export function StickyCartBarFr({ selectedPrice = 24.90, originalPrice = 29.80 }
           <>
             {/* Cart has items - show finalize order */}
             <div className="hidden sm:flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#C8522A]/20">
-                <ShoppingCart className="w-5 h-5 text-[#C8522A]" />
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/20">
+                <ShoppingCart className="w-5 h-5 text-primary" />
               </div>
               <div className="flex flex-col gap-0.5">
-                <span className="text-sm font-medium text-[#FAF7F2]">{totalItems} article{totalItems > 1 ? "s" : ""} dans votre panier</span>
-                <span className="text-xs text-[#FAF7F2]/60">Prêt à être expédié</span>
+                <span className="text-sm font-medium text-card">{totalItems} article{totalItems > 1 ? "s" : ""} dans votre panier</span>
+                <span className="text-xs text-card/60">Prêt à être expédié</span>
               </div>
             </div>
 
             {/* Total price */}
             <div className="flex items-baseline gap-2">
-              <span className="text-lg font-bold text-[#FAF7F2]">Total : {totalPrice.toFixed(2).replace(".", ",")} EUR</span>
+              <span className="text-lg font-bold text-card">Total : {totalPrice.toFixed(2).replace(".", ",")} EUR</span>
             </div>
 
             {/* Finalize CTA */}
             <button
               type="button"
               onClick={handleFinishOrder}
-              className="px-6 py-2.5 bg-[#22C55E] text-white rounded-lg text-sm font-medium whitespace-nowrap hover:bg-[#16A34A] active:scale-[0.97] transition-all flex-1 sm:flex-none text-center flex items-center justify-center gap-2"
+              className="px-6 py-2.5 bg-[#22C55E] text-white rounded-full text-sm font-medium whitespace-nowrap hover:bg-[#16A34A] active:scale-[0.97] transition-all flex-1 sm:flex-none text-center flex items-center justify-center gap-2"
             >
               <Lock className="w-4 h-4" />
               Finaliser ma commande

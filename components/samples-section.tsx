@@ -248,7 +248,7 @@ export function SamplesSection({ isFrenchVersion = false }: SamplesSectionProps)
               type="button"
               disabled={selected.length === 0}
               onClick={handleAddToCart}
-              className="w-full bg-accent text-accent-foreground py-3 rounded-lg text-sm font-semibold hover:bg-accent/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full bg-accent text-accent-foreground py-3 rounded-full text-sm font-semibold hover:bg-accent/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
               {t.addToCart}
             </button>

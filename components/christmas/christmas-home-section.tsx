@@ -8,19 +8,19 @@ export function ChristmasHomeSection() {
   const featured = getFeaturedChristmasProducts()
 
   return (
-    <section aria-labelledby="christmas-home-title" className="border-y border-border/60 bg-card py-16 lg:py-24">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:px-8">
+    <section aria-labelledby="christmas-home-title" className="px-3 py-12 sm:px-4 lg:px-6 lg:py-16">
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 rounded-[40px] bg-card px-5 py-12 shadow-[0_8px_30px_rgb(51_37_28/0.06)] sm:px-8 lg:px-12 lg:py-16">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex max-w-xl flex-col gap-4">
             <ChristmasEyebrow />
-            <h2 id="christmas-home-title" className="font-serif text-3xl text-balance sm:text-4xl lg:text-5xl">
+            <h2 id="christmas-home-title" className="font-serif text-4xl font-medium text-balance sm:text-5xl lg:text-6xl">
               The Christmas Collection
             </h2>
             <p className="leading-relaxed text-muted-foreground">
               Trees, baubles, garlands and lights chosen to sit beautifully against warm wood walls.
             </p>
           </div>
-          <Button asChild size="lg" className="h-12 w-full bg-accent px-8 text-accent-foreground hover:bg-accent/90 sm:w-fit">
+          <Button asChild size="lg" className="h-12 w-full px-8 sm:w-fit">
             <Link href="/christmas">Shop the collection</Link>
           </Button>
         </div>
@@ -31,7 +31,7 @@ export function ChristmasHomeSection() {
               <li key={category.id}>
                 <Link
                   href={`/christmas?category=${category.id}`}
-                  className="inline-flex h-9 items-center whitespace-nowrap rounded-full border border-border px-4 text-sm text-foreground transition-colors hover:border-foreground"
+                  className="inline-flex h-11 items-center whitespace-nowrap rounded-full border border-border bg-background px-5 text-sm font-medium text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
                 >
                   {category.name}
                 </Link>

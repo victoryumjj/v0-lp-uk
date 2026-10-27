@@ -113,7 +113,7 @@ export function ExitIntentPopupFr({ onConfirm }: ExitIntentPopupFrProps) {
         {/* CTA */}
         <button
           onClick={handleConfirm}
-          className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-base py-4 transition-colors"
+          className="w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base py-4 transition-colors rounded-full"
         >
           <ShoppingCart className="h-5 w-5 flex-shrink-0" />
           Je veux mon panneau

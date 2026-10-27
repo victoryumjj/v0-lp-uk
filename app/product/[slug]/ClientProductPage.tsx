@@ -542,7 +542,7 @@ window.addEventListener("scroll", handleScroll, { passive: true })
                     </div>
                     <button
                       type="button"
-                      className="px-4 py-2 text-sm font-medium bg-accent text-accent-foreground rounded-md hover:bg-accent/90 transition-colors whitespace-nowrap"
+                      className="px-4 py-2 text-sm font-medium bg-accent text-accent-foreground rounded-full hover:bg-accent/90 transition-colors whitespace-nowrap"
                       onClick={handleAddBothToCart}
                     >
                       {isFrenchVersion ? "Ajouter au panier" : "Add Both to Cart"}
@@ -682,7 +682,7 @@ window.addEventListener("scroll", handleScroll, { passive: true })
         {isFrenchVersion && frOrderData && (
           <section 
             id="order-summary-fr" 
-            className="mt-12 sm:mt-16 scroll-mt-8 border-2 border-[#FF6B00] rounded-xl bg-orange-50/50 p-6 sm:p-8"
+            className="mt-12 sm:mt-16 scroll-mt-8 border-2 border-primary rounded-xl bg-orange-50/50 p-6 sm:p-8"
           >
             <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center">Récapitulatif de Votre Commande</h2>
             
@@ -749,14 +749,14 @@ window.addEventListener("scroll", handleScroll, { passive: true })
             {/* Total */}
             <div className="flex items-center justify-between mb-6 pt-4 border-t border-orange-200">
               <span className="text-lg font-bold">Total</span>
-              <span className="text-2xl font-bold text-[#FF6B00]">€{frOrderData.totalPrice.toFixed(2).replace(".", ",")}</span>
+              <span className="text-2xl font-bold text-primary">€{frOrderData.totalPrice.toFixed(2).replace(".", ",")}</span>
             </div>
 
             {/* CTA Button */}
             <button
               type="button"
               onClick={handleFinalizeOrder}
-              className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-lg py-4 px-8 transition-colors duration-200 shadow-lg"
+              className="w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-lg py-4 px-8 transition-colors duration-200 shadow-lg rounded-full"
             >
               <Shield className="h-5 w-5 flex-shrink-0" />
               Finaliser Ma Commande
@@ -827,7 +827,7 @@ window.addEventListener("scroll", handleScroll, { passive: true })
                 }
               }
             }}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-base py-4 transition-colors shadow-lg"
+            className="w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-base py-4 transition-colors shadow-lg"
           >
             <ShoppingCart className="h-5 w-5 flex-shrink-0" />
             {isFrenchVersion 

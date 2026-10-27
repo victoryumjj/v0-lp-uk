@@ -145,7 +145,7 @@ export function ChristmasBuyBox({ product }: { product: ChristmasProduct }) {
           type="button"
           disabled={!available}
           onClick={handleBuyNow}
-          className="flex w-full items-center justify-center gap-3 rounded-full bg-[#FF6B00] px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 hover:bg-[#e05e00] disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-3 rounded-full bg-primary px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50 rounded-full"
         >
           <ShoppingCart className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
           {available ? `Buy Now - £${totalPrice.toFixed(2)}` : "Coming soon"}

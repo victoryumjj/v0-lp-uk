@@ -173,7 +173,7 @@ export function BonusModalUK({ isOpen, onClose, onAcceptBonus, onDeclineBonus }:
           {!bonusActivated && (
             <button
               onClick={handleActivateBonus}
-              className="w-full bg-[#e8a020] hover:bg-[#d49318] text-white font-medium py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.98] mb-3"
+              className="w-full bg-[#e8a020] hover:bg-[#d49318] text-white font-medium py-3.5 rounded-full flex items-center justify-center gap-2 transition-all active:scale-[0.98] mb-3"
             >
               <Gift className="w-5 h-5" />
               I want the bonus!

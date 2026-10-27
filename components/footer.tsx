@@ -25,42 +25,42 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/50 bg-secondary/50">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+    <footer className="px-3 pb-3 sm:px-4 lg:px-6">
+      <div className="mx-auto max-w-7xl rounded-[40px] bg-foreground px-6 py-16 text-card sm:px-10 lg:px-14 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-5 lg:gap-8">
           <div className="lg:col-span-2">
-            <Link href="/" className="font-serif text-2xl font-medium tracking-[0.2em] text-foreground">
+            <Link href="/" className="font-serif text-3xl font-semibold tracking-[0.2em] text-card">
               SLATURA WOOD
             </Link>
-            <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-card/70">
               Premium wood slat panels and curated interior decor. We believe in quality craftsmanship, sustainable materials and timeless design that elevates every space.
             </p>
-            <div className="mt-6 flex gap-4">
+            <div className="mt-6 flex gap-3">
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-card/10 text-card transition-colors hover:bg-card hover:text-foreground"
               >
-                <Instagram className="h-5 w-5" />
+                <Instagram className="h-4 w-4" />
                 <span className="sr-only">Instagram</span>
               </a>
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-card/10 text-card transition-colors hover:bg-card hover:text-foreground"
               >
-                <Facebook className="h-5 w-5" />
+                <Facebook className="h-4 w-4" />
                 <span className="sr-only">Facebook</span>
               </a>
               <a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                className="flex h-11 w-11 items-center justify-center rounded-full bg-card/10 text-card transition-colors hover:bg-card hover:text-foreground"
               >
-                <Twitter className="h-5 w-5" />
+                <Twitter className="h-4 w-4" />
                 <span className="sr-only">Twitter</span>
               </a>
             </div>
@@ -68,13 +68,13 @@ export function Footer() {
 
           {/* Links */}
           <div>
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-foreground">Shop</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-card">Shop</h3>
             <ul className="mt-5 space-y-3">
               {footerLinks.shop.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-sm text-card/70 transition-colors hover:text-card"
                   >
                     {link.name}
                   </Link>
@@ -84,13 +84,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-foreground">Company</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-card">Company</h3>
             <ul className="mt-5 space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-sm text-card/70 transition-colors hover:text-card"
                   >
                     {link.name}
                   </Link>
@@ -100,13 +100,13 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-xs font-medium uppercase tracking-[0.15em] text-foreground">Support</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.15em] text-card">Support</h3>
             <ul className="mt-5 space-y-3">
               {footerLinks.support.map((link) => (
                 <li key={link.name}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-sm text-card/70 transition-colors hover:text-card"
                   >
                     {link.name}
                   </Link>
@@ -116,18 +116,18 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-border/50 pt-10 sm:flex-row sm:items-start">
-          <address className="flex flex-col items-center gap-1 text-center text-xs not-italic leading-relaxed text-muted-foreground sm:items-start sm:text-left">
-            <span className="font-medium text-foreground">EARTH &amp; AIR WOOD, LLC</span>
+        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-card/15 pt-10 sm:flex-row sm:items-start">
+          <address className="flex flex-col items-center gap-1 text-center text-xs not-italic leading-relaxed text-card/60 sm:items-start sm:text-left">
+            <span className="font-semibold text-card">EARTH &amp; AIR WOOD, LLC</span>
             <span>EIN: 86-3245108</span>
             <span>Director: Amber Johnson</span>
             <span>411 Fairgreen Ave, Casselberry, FL 32707</span>
           </address>
           <div className="flex gap-6">
-            <Link href="/privacy" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link href="/privacy" className="text-sm text-card/70 hover:text-card">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
+            <Link href="/terms" className="text-sm text-card/70 hover:text-card">
               Terms of Use
             </Link>
           </div>

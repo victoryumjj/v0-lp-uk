@@ -68,21 +68,21 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
   }
 
   return (
-    <section className="bg-[#FAF7F2] border border-[#E8DDD4] rounded-2xl p-6 sm:p-8 my-8">
-      <div className="text-xs font-semibold tracking-widest uppercase text-[#C8522A] mb-2">
+    <section className="bg-card border border-[#E8DDD4] rounded-2xl p-6 sm:p-8 my-8">
+      <div className="text-xs font-semibold tracking-widest uppercase text-primary mb-2">
         Calculateur de surface
       </div>
-      <h2 className="text-xl sm:text-2xl font-bold text-[#2C1810] mb-2">
+      <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
         Combien de panneaux pour votre mur?
       </h2>
-      <p className="text-sm text-[#6B5B4E] mb-6">
+      <p className="text-sm text-muted-foreground mb-6">
         Entrez les dimensions de votre mur. Nous calculons la quantité exacte, avec marge de sécurité.
       </p>
 
       {/* Inputs */}
       <div className="flex items-end gap-3 mb-5 flex-wrap">
         <div className="flex flex-col gap-1.5 flex-1 min-w-[120px]">
-          <label className="text-xs font-medium text-[#6B5B4E]">Largeur du mur</label>
+          <label className="text-xs font-medium text-muted-foreground">Largeur du mur</label>
           <div className="relative">
             <input
               type="number"
@@ -91,16 +91,16 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
               onChange={(e) => setWidth(e.target.value)}
               min="0.5"
               step="0.1"
-              className="w-full px-3 py-2.5 pr-10 border border-[#E8DDD4] rounded-lg text-base bg-white text-[#2C1810] focus:outline-none focus:border-[#C8522A] transition-colors"
+              className="w-full px-3 py-2.5 pr-10 border border-[#E8DDD4] rounded-lg text-base bg-white text-foreground focus:outline-none focus:border-primary transition-colors"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#8B7B70] font-medium pointer-events-none">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium pointer-events-none">
               m
             </span>
           </div>
         </div>
         <span className="text-2xl text-[#C8C0B8] pb-2">x</span>
         <div className="flex flex-col gap-1.5 flex-1 min-w-[120px]">
-          <label className="text-xs font-medium text-[#6B5B4E]">Hauteur du mur</label>
+          <label className="text-xs font-medium text-muted-foreground">Hauteur du mur</label>
           <div className="relative">
             <input
               type="number"
@@ -109,9 +109,9 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
               onChange={(e) => setHeight(e.target.value)}
               min="0.5"
               step="0.1"
-              className="w-full px-3 py-2.5 pr-10 border border-[#E8DDD4] rounded-lg text-base bg-white text-[#2C1810] focus:outline-none focus:border-[#C8522A] transition-colors"
+              className="w-full px-3 py-2.5 pr-10 border border-[#E8DDD4] rounded-lg text-base bg-white text-foreground focus:outline-none focus:border-primary transition-colors"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#8B7B70] font-medium pointer-events-none">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium pointer-events-none">
               m
             </span>
           </div>
@@ -120,7 +120,7 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
 
       {/* Coverage */}
       <div className="mb-6">
-        <label className="block text-xs font-medium text-[#6B5B4E] mb-2">
+        <label className="block text-xs font-medium text-muted-foreground mb-2">
           Pourcentage du mur à couvrir
         </label>
         <div className="flex gap-2 flex-wrap">
@@ -131,8 +131,8 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
               onClick={() => setCoverage(pct)}
               className={`px-4 py-2 border rounded-full text-sm transition-all ${
                 coverage === pct
-                  ? "border-[#C8522A] bg-[#C8522A] text-white"
-                  : "border-[#E8DDD4] bg-white text-[#6B5B4E] hover:border-[#C8522A] hover:bg-[#C8522A] hover:text-white"
+                  ? "border-primary bg-primary text-white"
+                  : "border-[#E8DDD4] bg-white text-muted-foreground hover:border-primary hover:bg-primary hover:text-white"
               }`}
             >
               {pct === 100 ? "Mur entier" : `${pct}%`}
@@ -145,7 +145,7 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
       <button
         type="button"
         onClick={handleCalculate}
-        className="w-full py-3.5 bg-[#2C1810] text-white rounded-xl text-base font-medium hover:bg-[#4A2818] active:scale-[0.98] transition-all"
+        className="w-full py-3.5 bg-foreground text-white rounded-full text-base font-medium hover:bg-foreground/90 active:scale-[0.98] transition-all"
       >
         Calculer ma quantité
       </button>
@@ -155,26 +155,26 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
         <div className="mt-6 p-5 bg-white border border-[#E8DDD4] rounded-xl animate-in fade-in slide-in-from-bottom-2 duration-300">
           {/* Main result */}
           <div className="text-center pb-4 border-b border-[#F0EAE0] mb-4">
-            <div className="text-5xl font-bold text-[#C8522A] leading-none">{result.withBuffer}</div>
-            <div className="text-sm font-medium text-[#2C1810] mt-1">panneaux recommandés</div>
-            <div className="text-xs text-[#8B7B70] mt-1">
+            <div className="text-5xl font-bold text-primary leading-none">{result.withBuffer}</div>
+            <div className="text-sm font-medium text-foreground mt-1">panneaux recommandés</div>
+            <div className="text-xs text-muted-foreground mt-1">
               ({result.panels} pour la surface + {result.withBuffer - result.panels} de réserve pour les découpes)
             </div>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-2 mb-4">
-            <div className="flex flex-col items-center p-2.5 bg-[#FAF7F2] rounded-lg">
-              <span className="text-base font-bold text-[#2C1810]">{result.m2} m²</span>
-              <span className="text-[10px] text-[#8B7B70] text-center">surface couverte</span>
+            <div className="flex flex-col items-center p-2.5 bg-card rounded-lg">
+              <span className="text-base font-bold text-foreground">{result.m2} m²</span>
+              <span className="text-[10px] text-muted-foreground text-center">surface couverte</span>
             </div>
-            <div className="flex flex-col items-center p-2.5 bg-[#FAF7F2] rounded-lg">
-              <span className="text-base font-bold text-[#2C1810]">Pack {result.bundleRecommended}</span>
-              <span className="text-[10px] text-[#8B7B70] text-center">pack recommandé</span>
+            <div className="flex flex-col items-center p-2.5 bg-card rounded-lg">
+              <span className="text-base font-bold text-foreground">Pack {result.bundleRecommended}</span>
+              <span className="text-[10px] text-muted-foreground text-center">pack recommandé</span>
             </div>
             <div className="flex flex-col items-center p-2.5 bg-[#FFF1EB] rounded-lg">
-              <span className="text-base font-bold text-[#C8522A]">{result.price} EUR</span>
-              <span className="text-[10px] text-[#8B7B70] text-center">prix total</span>
+              <span className="text-base font-bold text-primary">{result.price} EUR</span>
+              <span className="text-[10px] text-muted-foreground text-center">prix total</span>
             </div>
           </div>
 
@@ -182,12 +182,12 @@ export function PanelCalculatorFr({ onSelectBundle }: PanelCalculatorFrProps) {
           <button
             type="button"
             onClick={handleSelectBundle}
-            className="w-full py-3.5 bg-[#C8522A] text-white rounded-xl text-base font-medium hover:bg-[#A8421A] active:scale-[0.98] transition-all mb-3"
+            className="w-full py-3.5 bg-primary text-white rounded-full text-base font-medium hover:bg-primary/90 active:scale-[0.98] transition-all mb-3 rounded-full"
           >
             Sélectionner le Pack {result.bundleRecommended} {result.price} EUR
           </button>
 
-          <p className="text-[11px] text-[#8B7B70] text-center">
+          <p className="text-[11px] text-muted-foreground text-center">
             +10% de marge incluse pour les chutes de découpe. Retours gratuits si vous en commandez trop.
           </p>
         </div>

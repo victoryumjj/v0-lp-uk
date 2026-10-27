@@ -51,7 +51,7 @@ export default function SuccessUKClient({ sessionId = null }: { sessionId?: stri
 
 
   return (
-    <div className="min-h-screen bg-[#f9f7f4] py-10 px-4">
+    <div className="min-h-screen bg-card py-10 px-4">
       <div className="mx-auto max-w-lg space-y-4">
 
         {/* Confirmation header */}
@@ -80,8 +80,8 @@ export default function SuccessUKClient({ sessionId = null }: { sessionId?: stri
         </div>
 
         {/* Post-purchase upsell */}
-        <div className="rounded-xl bg-white border border-[#FF6B00]/30 shadow-sm p-5">
-          <p className="text-xs font-semibold uppercase tracking-wider text-[#FF6B00] mb-1">Exclusive offer for customers</p>
+        <div className="rounded-xl bg-white border border-primary/30 shadow-sm p-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-1">Exclusive offer for customers</p>
           <h2 className="text-base font-bold text-foreground mb-3">
             Complete your installation with the LED Kit
           </h2>
@@ -103,7 +103,7 @@ export default function SuccessUKClient({ sessionId = null }: { sessionId?: stri
           </div>
           <Link
             href={`/product/${LED_UPSELL.slug}`}
-            className="w-full flex items-center justify-center gap-2 rounded-lg bg-[#FF6B00] hover:bg-[#e05e00] text-white font-bold text-sm py-3 transition-colors"
+            className="w-full flex items-center justify-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-white font-bold text-sm py-3 transition-colors"
           >
             <ShoppingCart className="h-4 w-4 flex-shrink-0" />
             Add to my order
