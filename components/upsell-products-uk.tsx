@@ -61,7 +61,7 @@ export function UpsellProductsUk({
     <div className={`rounded-xl border border-border bg-white p-4 ${className}`}>
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
-        <Plus className="w-4 h-4 text-[#FF6B00]" />
+        <Plus className="w-4 h-4 text-primary" />
         <span className="text-sm font-semibold text-foreground">Add These Too</span>
       </div>
 
@@ -76,7 +76,7 @@ export function UpsellProductsUk({
               onClick={() => handleToggle(product)}
               className={`w-full flex items-center gap-3 p-3 rounded-lg border-2 transition-all duration-200 text-left ${
                 isSelected 
-                  ? "border-[#FF6B00] bg-orange-50" 
+                  ? "border-primary bg-orange-50" 
                   : "border-gray-200 bg-white hover:border-gray-300"
               }`}
             >
@@ -100,7 +100,7 @@ export function UpsellProductsUk({
                   {product.description}
                 </p>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-sm font-bold text-[#FF6B00]">
+                  <span className="text-sm font-bold text-primary">
                     £{product.price.toFixed(2)}
                   </span>
                   {product.originalPrice && (
@@ -114,7 +114,7 @@ export function UpsellProductsUk({
               {/* Toggle Indicator */}
               <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${
                 isSelected 
-                  ? "bg-[#FF6B00] text-white" 
+                  ? "bg-primary text-white" 
                   : "border-2 border-gray-300 bg-white"
               }`}>
                 {isSelected && <Check className="w-4 h-4" />}

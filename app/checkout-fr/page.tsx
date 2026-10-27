@@ -180,7 +180,7 @@ export default function CheckoutFrPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f9f7f4] py-8 px-4">
+    <div className="min-h-screen bg-card py-8 px-4">
       <div className="mx-auto max-w-lg">
 
         {/* Header */}

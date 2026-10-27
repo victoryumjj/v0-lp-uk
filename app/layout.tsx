@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter, Playfair_Display } from "next/font/google"
+import { Manrope, Cormorant_Garamond } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import Script from "next/script"
 import { Suspense } from "react"
@@ -12,8 +12,8 @@ import { ScrollToTop } from "@/components/scroll-to-top"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
-const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const _playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" })
+const _inter = Manrope({ subsets: ["latin"], variable: "--font-inter", weight: ["400", "500", "600", "700"] })
+const _playfair = Cormorant_Garamond({ subsets: ["latin"], variable: "--font-playfair", weight: ["500", "600"] })
 
 export const metadata: Metadata = {
   title: "SLATURA WOOD | Premium Wood Acoustic Panels & Interior Design",
@@ -31,7 +31,7 @@ export default function RootLayout({
   const metaPixelId = "1200200552118123" // Meta Pixel
   
   return (
-    <html lang="en-GB">
+    <html lang="en-GB" className={`${_inter.variable} ${_playfair.variable} bg-background`}>
       <head>
         {/* Facebook Domain Verification */}
         <meta name="facebook-domain-verification" content="ihv7koj9hajrwhdhclgubwhbfk6c22" />
