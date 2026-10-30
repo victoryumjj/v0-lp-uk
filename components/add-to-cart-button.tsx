@@ -316,7 +316,7 @@ export function AddToCartButton({ product, variant = "default", className, isFre
           className="w-full flex items-center justify-center gap-2 rounded-full bg-[#2D2A26] hover:bg-[#1a1816] text-white font-medium text-base py-4 px-8 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full"
         >
           <ShoppingCart className="h-5 w-5 flex-shrink-0" />
-          Buy Now - {customTotalFr.toFixed(2).replace(".", ",")} GBP
+          Buy Now - {customTotalFr.toFixed(2).replace(".", ",")} €
         </button>
       </div>
     )
